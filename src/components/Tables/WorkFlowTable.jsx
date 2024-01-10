@@ -159,10 +159,7 @@ export default function WorkFlowTable({
                         {row.policy_name}
                       </TableCell>
                       <TableCell style={{ fontSize: "12px" }}>
-                        {row.policy_type}
-                      </TableCell>
-                      <TableCell style={{ fontSize: "12px" }}>
-                        {row.selected_group}
+                        {row.group_admin}
                       </TableCell>
                       <TableCell style={{ fontSize: "12px" }}>
                         {row.selected_users}

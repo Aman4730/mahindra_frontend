@@ -1,42 +1,26 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { AuthContext } from "../../context/AuthContext";
-import { UserContext } from "../../context/UserContext";
 import { notification } from "antd";
-import { FormGroup, Modal, ModalBody, Form } from "reactstrap";
+import { useForm } from "react-hook-form";
 import Head from "../../layout/head/Head";
 import ModalPop from "../../components/Modal";
 import Content from "../../layout/content/Content";
-import Meta_Properties from "../../components/Meta_properties";
-import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import SearchBar from "../../components/SearchBar";
 import "react-datepicker/dist/react-datepicker.css";
-import SearchIcon from "@mui/icons-material/Search";
+import { AuthContext } from "../../context/AuthContext";
+import { UserContext } from "../../context/UserContext";
+import Meta_Properties from "../../components/Meta_properties";
+import { Form, Modal, ModalBody, FormGroup } from "reactstrap";
+import DocmetaTable from "../../components/Tables/DocmetaTable";
+import { Stack, TextField, Typography, Autocomplete } from "@mui/material";
 import {
-  Autocomplete,
-  IconButton,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
-import {
-  Block,
-  BlockBetween,
+  Col,
+  Icon,
+  Button,
   BlockDes,
   BlockHead,
+  BlockBetween,
   BlockHeadContent,
-  Icon,
-  Col,
-  PaginationComponent,
-  Button,
-  DataTable,
-  DataTableBody,
-  DataTableHead,
-  DataTableRow,
-  DataTableItem,
-  TooltipComponent,
 } from "../../components/Component";
-import DocmetaTable from "../../components/Tables/DocmetaTable";
-import SearchBar from "../../components/SearchBar";
 
 const Docmetadata = () => {
   const {
@@ -54,17 +38,10 @@ const Docmetadata = () => {
   const { setAuthToken } = useContext(AuthContext);
   const [userData, setUserData] = contextData;
   const [sm, updateSm] = useState(false);
-  const [tablesm, updateTableSm] = useState(false);
-  const [onSearch, setonSearch] = useState(true);
-  const [onSearchText, setSearchText] = useState("");
   const [editId, setEditedId] = useState();
-  const [formData, setFormData] = useState("");
   const [metadata, setMetadata] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemPerPage, setItemPerPage] = useState(5);
   const [totalUsers, setTotalUsers] = useState(0);
   const [totalmeta, setTotalMeta] = useState(0);
-  const [deleteId, setDeleteId] = useState(false);
   const [docList, setDocList] = useState([]);
   const [metaList, setMetaList] = useState([]);
   const [searchTerm, setSearchTerm] = React.useState("");
@@ -130,7 +107,7 @@ const Docmetadata = () => {
       {},
       (apiRes) => {
         setTotalMeta(apiRes.data.length);
-        setMetaList(apiRes.data);
+        setMetaList(apiRes?.data);
       },
       (apiErr) => {
         console.log(apiErr);
@@ -138,18 +115,18 @@ const Docmetadata = () => {
     );
   };
   // ----------------list Dropdown
-  const [getProperties, GetProperties] = useState([]);
-  const onProperties = (doctype) => {
-    setMetaId(doctype);
+  const [metaId, setMetaId] = useState({});
+  const [getProperties, setGetProperties] = useState([]);
+  const onProperties = (doctype, id) => {
     let data = {
+      meta_id: id,
       doctype: doctype,
     };
+    setMetaId(data);
     getproperties(
       data,
       (apiRes) => {
-        GetProperties(apiRes.data);
-        getUsers();
-        setAuthToken(token);
+        setGetProperties(apiRes.data);
       },
       (apiErr) => {}
     );
@@ -169,31 +146,18 @@ const Docmetadata = () => {
   }, []);
   useEffect(() => {
     getTotalWorkspace();
-  }, [currentPage]);
+  }, []);
   useEffect(() => {
     getTotalWorkspace();
     getmetatypelist();
   }, [cabinet]);
-  useEffect(() => {
-    if (onSearchText !== "") {
-      const filteredObject = userData.filter((item) => {
-        return (
-          item.name.toLowerCase().includes(onSearchText.toLowerCase()) ||
-          item.email.toLowerCase().includes(onSearchText.toLowerCase())
-        );
-      });
-      setUserData([...filteredObject]);
-    } else {
-      setUserData([...userData]);
-    }
-  }, [onSearchText, setUserData]);
+
   // ----------------
   const getTotalWorkspace = () => {
     getWorkspace(
-      { pageNumber: currentPage, pageSize: itemPerPage, search: onSearchText },
+      {},
       (apiRes) => {
         setTotalUsers(apiRes.data.count);
-
         if (apiRes.status == 200) {
           setUserData(apiRes.data.data);
           setPermissionData({});
@@ -202,39 +166,18 @@ const Docmetadata = () => {
       (apiErr) => {}
     );
   };
-  // onChange function for searching name
-  const onFilterChange = (e) => {
-    setSearchText(e.target.value);
-  };
   //block meta properties
   const onBlockClick = (id, checked) => {
     let statusCheck = {
       id: id,
       status: checked,
     };
-    // notification["warning"]({
-    //   placement: "bottomRight",
-    //   description: "",
-    //   message: statusCheck.meta_status
-    //     ? "Property Active"
-    //     : "Property Inactive",
-    // });
-
     blockMetaStatus(
       statusCheck,
-      (apiRes) => {
-        if (200 == 200) {
-          statusCheck = {};
-          resetForm();
-          setModal({ edit: false }, { add: false });
-          getUsers();
-        }
-        setAuthToken(token);
-      },
+      (apiRes) => {},
       (apiErr) => {}
     );
   };
-
   const [switchValues, setSwitchValues] = useState({});
   const handleSwitchChange = (event, id) => {
     const checked = event.target.checked;
@@ -246,7 +189,6 @@ const Docmetadata = () => {
       },
     }));
   };
-
   // function to reset the form
   const resetForm = () => {
     setPropertyDropdown("");
@@ -264,8 +206,8 @@ const Docmetadata = () => {
   const onSubmitProperties = () => {
     if (editId) {
       let submittedData = {
-        meta_id: metaId.id,
-        doctype: metaId,
+        meta_id: metaId?.meta_id,
+        doctype: metaId?.doctype,
         fieldname: fieldNameInput,
         fieldtype: propertyDropdown,
         metaproperties: todos,
@@ -273,14 +215,13 @@ const Docmetadata = () => {
       meta_property(
         submittedData,
         (apiRes) => {
-          if (apiRes.status == 201) {
+          if (apiRes.status == 200) {
             notification["success"]({
               placement: "top",
               description: "",
               message: "Add Doc Metadata properties.",
               style: {
-                marginTop: "43px",
-                height: "60px",
+                height: 60,
               },
             });
           }
@@ -296,8 +237,8 @@ const Docmetadata = () => {
       );
     } else {
       let submittedData = {
-        meta_id: metaId.id,
-        doctype: metaId,
+        meta_id: metaId?.meta_id,
+        doctype: metaId?.doctype,
         fieldname: fieldNameInput,
         fieldtype: propertyDropdown,
         metaproperties: todos,
@@ -334,84 +275,78 @@ const Docmetadata = () => {
             notification["success"]({
               placement: "top",
               description: "",
-              message: "Doc Metadata Created Successfully.",
+              message: "Doc Metadata Edited Successfully.",
               style: {
-                marginTop: "43px",
-                height: "60px",
+                height: 60,
               },
             });
+            onFormCancel();
           }
-          const code = 200;
-          if (code == 200) {
-            resetForm();
-            setModal({ edit: false }, { add: false });
-            getTotalWorkspace();
-          }
-          setAuthToken(token);
         },
         (apiErr) => {}
       );
     } else {
       let submittedData = {
         metadata_name: metadata,
-        workspace_name: workspace.workspace_name,
-        doctype: doctype.doctype_name,
-        cabinet_name: cabinet.cabinet_name,
+        workspace_name: workspace?.workspace_name,
+        doctype: doctype?.doctype_name,
+        cabinet_name: cabinet?.cabinet_name,
       };
       add_docmetadata(
         submittedData,
         (apiRes) => {
-          const code = 200;
-          if (code == 200) {
-            resetForm();
-            setModal({ edit: false }, { add: false });
-            getUsers();
+          if (apiRes.status == 201) {
+            console.log(apiRes, "tfuysduy");
+            notification["success"]({
+              placement: "top",
+              description: "",
+              message: apiRes.data.message,
+              style: {
+                height: 60,
+              },
+            });
+            onFormCancel();
           }
-          setAuthToken(token);
         },
-        (apiErr) => {}
+        (apiErr) => {
+          if (apiErr.response.status == 400) {
+            console.log("kgyuf");
+            notification["success"]({
+              placement: "top",
+              description: "",
+              message: apiErr.response.data.message,
+              style: {
+                height: 60,
+              },
+            });
+          }
+        }
       );
     }
   };
-  // function that loads the want to editted userData
-
   // handle Delete Function
   const onDeleteClick = (id) => {
-    handleClose();
-    setDeleteId(true);
     let deleteId = { id: id };
     deletemetadata(
       deleteId,
       (apiRes) => {
-        if (apiRes.status == 200) {
+        if (apiRes?.status == 200) {
           notification["success"]({
             placement: "top",
             description: "",
             message: "Doc Metadata Deleted Successfully.",
             style: {
-              marginTop: "43px",
-              height: "60px",
+              height: 60,
             },
           });
+          handleClose();
+          getmetatypelist();
         }
-        const code = 200;
-        if (code == 200) {
-          resetForm();
-          setModal({ edit: false }, { add: false });
-          getTotalGroups();
-        }
-        setAuthToken(token);
       },
       (apiErr) => {}
     );
   };
-  // function to toggle the search option
-  const toggle = () => setonSearch(!onSearch);
-  const paginate = (pageNumber) => {
-    debugger;
-    setCurrentPage(pageNumber);
-  };
-  const [metaId, setMetaId] = useState();
+
   let [addProperty, setAddProperty] = useState("");
   let [todos, setTodos] = useState([]);
   const addTask = () => {
@@ -472,7 +407,7 @@ const Docmetadata = () => {
       <Meta_Properties
         modal={modal}
         editId={editId}
-        title={metaId}
+        title={metaId?.doctype}
         switchValues={switchValues}
         setSwitchValues={setSwitchValues}
         handleSwitchChange={handleSwitchChange}
@@ -526,13 +461,6 @@ const Docmetadata = () => {
                           searchTerm={searchTerm}
                           setSearchTerm={setSearchTerm}
                         />
-                        {/* <Button
-                          color="primary"
-                          className="btn-icon"
-                          onClick={() => setModal({ add: true })}
-                        >
-                          <Icon name="plus"></Icon>
-                        </Button> */}
                       </li>
                     </ul>
                   </div>
@@ -584,10 +512,11 @@ const Docmetadata = () => {
                     <Autocomplete
                       disablePortal
                       size="small"
+                      name="cabinet"
                       options={cabinetList}
                       getOptionLabel={(cabinetList) =>
                         cabinetList?.cabinet_name
-                      } // Adjust this based on your API response structure
+                      }
                       renderInput={(params) => (
                         <TextField {...params} label="Select an option" />
                       )}
@@ -595,10 +524,11 @@ const Docmetadata = () => {
                     />
                   </Col>
                   <Col md="6">
-                    <label className="form-label">workspace_name</label>
+                    <label className="form-label">Workspace Name</label>
                     <Autocomplete
                       disablePortal
                       size="small"
+                      name="workspace"
                       options={userData}
                       getOptionLabel={(userData) => userData.workspace_name} // Adjust this based on your API response structure
                       renderInput={(params) => (
@@ -612,6 +542,7 @@ const Docmetadata = () => {
                     <Autocomplete
                       disablePortal
                       size="small"
+                      name="doctype"
                       options={docList}
                       getOptionLabel={(docList) => docList.doctype_name} // Adjust this based on your API response structure
                       renderInput={(params) => (
@@ -628,10 +559,9 @@ const Docmetadata = () => {
                         type="text"
                         fullWidth
                         size="small"
-                        name="metadata Name"
+                        name="metadata"
                         // defaultValue={formData}
                         onChange={(e) => setMetadata(e.target.value)}
-                        placeholder="Enter Quota"
                         ref={register({ required: "This field is required" })}
                       />
                       {errors.workspace_name && (

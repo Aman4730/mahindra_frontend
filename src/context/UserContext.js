@@ -13,11 +13,10 @@ export const UserContextProvider = (props) => {
       localStorage.removeItem("user");
     }
   }, []);
-  const [isGuestLogin, setIsGuestLogin] = useState([]);
-
-  const [userData, setUserData] = useState([]);
   const [isLogin, setIsLogin] = useState({});
-
+  const [userData, setUserData] = useState([]);
+  const [isGuestLogin, setIsGuestLogin] = useState([]);
+  const [workSpaceData, setWorkspaceData] = useState({});
   async function Login(userSubmittedData, handleApiRes, handleApiError) {
     await AxiosPost(
       "login",
@@ -442,6 +441,22 @@ export const UserContextProvider = (props) => {
       }
     );
   }
+  async function add_updatefolder(
+    userSubmittedData,
+    handleApiRes,
+    handleApiError
+  ) {
+    await AxiosPost(
+      "updatefolder",
+      userSubmittedData,
+      (apiRes) => {
+        handleApiRes(apiRes);
+      },
+      (apiError) => {
+        handleApiError(apiError);
+      }
+    );
+  }
   async function folders(userSubmittedData, handleApiRes, handleApiError) {
     await AxiosPost(
       "folders",
@@ -485,6 +500,50 @@ export const UserContextProvider = (props) => {
   async function add_Policies(userSubmittedData, handleApiRes, handleApiError) {
     await AxiosPost(
       "addpolicies",
+      userSubmittedData,
+      (apiRes) => {
+        handleApiRes(apiRes);
+      },
+      (apiError) => {
+        handleApiError(apiError);
+      }
+    );
+  }
+  async function add_createworkflow(
+    userSubmittedData,
+    handleApiRes,
+    handleApiError
+  ) {
+    await AxiosPost(
+      "createworkflow",
+      userSubmittedData,
+      (apiRes) => {
+        handleApiRes(apiRes);
+      },
+      (apiError) => {
+        handleApiError(apiError);
+      }
+    );
+  }
+  async function getworkflow(userSubmittedData, handleApiRes, handleApiError) {
+    await AxiosPost(
+      "getworkflow",
+      userSubmittedData,
+      (apiRes) => {
+        handleApiRes(apiRes);
+      },
+      (apiError) => {
+        handleApiError(apiError);
+      }
+    );
+  }
+  async function deleteworkflow(
+    userSubmittedData,
+    handleApiRes,
+    handleApiError
+  ) {
+    await AxiosPost(
+      "deleteworkflow",
       userSubmittedData,
       (apiRes) => {
         handleApiRes(apiRes);
@@ -738,7 +797,6 @@ export const UserContextProvider = (props) => {
       }
     );
   }
-  const [workSpaceData, setWorkspaceData] = useState({});
   async function getfoldernames(data, handleApiRes, handleApiError) {
     await AxiosPost(
       "getFolders",
@@ -1015,8 +1073,10 @@ export const UserContextProvider = (props) => {
         addcreatefolder: addcreatefolder,
         add_docmetadata: add_docmetadata,
         adduploadcreate: adduploadcreate,
+        add_updatefolder: add_updatefolder,
         addmetaproperties: addmetaproperties,
         addNewcreatefolder: addNewcreatefolder,
+        add_createworkflow: add_createworkflow,
         add_metaproperties: add_metaproperties,
         getUser: getUser,
         getsmtp: getsmtp,
@@ -1028,6 +1088,7 @@ export const UserContextProvider = (props) => {
         getdoclist: getdoclist,
         getCabinet: getCabinet,
         getmetalist: getmetalist,
+        getworkflow: getworkflow,
         getrecycle: getrecycle,
         get_togggle: get_togggle,
         getGuestdata: getGuestdata,
@@ -1052,6 +1113,7 @@ export const UserContextProvider = (props) => {
         userDropdownU: userDropdownU,
         deleteNotes: deleteNotes,
         deletepolicy: deletepolicy,
+        deleteworkflow: deleteworkflow,
         downloadfile: downloadfile,
         downloadfolders: downloadfolders,
         deletefile: deletefile,

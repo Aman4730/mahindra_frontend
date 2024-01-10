@@ -165,7 +165,7 @@ export default function TeamSpaceFileUpload({
                 height: "35px",
               }}
             >
-              Save
+              Browse
             </Button>
             {/* ) : (
                 ""

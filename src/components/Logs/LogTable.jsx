@@ -117,7 +117,7 @@ export default function LogTable({
     { value: "Upload" },
     { value: "Delete" },
     { value: "Download" },
-    { value: "Updated" },
+    { value: "Update" },
   ];
   return (
     <Box>

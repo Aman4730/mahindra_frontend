@@ -195,8 +195,9 @@ const WS1Header = ({
       >
         {list?.map((data, index) => (
           <div
-            onClick={() => callApiHeader({ ...data, index })}
+            key={index}
             style={{ cursor: "pointer" }}
+            onClick={() => callApiHeader({ ...data, index })}
           >
             {data?.folder_name ? (
               <p onClick={() => findFolder(data)} style={{ cursor: "pointer" }}>

@@ -1,36 +1,37 @@
 import {
-  Card,
-  Backdrop,
   Box,
-  Autocomplete,
+  Card,
+  Grid,
+  Stack,
+  Button,
+  Backdrop,
   TextField,
   Typography,
-  Button,
-  Stack,
-  Grid,
+  Autocomplete,
 } from "@mui/material";
 import "./FileUpload.css";
-import { Icon } from "../Component";
+import { Icon, RSelect } from "../Component";
 import React, { useEffect, useState } from "react";
 export default function FileUpload({
   open,
   close,
-  docListUpload,
-  handleOnClick,
-  Properties,
-  selectedFile,
-  handleFileChange,
-  handleOkay,
-  fileDesc,
-  fileName,
-  handleInputChange,
-  formValues,
   loading,
+  fileDesc,
+  handleOkay,
+  formValues,
+  Properties,
+  selectedMeta,
+  selectedFile,
+  setSelectedMeta,
+  handleFileChange,
+  matchedWorkspace,
+  handleInputChange,
+  handleOnClick,
 }) {
   const [propertys, setPropertys] = useState([]);
   const property = () => {
-    Properties.map((data) => {
-      setPropertys(data.metaproperties);
+    Properties?.map((data) => {
+      setPropertys(data?.metaproperties);
     });
   };
   useEffect(() => {
@@ -50,7 +51,12 @@ export default function FileUpload({
   }
   const fileSizeInBytes = selectedFile?.size;
   const formattedSize = formatFileSize(fileSizeInBytes);
-  const top100Films = propertys;
+
+  const metadata = matchedWorkspace?.map((data) => ({
+    label: data?.doctype,
+    value: data?.doctype,
+  }));
+
   return (
     <>
       <Backdrop sx={{ color: "#fff", zIndex: 1 }} open={open}>
@@ -60,7 +66,6 @@ export default function FileUpload({
             border: "1px solid black",
             display: "flex",
             flexDirection: "column",
-            width: "45%",
           }}
         >
           <Stack flexDirection="row" justifyContent="space-between">
@@ -72,19 +77,15 @@ export default function FileUpload({
             </a>
           </Stack>
           <Box>
-            <Autocomplete
-              fullWidth
-              freeSolo
-              disablePortal
-              size="small"
-              options={docListUpload}
-              getOptionLabel={(docListUpload) => docListUpload?.doctype_name} // Adjust this based on your API response structure
-              sx={{ width: 248, pb: 0.5 }}
-              renderInput={(params) => (
-                <TextField {...params} label="Select Doc Type" />
-              )}
-              onChange={(event, value) => handleOnClick(value)}
-            />
+            <Grid container columnSpacing={1} rowSpacing={1}>
+              <Grid item xs={12}>
+                <RSelect
+                  options={metadata}
+                  defaultValue="Please Select Doctype"
+                  onChange={handleOnClick}
+                />
+              </Grid>
+            </Grid>
             <Grid container columnSpacing={1} rowSpacing={1}>
               {Properties?.map((data) => (
                 <React.Fragment key={data.name}>
@@ -107,14 +108,17 @@ export default function FileUpload({
                         disablePortal
                         size="small"
                         id="combo-box-demo"
-                        options={top100Films}
+                        name={data.fieldname}
+                        options={data.metaproperties}
                         renderInput={(params) => (
                           <TextField
                             {...params}
-                            label="Properties"
+                            label={data.fieldname}
                             size="small"
                           />
                         )}
+                        value={formValues[data.fieldname] || ""}
+                        onChange={handleInputChange}
                       />
                     </Grid>
                   )}
@@ -123,7 +127,7 @@ export default function FileUpload({
             </Grid>
           </Box>
           <Box sx={{ mt: 1 }}>
-            <Typography variant="h6" sx={{ mb: 1 }} style={{ width: "170px" }}>
+            <Typography variant="h6" sx={{ mb: 1 }}>
               Upload Document
             </Typography>
             <Stack flexDirection="row">
@@ -131,25 +135,27 @@ export default function FileUpload({
                 <TextField
                   size="small"
                   label="File Desc"
-                  style={{ marginRight: "5px" }}
+                  style={{ width: "270px", marginRight: "5px" }}
                   onChange={fileDesc}
                 />
               </Grid>
               {selectedFile?.name?.length > 0 ? (
                 <span
                   style={{
-                    // border: "1px solid lightblue",
-                    // background: "lightblue",
-                    // fontWeight: "bold",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    padding: "0px 5px 0px 5px",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    maxWidth: "200px",
+                    background: "lightblue",
+                    padding: "8px 5px 0px 5px",
                     borderRadius: "5px",
                   }}
                 >
-                  Selected File: {selectedFile && selectedFile.name}(
-                  {formattedSize})
+                  {selectedFile && selectedFile.name}({formattedSize})
+                  {console.log(
+                    selectedFile && selectedFile.name,
+                    "selectedFile"
+                  )}
                 </span>
               ) : (
                 ""
@@ -166,26 +172,31 @@ export default function FileUpload({
               ""
             ) : (
               <Stack pt={1} sx={{ pt: 1.5 }} flexDirection="row">
-                <label htmlFor="file-upload" className="custom-label-input">
-                  Browse
-                </label>
-                <input
-                  id="file-upload"
-                  type="file"
-                  className="custom-input"
-                  onChange={handleFileChange}
-                />
-                <Button
-                  variant="contained"
-                  onClick={handleOkay}
-                  style={{
-                    marginLeft: "5px",
-                    height: "35px",
-                    outline: "none",
-                  }}
-                >
-                  Upload
-                </Button>
+                {selectedFile && selectedFile.name ? (
+                  <Button
+                    variant="contained"
+                    onClick={handleOkay}
+                    style={{
+                      marginLeft: "5px",
+                      height: "35px",
+                      outline: "none",
+                    }}
+                  >
+                    Upload
+                  </Button>
+                ) : (
+                  <>
+                    <label htmlFor="file-upload" className="custom-label-input">
+                      Browse
+                    </label>
+                    <input
+                      id="file-upload"
+                      type="file"
+                      className="custom-input"
+                      onChange={handleFileChange}
+                    />
+                  </>
+                )}
               </Stack>
             )}
             <Button

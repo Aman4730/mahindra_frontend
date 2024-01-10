@@ -275,20 +275,6 @@ const Menu = ({ sidebarToggle, mobileView }) => {
       .catch((error) => {});
   }, []);
 
-  // React.useMemo(() => {
-  //   if (isLogin?.my_workspace?.length) {
-  //     let newIsLoginData = [];
-  //     for (let i = 0; i < isLogin?.my_workspace.length; i++) {
-  //       for (let j = 0; j < workspacelist.length; j++) {
-  //         if (workspacelist[i]?.workspace_name == isLogin?.my_workspace[j]) {
-  //           newIsLoginData.push(workspacelist[i]);
-  //         }
-  //       }
-  //     }
-  //     setWorkspacelist(newIsLoginData);
-  //   }
-  // }, [workspacelist?.length]);
-
   const subMenu = workspacelist
     ?.map((data) => {
       if (isLogin?.my_workspace?.includes(data.workspace_name)) {
@@ -335,17 +321,6 @@ const Menu = ({ sidebarToggle, mobileView }) => {
     })
     .filter(Boolean);
 
-  // Check if the default teamspace is already included
-  const hasDefaultTeamSpace = isLogin?.teamspace?.includes("Default TeamSpace");
-  if (!hasDefaultTeamSpace) {
-    teamMenu.push({
-      icon: "folders-fill", // Replace with the actual icon for the default teamspace
-      text: "Incomming file",
-      active: false,
-      link: "/teamSpace",
-      id: "default-teamspace-id", // Replace with the appropriate ID for the default teamspace
-    });
-  }
   let loginData = {};
   const property = isLogin?.Permission?.map((data) => {
     loginData = data;
@@ -373,16 +348,6 @@ const Menu = ({ sidebarToggle, mobileView }) => {
       text: "Recycle bin",
       active: true,
       link: "/recyclebin",
-    });
-  }
-
-  // Conditionally add a menu item based on some condition
-  if (hasDefaultTeamSpace) {
-    teamSpaceMenu.push({
-      icon: "your-icon",
-      text: "Your Menu Item",
-      active: true,
-      link: "/your-link",
     });
   }
 

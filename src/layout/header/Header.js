@@ -38,7 +38,7 @@ const Header = ({ fixed, theme, className, setVisibility, ...props }) => {
               <Stack
                 style={{
                   fontSize: "24.5px",
-                  marginRight: "-200px",
+                  marginLeft: "170px",
                 }}
               >
                 <BlockHeadContent>
@@ -72,7 +72,7 @@ const Header = ({ fixed, theme, className, setVisibility, ...props }) => {
                   width: "100px",
                   height: "60px",
                 }}
-                src="/acmeLogo.jpeg"
+                src="/Image/acmeLogo.jpeg"
                 alt="logo-dark"
               ></img>
               {/* <img className="logo-light w-80 h-80" src={acmeLogo} alt="logo" /> */}

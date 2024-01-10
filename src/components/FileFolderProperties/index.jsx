@@ -96,7 +96,7 @@ export default function PropertiesModel({
                 }}
               >
                 {list?.map((data, index) => (
-                  <div>
+                  <div key={index}>
                     {data?.folder_name ? <p>{data?.folder_name} /</p> : ""}
                   </div>
                 ))}

@@ -1,19 +1,18 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
+import { Switch } from "@mui/material";
 import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
-import TableRow from "@mui/material/TableRow";
-import TableSortLabel from "@mui/material/TableSortLabel";
 import Paper from "@mui/material/Paper";
 import Tooltip from "@mui/material/Tooltip";
 import { visuallyHidden } from "@mui/utils";
-import EditIcon from "@mui/icons-material/Edit";
+import TableRow from "@mui/material/TableRow";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableHead from "@mui/material/TableHead";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Switch } from "@mui/material";
+import TableSortLabel from "@mui/material/TableSortLabel";
+import TableContainer from "@mui/material/TableContainer";
+import TablePagination from "@mui/material/TablePagination";
 
 function EnhancedTableHead(props) {
   const { order, orderBy, onRequestSort, headCells } = props;
@@ -55,7 +54,6 @@ export default function LogTable({
   rows,
   headCells,
   searchTerm,
-  onEditClick,
   onBlockClick,
   allfolderlist,
   handleClickOpen,
@@ -64,22 +62,12 @@ export default function LogTable({
   const [orderBy, setOrderBy] = React.useState("calories");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
-  };
-
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelected = rows.map((n) => n.name);
-      setSelected(newSelected);
-      return;
-    }
-    setSelected([]);
   };
 
   const handleClick = (event, name) => {
@@ -105,10 +93,9 @@ export default function LogTable({
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
+    setRowsPerPage(+event.target.value);
     setPage(0);
   };
-
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
   const emptyRows =
@@ -126,36 +113,15 @@ export default function LogTable({
               headCells={headCells}
             />
             <TableBody>
-              {(rowsPerPage > 0
-                ? allfolderlist.slice(
-                    page * rowsPerPage,
-                    page * rowsPerPage + rowsPerPage
-                  )
-                : allfolderlist
-              )
-                ?.filter((item) =>
+              {allfolderlist
+                .filter((item) =>
                   item.doctype_name
                     ?.toLowerCase()
                     .includes(searchTerm?.toLowerCase())
                 )
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   const isItemSelected = isSelected(row.name);
-                  const labelId = `enhanced-table-checkbox-${index}`;
-                  const originalTimestamp = row.createdAt;
-                  const originalDate = new Date(originalTimestamp);
-                  const options = {
-                    year: "numeric",
-                    month: "2-digit",
-                    day: "2-digit",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    hour12: false,
-                  };
-                  const convertedTimestamp = originalDate.toLocaleString(
-                    "en-US",
-                    options
-                  );
-
                   return (
                     <TableRow
                       hover
@@ -174,15 +140,15 @@ export default function LogTable({
                       <TableCell></TableCell>
                       <TableCell></TableCell>
                       <TableCell></TableCell>
-
                       <TableCell>
                         <Switch
-                          checked={row.user_status === "true"}
+                          checked={row.doc_status === "true"}
                           size="small"
                           onChange={(event) =>
                             onBlockClick(row.id, event.target.checked)
                           }
                         />
+
                         <Tooltip
                           title="Delete"
                           onClick={() => handleClickOpen(row.id)}

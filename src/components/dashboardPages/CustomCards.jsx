@@ -85,13 +85,13 @@ const CustomCards = ({ counts }) => {
                 border: `4px solid ${data.color}`,
               }}
             ></div>
-            <h4 style={{ margin: "5px 0px 0px 16px" }}>{data.counts}</h4>
+            <h4 style={{ margin: "5px 0px 0px 16px" }}>{data.counts || 0}</h4>
             <h6 style={{ margin: "5px 0px 0px 16px" }}>{data.name}</h6>
           </Stack>
           <i
             className={data.icon}
             style={{
-              padding: "20px 4px 0px 0px",
+              padding: "20px 5px 0px 0px",
               fontSize: "33px",
               color: "lightgrey",
             }}

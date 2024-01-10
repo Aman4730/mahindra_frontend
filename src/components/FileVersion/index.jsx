@@ -23,29 +23,28 @@ export default function FileVersion({
   handleOpenDeleteFile,
 }) {
   const allVersionData = versionTableData?.data?.all_version_file;
-  console.log(allVersionData, "allVersionData");
   function getFileIconByExtension(filename) {
     switch (filename) {
       case ("doc", "docx"):
-        return "docx.svg";
+        return "/Image/docx.svg";
       case "png":
-        return "jpeg.svg";
+        return "/Image/jpeg.svg";
       case "pdf":
-        return "pdf.svg";
+        return "/Image/pdf.svg";
       case "ppt":
-        return "pptx.svg";
+        return "/Image/pptx.svg";
       case "txt":
-        return "txt.svg";
+        return "/Image/txt.svg";
       case "video":
-        return "video.png";
+        return "/Image/video.png";
       case "xlsx":
-        return "xlsx.svg";
+        return "/Image/xlsx.svg";
       case "csv":
-        return "csv.svg";
+        return "/Image/csv.svg";
       case "zip":
-        return "zip.svg";
+        return "/Image/zip.svg";
       default:
-        return "default.svg";
+        return "/Image/default.svg";
     }
   }
   const history = useHistory();
@@ -64,11 +63,6 @@ export default function FileVersion({
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
         maxWidth="md"
-        // "xs": Extra small (e.g., suitable for a small form)
-        // "sm": Small
-        // "md": Medium (the default)
-        // "lg": Large
-        // "xl": Extra large
       >
         <TableContainer component={Paper}>
           <Table size="small" aria-label="a dense table">
@@ -83,7 +77,6 @@ export default function FileVersion({
             </TableHead>
             <TableBody>
               {allVersionData?.map((data) => {
-                console.log(data, "===========");
                 const originalTimestamp = data.updatedAt;
                 const originalDate = new Date(originalTimestamp);
                 const options = {
@@ -140,7 +133,7 @@ export default function FileVersion({
                           data?.file_name
                             ? getFileIconByExtension(data.file_type)
                             : data?.folder_name
-                            ? "/folder.png"
+                            ? "/Image/folder.png"
                             : ""
                         }
                         alt="File Icon"

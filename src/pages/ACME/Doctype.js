@@ -141,8 +141,7 @@ const Workspace = () => {
               description: "",
               message: "DocType Created Successfully.",
               style: {
-                marginTop: "43px",
-                height: "60px",
+                height: 60,
               },
             });
           }
@@ -163,26 +162,35 @@ const Workspace = () => {
       add_doctype(
         submittedData,
         (apiRes) => {
-          const code = 200;
-          if (code == 200) {
-            resetForm();
-            setModal({ edit: false }, { add: false });
-            getUsers();
+          if (apiRes.status == 201) {
+            notification["success"]({
+              placement: "top",
+              description: "",
+              message: "DocType Created Successfully.",
+              style: {
+                height: 60,
+              },
+            });
           }
-          setAuthToken(token);
+          resetForm();
+          onFormCancel();
         },
         (apiErr) => {}
       );
     }
   };
   const onBlockClick = (id, user_status) => {
+    console.log(id, user_status, "user_status");
     let statusCheck = {
       id,
       user_status,
     };
-    notification["warning"]({
-      placement: "topLeft",
+    notification["success"]({
+      placement: "topRight",
       description: "",
+      style: {
+        height: 60,
+      },
       message: user_status ? "Doctye Active" : "Doctye Inactive",
     });
 
@@ -213,8 +221,7 @@ const Workspace = () => {
             description: "",
             message: "Doctype Deleted Successfully.",
             style: {
-              marginTop: "43px",
-              height: "60px",
+              height: 60,
             },
           });
         }

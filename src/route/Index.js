@@ -127,6 +127,7 @@ import WorkFlow from "../pages/ACME/WorkFlow";
 import GlobalSearch from "../pages/ACME/GlobalSearch";
 import RecycleBin from "../pages/ACME/RecycleBin";
 import SystemInfo from "../pages/ACME/SystemInfo";
+import Logout from "../pages/ACME/Logout";
 const Pages = () => {
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
@@ -151,6 +152,7 @@ const Pages = () => {
       "/doctype",
       "/docmetadata",
       "/fileviewer",
+      "/systemInfo",
     ];
 
     endpointsToHide.forEach((endpoint) => {
@@ -359,6 +361,11 @@ const Pages = () => {
           exact
           path={`${process.env.PUBLIC_URL}/logs`}
           component={Logs}
+        ></Route>
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL}/logout`}
+          component={Logout}
         ></Route>
         <Route
           exact

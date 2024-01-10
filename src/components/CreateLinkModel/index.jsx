@@ -15,14 +15,18 @@ import {
   FormGroup,
   Grid,
   Stack,
+  Typography,
 } from "@mui/material";
 export default function CreateLinkModel({
   error,
   openLink,
+  moveData,
+  teamSpace,
   selectedDate,
   shareFormData,
   userDropdowns,
   checkboxValues,
+  accesscheckbox,
   setSelectedDate,
   handleShareData,
   handleLinkClose,
@@ -35,7 +39,6 @@ export default function CreateLinkModel({
       <Dialog open={openLink} onClose={handleLinkClose}>
         <DialogTitle>Generate Link</DialogTitle>
         <DialogContent>
-          {/* <DialogContentText p={1}>Folder/File Name:</DialogContentText> */}
           <Grid container columnSpacing={1} pt={1}>
             <Grid item xs={6}>
               <Autocomplete
@@ -53,28 +56,47 @@ export default function CreateLinkModel({
                 }
               />
             </Grid>
-            {shareFormData.Type == "User" ? (
-              <Grid item xs={6}>
-                <Autocomplete
-                  disablePortal
-                  size="small"
-                  name="userDropdowns"
-                  options={userDropdowns}
-                  getOptionLabel={(user) => user.email}
-                  renderInput={(params) => (
-                    <TextField {...params} label="Select an option" />
-                  )}
-                  value={shareFormData.userDropdowns || null}
-                  onChange={(e, newValue) =>
-                    handleShareData({
-                      target: { name: "userDropdowns", value: newValue },
-                    })
-                  }
-                />
-              </Grid>
+            {shareFormData.Type === "User" ? (
+              <>
+                <Grid item xs={6}>
+                  <Autocomplete
+                    disablePortal
+                    size="small"
+                    name="userDropdowns"
+                    options={userDropdowns}
+                    getOptionLabel={(user) => user.email}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Select an option" />
+                    )}
+                    value={shareFormData.userDropdowns || null}
+                    onChange={(e, newValue) =>
+                      handleShareData({
+                        target: { name: "userDropdowns", value: newValue },
+                      })
+                    }
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <Autocomplete
+                    disablePortal
+                    size="small"
+                    name="userDropdowns"
+                    options={teamSpace}
+                    getOptionLabel={(user) => user}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Workspace Name" />
+                    )}
+                    value={shareFormData.workspace_name || null}
+                    onChange={(e, newValue) =>
+                      handleShareData({
+                        target: { name: "workspace_name", value: newValue },
+                      })
+                    }
+                  />
+                </Grid>
+              </>
             ) : (
               <>
-                <Grid item xs={6}></Grid>
                 <Grid item xs={6}>
                   <TextField
                     fullWidth
@@ -131,95 +153,38 @@ export default function CreateLinkModel({
                 </Grid>
               </>
             )}
-
-            <FormGroup style={{ display: "flex", flexDirection: "row" }}>
-              <Grid item xs={3} sx={{ pl: 1, pt: 0.5 }}>
-                <FormGroup>
-                  <div className="form-control-wrap">
-                    <DatePicker
-                      name="Link_Expiry"
-                      dateFormat="dd/MM/yyyy"
-                      placeholderText="Link Expiry"
-                      selected={selectedDate}
-                      onChange={handleDateChange}
-                      className="form-control date-picker small-width"
+            <Grid item xs={6}>
+              <div className="form-control-wrap">
+                <DatePicker
+                  name="Link_Expiry"
+                  dateFormat="dd/MM/yyyy"
+                  placeholderText="Link Expiry"
+                  selected={selectedDate}
+                  onChange={handleDateChange}
+                  className="form-control date-picker small-width"
+                />
+              </div>
+            </Grid>
+            {accesscheckbox?.map((data) => (
+              <Grid item key={data.label}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      name={data.name}
+                      checked={checkboxValues[data.name]}
+                      onChange={handleCheckboxChange}
                     />
-                  </div>
-                </FormGroup>
+                  }
+                  label={
+                    <Typography variant="body2" style={{ fontSize: "15px" }}>
+                      {data.label}
+                    </Typography>
+                  }
+                  sx={{ pl: 0.4, mb: -4 }}
+                  style={data.style}
+                />
               </Grid>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    name="View"
-                    checked={checkboxValues.View}
-                    onChange={handleCheckboxChange}
-                  />
-                }
-                label="View"
-                sx={{ pl: 3 }}
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    name="Download"
-                    checked={checkboxValues.Download}
-                    onChange={handleCheckboxChange}
-                  />
-                }
-                label="Download"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    name="Upload"
-                    checked={checkboxValues.Upload}
-                    onChange={handleCheckboxChange}
-                  />
-                }
-                label="Upload"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    name="Print"
-                    checked={checkboxValues.Print}
-                    onChange={handleCheckboxChange}
-                  />
-                }
-                label="Print"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    name="create_folder"
-                    checked={checkboxValues.create_folder}
-                    onChange={handleCheckboxChange}
-                  />
-                }
-                label="Folder Create"
-                sx={{ pl: 1 }}
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    name="upload_folder"
-                    checked={checkboxValues.upload_folder}
-                    onChange={handleCheckboxChange}
-                  />
-                }
-                label="Folder Upload"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    name="upload_file"
-                    checked={checkboxValues.upload_file}
-                    onChange={handleCheckboxChange}
-                  />
-                }
-                label="File Upload"
-              />
-            </FormGroup>
+            ))}
           </Grid>
         </DialogContent>
         <DialogActions>

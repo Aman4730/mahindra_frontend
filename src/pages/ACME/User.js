@@ -278,6 +278,7 @@ const UserListRegularPage = () => {
   };
   // Function to handle the click event when the user clicks on the block/unblock button associated with a specific user
   const onBlockClick = (id, user_status) => {
+    console.log(user_status, "666666666666");
     let statusCheck = {
       id,
       user_status,
@@ -659,7 +660,7 @@ const UserListRegularPage = () => {
                       <RSelect
                         options={options}
                         name="user_type"
-                        defaultValue="Please Select Groups"
+                        defaultValue="User Type"
                         onChange={(e) =>
                           setFormData({
                             ...formData,

@@ -129,6 +129,7 @@ export default function LogTable({
                     .includes(searchTerm?.toLowerCase())
                 )
                 .map((row, index) => {
+                  console.log(row, "===");
                   const isItemSelected = isSelected(row.name);
                   const labelId = `enhanced-table-checkbox-${index}`;
                   return (
@@ -162,7 +163,7 @@ export default function LogTable({
                           >
                             <AdminPanelSettingsIcon
                               style={{ fontSize: "23px" }}
-                              onClick={() => onProperties(row?.doctype)}
+                              onClick={() => onProperties(row?.doctype, row.id)}
                             />
                           </li>
                           <li>

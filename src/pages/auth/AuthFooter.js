@@ -29,7 +29,7 @@ const AuthFooter = () => {
           }}
         >
           <div className="nk-block-content text-center text-lg-left">
-            <p className="text-soft">&copy; 2023 Acme. All Rights Reserved.</p>
+            <p className="text-soft">&copy; 2024 ACME. All Rights Reserved.</p>
           </div>
         </div>
         <Row className="g-3">

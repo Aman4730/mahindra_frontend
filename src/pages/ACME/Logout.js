@@ -2,7 +2,6 @@ import React, { useState, useContext } from "react";
 import PageContainer from "../../layout/page-container/PageContainer";
 import acmeLogo from "../../images/AcmeTrans.png";
 import Head from "../../layout/head/Head";
-import AuthFooter from "./AuthFooter";
 import {
   Block,
   BlockContent,
@@ -20,18 +19,16 @@ import { AuthContext } from "../../context/AuthContext";
 import { notification } from "antd";
 import { useHistory } from "react-router-dom";
 import { Stack } from "@mui/material";
-import { UserContext } from "../../context/UserContext";
 
-const ForgotPassword = () => {
-  // Destructure useContext variables
-  // const { forgetpass } = useContext(UserContext);
+const Logout = () => {
+  const { setAuthToken, loginWithOTP, Login } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
   const [passState, setPassState] = useState(false);
   const [errorVal, setError] = useState("");
   const [loginData, setLoginData] = useState([]);
   const [formData, setFormData] = useState({
     email: "",
-    emp_code: "",
+    password: "",
   });
   const handleInputChange = (e) => {
     setFormData({
@@ -42,7 +39,7 @@ const ForgotPassword = () => {
   const history = useHistory();
   const onFormSubmit = (formData) => {
     setLoading(true);
-    fetch(`${process.env.REACT_APP_API_URL_LOCAL}/forgetpasslink`, {
+    fetch(`${process.env.REACT_APP_API_URL_LOCAL}/login`, {
       method: "POST",
       body: JSON.stringify(formData),
       headers: {
@@ -53,31 +50,29 @@ const ForgotPassword = () => {
         return data.json();
       })
       .then((data) => {
-        notification["success"]({
-          placement: "'top",
-          description: "",
-          message: data.message,
-        });
+        if (data.success) {
+          setLoginData(data);
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("user", JSON.stringify(data));
+          history.push("/");
+        } else if (data.status == false) {
+          notification["error"]({
+            placement: "'bottomRight",
+            description: "",
+            message: "Your account has been disabled",
+          });
+        } else {
+          notification["error"]({
+            placement: "'bottomRight",
+            description: "",
+            message: "Invalid Credential",
+          });
+        }
       })
       .catch((error) => {
         console.log(error);
       });
   };
-  // const onFormSubmit = () => {
-  //   let data = {
-  //     emp_code: formData?.email,
-  //     email: formData?.emp_code,
-  //   };
-  //   forgetpass(
-  //     data,
-  //     (apiRes) => {
-  //       setAddProperties(apiRes.data);
-  //       getUsers();
-  //       setAuthToken(token);
-  //     },
-  //     (apiErr) => {}
-  //   );
-  // };
   const { errors, register, handleSubmit } = useForm();
   return (
     <React.Fragment>
@@ -97,7 +92,15 @@ const ForgotPassword = () => {
                   </Link>
                 </div>
                 <BlockTitle tag="h5" className="text-center">
-                  Reset Password - Acme DocHub
+                  ACME DocHub
+                </BlockTitle>
+                <BlockDes></BlockDes>
+              </BlockContent>
+              <BlockContent>
+                <BlockTitle tag="h5" className="text-center">
+                  Successfully Logged Out
+                  <br />
+                  You can now close the browser.
                 </BlockTitle>
                 <BlockDes></BlockDes>
               </BlockContent>
@@ -110,31 +113,10 @@ const ForgotPassword = () => {
               </div>
             )}
             <Form className="is-alter" onSubmit={handleSubmit(onFormSubmit)}>
-              <FormGroup>
+              {/* <FormGroup>
                 <div className="form-label-group">
                   <label className="form-label" htmlFor="default-01">
                     Login Id
-                  </label>
-                </div>
-                <div className="form-control-wrap">
-                  <input
-                    type="text"
-                    name="emp_code"
-                    value={formData.emp_code}
-                    onChange={handleInputChange}
-                    ref={register({ required: "This field is required" })}
-                    placeholder="Enter your registered emp_code"
-                    className="form-control-lg form-control"
-                  />
-                  {errors.email && (
-                    <span className="invalid">{errors.emp_code.message}</span>
-                  )}
-                </div>
-              </FormGroup>
-              <FormGroup>
-                <div className="form-label-group">
-                  <label className="form-label" htmlFor="default-01">
-                    Email Id
                   </label>
                 </div>
                 <div className="form-control-wrap">
@@ -151,31 +133,74 @@ const ForgotPassword = () => {
                     <span className="invalid">{errors.email.message}</span>
                   )}
                 </div>
-              </FormGroup>
-              <FormGroup>
-                <Button
+              </FormGroup> */}
+              {/* <FormGroup>
+                <div className="form-label-group">
+                  <label className="form-label" htmlFor="password">
+                    Password
+                  </label>
+                </div>
+                <div className="form-control-wrap">
+                  <a
+                    href="#password"
+                    onClick={(ev) => {
+                      ev.preventDefault();
+                      setPassState(!passState);
+                    }}
+                    className={`form-icon lg form-icon-right passcode-switch ${
+                      passState ? "is-hidden" : "is-shown"
+                    }`}
+                  >
+                    <Icon name="eye" className="passcode-icon icon-show"></Icon>
+
+                    <Icon
+                      name="eye-off"
+                      className="passcode-icon icon-hide"
+                    ></Icon>
+                  </a>
+                  <input
+                    type={passState ? "text" : "password"}
+                    id="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    ref={register({ required: "This field is required" })}
+                    placeholder="Enter your password"
+                    className={`form-control-lg form-control ${
+                      passState ? "is-hidden" : "is-shown"
+                    }`}
+                  />
+                  {errors.password && (
+                    <span className="invalid">{errors.password.message}</span>
+                  )}
+                </div>
+              </FormGroup> */}
+
+              {/* <FormGroup>
+                <p
                   size="lg"
                   className="btn-block"
                   type="submit"
                   color="primary"
+                  style={{ display: "flex", alignItems: "center" }}
                 >
-                  Send Reset Link
-                </Button>
-              </FormGroup>
+                  Successfully Logged Out.
+                  <pre>You can now close the browser.</pre>
+                </p>
+              </FormGroup> */}
               <div
-                className="form-note-s2"
+                className="form-note-s2 text-center "
                 style={{ display: "flex", justifyContent: "end" }}
               >
-                <Link to={`${process.env.PUBLIC_URL}/auth-login`}>
-                  <strong>Return to login</strong>
-                </Link>
+                {/* <Link to={`${process.env.PUBLIC_URL}/auth-reset`}>
+                  <strong>Forgot Password</strong>
+                </Link> */}
               </div>
             </Form>
           </PreviewCard>
         </Block>
-        <AuthFooter />
       </PageContainer>
     </React.Fragment>
   );
 };
-export default ForgotPassword;
+export default Logout;

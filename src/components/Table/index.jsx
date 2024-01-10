@@ -24,16 +24,15 @@ import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import SportsVolleyballRoundedIcon from "@mui/icons-material/SportsVolleyballRounded";
 function EnhancedTableHead(props) {
   const { order, orderBy, onRequestSort, headCells } = props;
-
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
   return (
     <TableHead>
       <TableRow>
-        {headCells.map((headCell) => (
+        {headCells.map((headCell, index) => (
           <TableCell
-            key={headCell.id}
+            key={index}
             align={headCell.numeric ? "right" : "left"}
             padding={"normal"}
             sortDirection={orderBy === headCell.id ? order : false}
@@ -123,28 +122,27 @@ export default function CommonTable({
   function getFileIconByExtension(filename) {
     switch (filename) {
       case ("doc", "docx"):
-        return "docx.svg";
+        return "/Image/docx.svg";
       case "png":
-        return "jpeg.svg";
+        return "/Image/jpeg.svg";
       case "pdf":
-        return "pdf.svg";
+        return "/Image/pdf.svg";
       case "ppt":
-        return "pptx.svg";
+        return "/Image/pptx.svg";
       case "txt":
-        return "txt.svg";
+        return "/Image/txt.svg";
       case "video":
-        return "video.png";
+        return "/Image/video.png";
       case "xlsx":
-        return "xlsx.svg";
+        return "/Image/xlsx.svg";
       case "csv":
-        return "csv.svg";
+        return "/Image/csv.svg";
       case "zip":
-        return "zip.svg";
+        return "/Image/zip.svg";
       default:
-        return "default.svg";
+        return "/Image/default.svg";
     }
   }
-  console.log(allfolderlist, "allfolderlist");
 
   return (
     <Box>
@@ -168,9 +166,7 @@ export default function CommonTable({
                     .includes(searchTerm?.toLowerCase())
                 )
                 .map((data, index) => {
-                  console.log(data, "====");
                   const isItemSelected = isSelected(data.name);
-                  const labelId = `enhanced-table-checkbox-${index}`;
                   const originalTimestamp = data.updatedAt;
                   const originalDate = new Date(originalTimestamp);
                   const options = {
@@ -185,7 +181,6 @@ export default function CommonTable({
                     "en-US",
                     options
                   );
-
                   function formatFileSize(sizeInBytes) {
                     if (sizeInBytes < 1024) {
                       return sizeInBytes + " B";
@@ -201,14 +196,13 @@ export default function CommonTable({
                   }
                   const fileSizeInBytes = data?.file_size || data?.folder_size;
                   const formattedSize = formatFileSize(fileSizeInBytes);
-
                   return (
                     <TableRow
                       hover
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={data.id}
+                      key={index}
                       selected={isItemSelected}
                       sx={{
                         cursor: "pointer",
@@ -230,7 +224,7 @@ export default function CommonTable({
                             data?.file_name
                               ? getFileIconByExtension(data.file_type)
                               : data?.folder_name
-                              ? "/folder.png"
+                              ? "/Image/folder.png"
                               : ""
                           }
                           alt="File Icon"
@@ -270,20 +264,28 @@ export default function CommonTable({
                           <Tooltip
                             title="View"
                             onClick={() => {
-                              navigate(
-                                data.id,
-                                data?.file_name,
-                                data.filemongo_id
-                              );
+                              if (data.file_type) {
+                                navigate(
+                                  data.id,
+                                  data?.file_name,
+                                  data.filemongo_id
+                                );
+                              } else {
+                                callApi(data);
+                              }
                             }}
                           >
                             <VisibilityIcon fontSize="small" sx={{ mr: 1 }} />
                           </Tooltip>
                           <Tooltip
                             title="Edit"
-                            onClick={
-                              data.file_size ? openFileUpload : openModal
-                            }
+                            onClick={() => {
+                              if (data.file_size) {
+                                openFileUpload(data);
+                              } else {
+                                openModal(data);
+                              }
+                            }}
                           >
                             <EditIcon sx={{ mr: 1 }} fontSize="small" />
                           </Tooltip>
@@ -300,15 +302,15 @@ export default function CommonTable({
                               }
                             }}
                           >
-                            <FileDownloadIcon fontSize="small" />
+                            <FileDownloadIcon fontSize="small" sx={{ mr: 1 }} />
                           </Tooltip>
                           <Tooltip
                             title="Move"
                             onClick={() => handleClickMove(data)}
                           >
                             <DriveFileMoveIcon
-                              sx={{ ml: 1, mr: 1 }}
                               fontSize="small"
+                              sx={{ mr: 1 }}
                             />
                           </Tooltip>
                           <Tooltip
@@ -331,21 +333,15 @@ export default function CommonTable({
                             title="Comments"
                             onClick={() => handleClickOpenCommets(data?.id)}
                           >
-                            <SmsIcon fontSize="small" />
+                            <SmsIcon fontSize="small" sx={{ mr: 1 }} />
                           </Tooltip>
                           <Tooltip
                             title="Properties"
                             onClick={() => handleClickOpenProperties(data)}
                           >
-                            <ArticleIcon
-                              sx={{ ml: 1, mr: 1 }}
-                              fontSize="small"
-                            />
+                            <ArticleIcon fontSize="small" sx={{ mr: 1 }} />
                           </Tooltip>
-                          <Tooltip
-                            title="Rights"
-                            style={{ marginRight: "35px" }}
-                          >
+                          <Tooltip title="Rights" sx={{ mr: 1 }}>
                             <AdminPanelSettingsIcon fontSize="small" />
                           </Tooltip>
                         </TableCell>
@@ -471,7 +467,10 @@ export default function CommonTable({
                               title="Rights"
                               style={{ marginRight: "35px" }}
                             >
-                              <AdminPanelSettingsIcon fontSize="small" />
+                              <AdminPanelSettingsIcon
+                                fontSize="small"
+                                sx={{ mr: 1 }}
+                              />
                             </Tooltip>
                           ) : (
                             ""

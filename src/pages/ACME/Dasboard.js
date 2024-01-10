@@ -20,11 +20,21 @@ const Dashboard = () => {
   const [quotadetail, setQuotadetail] = useState([]);
   const [userquota, setUserquota] = useState([]);
   const [extension, setExtension] = useState({});
+  // useEffect(() => {
+  //   getworkspace();
+  //   getExtension();
+  //   getFolderFile();
+  //   getQuotadetails();
+  // }, []);
   useEffect(() => {
+    const abortController = new AbortController();
     getworkspace();
     getExtension();
     getFolderFile();
     getQuotadetails();
+    return () => {
+      abortController.abort();
+    };
   }, []);
   //Card Data
   const getworkspace = () => {

@@ -102,7 +102,7 @@ const GuestLogin = () => {
                   <Link to={process.env.PUBLIC_URL + "/"} className="logo-link">
                     <img
                       className="logo-dark w-50"
-                      src="/acmeLogo.jpeg"
+                      src="/Image/acmeLogo.jpeg"
                       alt="logo-dark"
                     ></img>
                   </Link>

@@ -22,13 +22,12 @@ import RecyclebinTable from "../../components/Tables/RecyclebinTable";
 // RecycleBin component
 const RecycleBin = () => {
   // Get necessary functions and data from UserContext
-  const { getrecycle, restoreFiles, deleterestore } = useContext(UserContext);
+  const { getrecycle, restoreFiles, deleterestore, isLogin } =
+    useContext(UserContext);
   // State variables
   const [sm, updateSm] = useState(false);
-  const [deleteId, setDeleteId] = useState(false);
   const [restore, setRestore] = useState(false);
   const [totalUsers, setTotalUsers] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
   const [getRecycyleBin, setGetRecycleBin] = useState([]);
   const [searchTerm, setSearchTerm] = React.useState("");
   const [open, setOpen] = React.useState({
@@ -60,10 +59,6 @@ const RecycleBin = () => {
     getRecycle();
   }, [restore]);
 
-  useEffect(() => {
-    getRecycle();
-    setDeleteId(false);
-  }, [deleteId]);
   // Get Recycle Bin Data
   const getRecycle = () => {
     getrecycle(
@@ -76,15 +71,26 @@ const RecycleBin = () => {
       (apiErr) => {}
     );
   };
-
-  const onRestoreFiles = (id, file_type) => {
-    console.log(file_type, id, "pppp");
+  console.log(isLogin, "isLogin");
+  const onRestoreFiles = (row) => {
+    console.log(row, "pppppp");
     setRestore(true);
     let data;
-    if (file_type) {
-      data = { file_id: id };
+    if (row?.file_type) {
+      data = {
+        file_id: row?.id,
+        file_name: row?.file_name,
+        file_size: row?.file_size,
+        user_type: isLogin?.user_type,
+        workspace_name: row?.workspace_name,
+      };
     } else {
-      data = { folder_id: id };
+      data = {
+        folder_id: row?.id,
+        user_type: isLogin?.user_type,
+        folder_size: row?.folder_size,
+        workspace_name: row?.workspace_name,
+      };
     }
     restoreFiles(
       data,
@@ -95,10 +101,10 @@ const RecycleBin = () => {
             description: "",
             message: "Restore File Successfully.",
             style: {
-              marginTop: "43px",
-              height: "60px",
+              height: 60,
             },
           });
+          getRecycle();
         }
       },
       (apiErr) => {}
@@ -108,7 +114,6 @@ const RecycleBin = () => {
   const onDeleteClick = (id, file_type) => {
     console.log(id, file_type);
     handleClose();
-    setDeleteId(true);
     let data = {
       id: id,
       file: file_type,
@@ -123,12 +128,11 @@ const RecycleBin = () => {
             description: "",
             message: "Recycle Bin Deleted Successfully.",
             style: {
-              marginTop: "43px",
-              height: "60px",
+              height: 60,
             },
           });
+          getRecycle();
         }
-        setDeleteId(true);
       },
       (apiErr) => {}
     );

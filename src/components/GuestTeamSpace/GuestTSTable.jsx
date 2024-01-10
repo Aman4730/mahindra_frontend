@@ -118,25 +118,25 @@ export default function GuestTSTable({
   function getFileIconByExtension(filename) {
     switch (filename) {
       case ("doc", "docx"):
-        return "docx.svg";
+        return "/Image/docx.svg";
       case "png":
-        return "jpeg.svg";
+        return "/Image/jpeg.svg";
       case "pdf":
-        return "pdf.svg";
+        return "/Image/pdf.svg";
       case "ppt":
-        return "pptx.svg";
+        return "/Image/pptx.svg";
       case "txt":
-        return "txt.svg";
+        return "/Image/txt.svg";
       case "video":
-        return "video.png";
+        return "/Image/video.png";
       case "xlsx":
-        return "xlsx.svg";
+        return "/Image/xlsx.svg";
       case "csv":
-        return "csv.svg";
+        return "/Image/csv.svg";
       case "zip":
-        return "zip.svg";
+        return "/Image/zip.svg";
       default:
-        return "default.svg";
+        return "/Image/default.svg";
     }
   }
   console.log(allfolderlist, "allfolderlist");
@@ -224,7 +224,7 @@ export default function GuestTSTable({
                             data?.file_name
                               ? getFileIconByExtension(data.file_type)
                               : data?.folder_name
-                              ? "/folder.png"
+                              ? "/Image/folder.png"
                               : ""
                           }
                           alt="File Icon"

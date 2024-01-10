@@ -104,25 +104,25 @@ export default function RecyclebinTable({
   function getFileIconByExtension(filename) {
     switch (filename) {
       case ("doc", "docx"):
-        return "docx.svg";
+        return "/Image/docx.svg";
       case "png":
-        return "jpeg.svg";
+        return "/Image/jpeg.svg";
       case "pdf":
-        return "pdf.svg";
+        return "/Image/pdf.svg";
       case "ppt":
-        return "pptx.svg";
+        return "/Image/pptx.svg";
       case "txt":
-        return "txt.svg";
+        return "/Image/txt.svg";
       case "video":
-        return "video.png";
+        return "/Image/video.png";
       case "xlsx":
-        return "xlsx.svg";
+        return "/Image/xlsx.svg";
       case "csv":
-        return "csv.svg";
+        return "/Image/csv.svg";
       case "zip":
-        return "zip.svg";
+        return "/Image/zip.svg";
       default:
-        return "default.svg";
+        return "/Image/default.svg";
     }
   }
   const emptyRows =
@@ -140,104 +140,122 @@ export default function RecyclebinTable({
               headCells={headCells}
             />
             <TableBody>
-              {allfolderlist?.map((row, index) => {
-                console.log(row);
-                const isItemSelected = isSelected(row?.name);
-                const labelId = `enhanced-table-checkbox-${index}`;
-                const originalTimestamp = row.updatedAt;
-                const originalDate = new Date(originalTimestamp);
-                const options = {
-                  year: "numeric",
-                  month: "2-digit",
-                  day: "2-digit",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  hour12: false,
-                };
-                const convertedTimestamp = originalDate.toLocaleString(
-                  "en-US",
-                  options
-                );
+              {allfolderlist
+                .filter(
+                  (item) =>
+                    item?.file_name ||
+                    item?.folder_name
+                      ?.toLowerCase()
+                      .includes(searchTerm?.toLowerCase())
+                )
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row, index) => {
+                  const isItemSelected = isSelected(row?.name);
+                  const labelId = `enhanced-table-checkbox-${index}`;
+                  const originalTimestamp = row.updatedAt;
+                  const originalDate = new Date(originalTimestamp);
+                  const options = {
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: false,
+                  };
+                  const convertedTimestamp = originalDate.toLocaleString(
+                    "en-US",
+                    options
+                  );
 
-                function formatFileSize(sizeInBytes) {
-                  if (sizeInBytes < 1024) {
-                    return sizeInBytes + " B";
-                  } else if (sizeInBytes < 1024 * 1024) {
-                    return (sizeInBytes / 1024).toFixed(2) + " KB";
-                  } else if (sizeInBytes < 1024 * 1024 * 1024) {
-                    return (sizeInBytes / (1024 * 1024)).toFixed(2) + " MB";
-                  } else {
-                    return (
-                      (sizeInBytes / (1024 * 1024 * 1024)).toFixed(2) + " GB"
-                    );
+                  function formatFileSize(sizeInBytes) {
+                    if (sizeInBytes < 1024) {
+                      return sizeInBytes + " B";
+                    } else if (sizeInBytes < 1024 * 1024) {
+                      return (sizeInBytes / 1024).toFixed(2) + " KB";
+                    } else if (sizeInBytes < 1024 * 1024 * 1024) {
+                      return (sizeInBytes / (1024 * 1024)).toFixed(2) + " MB";
+                    } else {
+                      return (
+                        (sizeInBytes / (1024 * 1024 * 1024)).toFixed(2) + " GB"
+                      );
+                    }
                   }
-                }
-                const fileSizeInBytes = row?.file_size || row?.folder_size;
-                const formattedSize = formatFileSize(fileSizeInBytes);
-                return (
-                  <TableRow
-                    hover
-                    onClick={(event) => handleClick(event, row.name)}
-                    role="checkbox"
-                    aria-checked={isItemSelected}
-                    tabIndex={-1}
-                    key={index}
-                    selected={isItemSelected}
-                    sx={{ cursor: "pointer" }}
-                  >
-                    <TableCell
-                      // onClick={() => callApi(data)}
-                      className="tablefont"
-                      style={{
-                        fontSize: "13px",
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        maxWidth: "300px",
-                      }}
+                  const fileSizeInBytes = row?.file_size || row?.folder_size;
+                  const formattedSize = formatFileSize(fileSizeInBytes);
+                  return (
+                    <TableRow
+                      hover
+                      onClick={(event) => handleClick(event, row.name)}
+                      role="checkbox"
+                      aria-checked={isItemSelected}
+                      tabIndex={-1}
+                      key={index}
+                      selected={isItemSelected}
+                      sx={{ cursor: "pointer" }}
                     >
-                      <img
-                        src={
-                          row?.file_name
-                            ? getFileIconByExtension(row.file_type)
-                            : row?.folder_name
-                            ? "/folder.png"
-                            : ""
-                        }
-                        alt="File Icon"
-                        height="22px"
-                        style={{ marginRight: "5px", marginBottom: "2px" }}
-                      />
-                      {row?.file_name || row?.folder_name}
-                    </TableCell>
-                    <TableCell style={{ fontSize: "13px" }}>
-                      {convertedTimestamp}
-                    </TableCell>
-                    <TableCell
-                      component="th"
-                      id={labelId}
-                      scope="row"
-                      style={{ fontSize: "13px" }}
-                    >
-                      {formattedSize}
-                    </TableCell>
-                    <TableCell>
-                      <Tooltip
-                        title="Restore"
-                        onClick={() => onRestoreFiles(row.id, row?.file_type)}
+                      <TableCell
+                        // onClick={() => callApi(data)}
+                        className="tablefont"
+                        style={{
+                          fontSize: "13px",
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          maxWidth: "300px",
+                        }}
                       >
-                        <FastRewindIcon sx={{ mr: 1, ml: 2 }} />
-                      </Tooltip>
-                      <Tooltip
-                        title="Delete"
-                        onClick={() => handleClickOpen(row.id, row.file_type)}
+                        <img
+                          src={
+                            row?.file_name
+                              ? getFileIconByExtension(row.file_type)
+                              : row?.folder_name
+                              ? "/Image/folder.png"
+                              : ""
+                          }
+                          alt="File Icon"
+                          height="22px"
+                          style={{ marginRight: "5px", marginBottom: "2px" }}
+                        />
+                        {row?.file_name || row?.folder_name}
+                      </TableCell>
+                      <TableCell style={{ fontSize: "13px" }}>
+                        {convertedTimestamp}
+                      </TableCell>
+                      <TableCell
+                        component="th"
+                        id={labelId}
+                        scope="row"
+                        style={{ fontSize: "13px" }}
                       >
-                        <DeleteIcon fontSize="small" />
-                      </Tooltip>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
+                        {formattedSize}
+                      </TableCell>
+                      <TableCell>
+                        <Tooltip
+                          title="Restore"
+                          onClick={() =>
+                            onRestoreFiles({
+                              id: row?.id,
+                              user_type: row?.user_type,
+                              file_type: row?.file_type,
+                              folder_size: row?.folder_size,
+                              file_size: row?.file_size,
+                              file_name: row?.file_name,
+                              workspace_name: row?.workspace_name,
+                            })
+                          }
+                        >
+                          <FastRewindIcon sx={{ mr: 1, ml: 2 }} />
+                        </Tooltip>
+                        <Tooltip
+                          title="Delete"
+                          onClick={() => handleClickOpen(row.id, row.file_type)}
+                        >
+                          <DeleteIcon fontSize="small" />
+                        </Tooltip>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
               {emptyRows > 0 && (
                 <TableRow style={{ height: 53 * emptyRows }}>
                   <TableCell colSpan={6} />

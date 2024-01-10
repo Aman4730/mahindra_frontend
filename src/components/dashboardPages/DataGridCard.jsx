@@ -75,23 +75,23 @@ export default function DataGridCard({ tableData }) {
   function getFileIconByExtension(filename) {
     switch (filename) {
       case ("doc", "docx"):
-        return "docx.svg";
+        return "/Image/docx.svg";
       case "png":
-        return "jpeg.svg";
+        return "/Image/jpeg.svg";
       case "pdf":
-        return "pdf.svg";
+        return "/Image/pdf.svg";
       case "ppt":
-        return "pptx.svg";
+        return "/Image/pptx.svg";
       case "txt":
-        return "txt.svg";
+        return "/Image/txt.svg";
       case "video":
-        return "video.png";
+        return "/Image/video.png";
       case "xlsx":
-        return "xlsx.svg";
+        return "/Image/xlsx.svg";
       case "csv":
-        return "csv.svg";
+        return "/Image/csv.svg";
       case "zip":
-        return "zip.svg";
+        return "/Image/zip.svg";
       default:
         return "default.svg";
     }
@@ -106,7 +106,7 @@ export default function DataGridCard({ tableData }) {
         <TableContainer
           style={{
             height: "260px",
-            width: "66vw",
+            width: "64.9vw",
             borderRadius: "10px",
           }}
         >
@@ -119,7 +119,6 @@ export default function DataGridCard({ tableData }) {
             <TableBody>
               {tableData?.map((data, index) => {
                 const isItemSelected = isSelected(data.name);
-                const labelId = `enhanced-table-checkbox-${index}`;
                 const options = {
                   year: "numeric",
                   month: "2-digit",
@@ -130,12 +129,6 @@ export default function DataGridCard({ tableData }) {
                 };
                 const updateAt = new Date(data.updatedAt);
                 const updateAtdate = updateAt.toLocaleTimeString(
-                  "en-US",
-                  options
-                );
-
-                const createdAt = new Date(data.createdAt);
-                const createdAted = createdAt.toLocaleTimeString(
                   "en-US",
                   options
                 );
@@ -157,14 +150,14 @@ export default function DataGridCard({ tableData }) {
                 const formattedSize = formatFileSize(fileSizeInBytes);
                 return (
                   <TableRow
-                    key={data.id}
+                    key={index}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
                     selected={isItemSelected}
                     sx={{
                       cursor: "pointer",
-                      backgroundColor: isEvenRow ? "#F4F6F6 " : "transparent", // Apply grey background to even rows
+                      backgroundColor: isEvenRow ? "#F4F6F6 " : "transparent",
                     }}
                   >
                     <TableCell
@@ -175,7 +168,7 @@ export default function DataGridCard({ tableData }) {
                         overflow: "hidden",
                         textOverflow: "ellipsis",
                         maxWidth: "200px",
-                        transition: "background-color 0.3s ease", // Add transition for hover effect
+                        transition: "background-color 0.3s ease",
                       }}
                     >
                       <img
@@ -183,13 +176,15 @@ export default function DataGridCard({ tableData }) {
                           data?.file_name
                             ? getFileIconByExtension(data.file_type)
                             : data?.folder_name
-                            ? "/folder.png"
+                            ? "/Image/folder.png"
                             : ""
                         }
                         alt="File Icon"
                         height="22px"
                         style={{ marginRight: "10px", marginBottom: "2px" }}
                       />
+                      {/* <svg href="/Image/docx.svg"></svg> */}
+
                       {data?.file_name || data?.folder_name}
                     </TableCell>
 
@@ -203,13 +198,17 @@ export default function DataGridCard({ tableData }) {
                   </TableRow>
                 );
               })}
-              {emptyRows > 0 && (
+              {tableData.length > 0 ? (
+                ""
+              ) : (
                 <TableRow
                   style={{
-                    height: 53 * emptyRows,
+                    height: 53,
                   }}
                 >
-                  <TableCell colSpan={6} />
+                  <TableCell colSpan={5} align="center">
+                    No data available
+                  </TableCell>
                 </TableRow>
               )}
             </TableBody>

@@ -51,7 +51,6 @@ const Login = () => {
         return data.json();
       })
       .then((data) => {
-        console.log(data, "login");
         if (data.success) {
           setLoginData(data);
           localStorage.setItem("token", data.token);
@@ -88,13 +87,13 @@ const Login = () => {
                   <Link to={process.env.PUBLIC_URL + "/"} className="logo-link">
                     <img
                       className="logo-dark w-50"
-                      src="/acmeLogo.jpeg"
+                      src="/Image/acmeLogo.jpeg"
                       alt="logo-dark"
                     ></img>
                   </Link>
                 </div>
                 <BlockTitle tag="h5" className="text-center">
-                  Sign In - Acme DocHub
+                  Sign In - ACME DocHub
                 </BlockTitle>
                 <BlockDes></BlockDes>
               </BlockContent>

@@ -35,11 +35,12 @@ import WorkFlowTable from "../../components/Tables/WorkFlowTable";
 const WorkFlow = () => {
   const {
     contextData,
-    getpolicy,
     userDropdownU,
-    add_Policies,
+    add_createworkflow,
+    getworkflow,
     deletepolicy,
     getWorkspace,
+    deleteworkflow,
   } = useContext(UserContext);
   const [sm, updateSm] = useState(false);
   const [editId, setEditedId] = useState();
@@ -56,44 +57,18 @@ const WorkFlow = () => {
     edit: false,
     add: false,
   });
-  const [formData, setFormData] = useState({
-    group_name: "",
-    group_admin: "",
-    selected_user: "",
-  });
+
   const [addPolicies, setAddPolicies] = useState({
     policy_name: "",
+    group_admin: "",
+    workspace_name: "",
     selected_user: [],
-    selected_group: [],
-    policy_type: "",
-    minimum_characters: "",
-    minimum_numeric: "",
-    minimum_alphabet: "",
-    minimum_special: "",
-    incorrect_password: "",
-    // file_extension: "",
-    minimum_days: "",
-    maximum_days: "",
-    subject: "",
-    message: "",
-    minimum_upload: "",
-    minimum_download: "",
   });
   const [checkboxValues, setCheckboxValues] = useState({
-    view: false,
-    enable: false,
-    share: false,
-    rename: false,
-    upload_folder: false,
-    create_folder: false,
-    upload_file: false,
-    delete: false,
-    download: false,
-    move: false,
-    rights: false,
-    comment: false,
-    properties: false,
+    l1: false,
+    l2: false,
   });
+
   const handleCheckboxChange = (event) => {
     const { name, checked } = event.target;
     setCheckboxValues((prevValues) => ({
@@ -101,22 +76,12 @@ const WorkFlow = () => {
       [name]: checked,
     }));
   };
-  const handleShareData = (e) => {
-    const { name, value } = e.target;
-    setAddPolicies((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+
   const [open, setOpen] = React.useState({
     status: false,
     data: "",
   });
-  const handleClose = () => {
-    resetForm();
-    setEditedId(0);
-    setOpen({ status: false });
-  };
+
   const [deleteModal, setDeleteModal] = React.useState({
     status: false,
     data: "",
@@ -144,10 +109,8 @@ const WorkFlow = () => {
   useEffect(() => {
     getRolesDropdown();
     getTableData();
-  }, [currentPage]);
-  useEffect(() => {
-    getTableData();
-  }, [addPolicies]);
+  }, []);
+
   const getUserRselect = () => {
     userDropdownU(
       {},
@@ -190,18 +153,11 @@ const WorkFlow = () => {
   };
   const [tableDropdown, setTableDropdown] = useState([]);
   const getTableData = () => {
-    getpolicy(
+    getworkflow(
       {},
       (apiRes) => {
-        const data = apiRes.data.data2;
-        setTableDropdown(data);
-        setTotalUsers(apiRes.data.data2.length);
-        // setGroupsDropdown(
-        //   data.groups.map((gro) => ({
-        //     label: gro.group_name,
-        //     value: gro.id,
-        //   }))
-        // );
+        setTableDropdown(apiRes?.data?.allWorkFlow);
+        setTotalUsers(apiRes?.data?.allWorkFlow?.length);
       },
       (apiErr) => {}
     );
@@ -213,21 +169,9 @@ const WorkFlow = () => {
   const resetForm = () => {
     setAddPolicies({
       policy_name: "",
+      group_admin: "",
       selected_user: [],
-      selected_group: [],
-      policy_type: "",
-      minimum_characters: "",
-      minimum_numeric: "",
-      minimum_alphabet: "",
-      minimum_special: "",
-      incorrect_password: "",
-      // file_extension: "",
-      minimum_days: "",
-      maximum_days: "",
-      subject: "",
-      message: "",
-      minimum_upload: "",
-      minimum_download: "",
+      workspace_name: "",
     });
     setEditedId(0);
   };
@@ -236,185 +180,152 @@ const WorkFlow = () => {
     setModal({ edit: false, add: false });
     resetForm();
   };
+  const onFormClose = () => {
+    resetForm();
+    setModal({ edit: false }, { add: false });
+  };
   // submit function to add a new item
   const onFormSubmit = () => {
     if (editId) {
       let submittedData = {
         id: editId,
         policy_name: addPolicies.policy_name,
-        selected_user: addPolicies.selected_user,
-        selected_group: addPolicies.selected_group,
-        policy_type: addPolicies.policy_type,
-        minimum_characters: addPolicies.minimum_characters,
-        minimum_numeric: addPolicies.minimum_numeric,
-        minimum_alphabet: addPolicies.minimum_alphabet,
-        minimum_special: addPolicies.minimum_special,
-        incorrect_password: addPolicies.incorrect_password,
-        file_extension: todos,
-        minimum_days: addPolicies.minimum_days,
-        maximum_days: addPolicies.maximum_days,
-        subject: addPolicies.subject,
-        message: addPolicies.message,
-        minimum_upload: addPolicies.minimum_upload,
-        minimum_download: addPolicies.minimum_download,
-        view: checkboxValues.view,
-        enable: checkboxValues.enable,
-        share: checkboxValues.share,
-        rename: checkboxValues.rename,
-        upload_folder: checkboxValues.upload_folder,
-        create_folder: checkboxValues.create_folder,
-        upload_file: checkboxValues.upload_file,
-        delete: checkboxValues.delete,
-        download: checkboxValues.download,
-        move: checkboxValues.move,
-        rights: checkboxValues.rights,
-        comment: checkboxValues.comment,
-        properties: checkboxValues.properties,
+        user_email: addPolicies.selected_user,
+        group_admin: addPolicies.group_admin,
+        workspace_name: addPolicies.workspace_name,
+        l_1: checkboxValues.l1,
+        l_2: checkboxValues.l2,
       };
-      notification["success"]({
-        placement: "top",
-        description: "",
-        message: "Edit Policy Successfully...",
-        style: {
-          marginTop: "43px",
-          height: "60px",
-        },
-      });
-      add_Policies(
+      add_createworkflow(
         submittedData,
         (apiRes) => {
-          const code = 200;
-          if (code == 200) {
-            resetForm();
-            // setModal({ edit: false }, { add: false });
-            setOpen({ ...open, status: false });
+          console.log(apiRes, "====");
+          if (apiRes.status === 200) {
+            notification["success"]({
+              placement: "top",
+              description: "",
+              message: apiRes.data.message,
+              style: {
+                height: 60,
+              },
+            });
+            onFormClose();
+          } else if (apiRes.status === 400) {
+            notification["success"]({
+              placement: "top",
+              description: "",
+              message: apiRes.data.message,
+              style: {
+                height: 60,
+              },
+            });
           }
-          setAuthToken(token);
         },
-        (apiErr) => {}
+        (apiErr) => {
+          if (apiErr.response.status === 400) {
+            notification["warning"]({
+              placement: "top",
+              description: "",
+              message: apiErr.response.data.message,
+              style: {
+                height: 60,
+              },
+            });
+            onFormClose();
+          }
+        }
       );
     } else {
       let submittedData = {
         policy_name: addPolicies.policy_name,
-        selected_user: addPolicies.selected_user,
-        selected_group: addPolicies.selected_group,
-        policy_type: addPolicies.policy_type,
-        minimum_characters: addPolicies.minimum_characters,
-        minimum_numeric: addPolicies.minimum_numeric,
-        minimum_alphabet: addPolicies.minimum_alphabet,
-        minimum_special: addPolicies.minimum_special,
-        incorrect_password: addPolicies.incorrect_password,
-        file_extension: todos,
-        minimum_days: addPolicies.minimum_days,
-        maximum_days: addPolicies.maximum_days,
-        subject: addPolicies.subject,
-        message: addPolicies.message,
-        minimum_upload: addPolicies.minimum_upload,
-        minimum_download: addPolicies.minimum_download,
-        view: checkboxValues.view,
-        share: checkboxValues.share,
-        rename: checkboxValues.rename,
-        enable: checkboxValues.enable,
-        upload_folder: checkboxValues.upload_folder,
-        create_folder: checkboxValues.create_folder,
-        upload_file: checkboxValues.upload_file,
-        delete: checkboxValues.delete,
-        download: checkboxValues.download,
-        move: checkboxValues.move,
-        rights: checkboxValues.rights,
-        comment: checkboxValues.comment,
-        properties: checkboxValues.properties,
+        user_email: addPolicies.selected_user,
+        group_admin: addPolicies.group_admin,
+        workspace_name: addPolicies.workspace_name,
+        l_1: checkboxValues.l1,
+        l_2: checkboxValues.l2,
       };
-      notification["success"]({
-        placement: "top",
-        description: "",
-        message: "Group Created Successfully...",
-        style: {
-          marginTop: "43px",
-          height: "60px",
-        },
-      });
-      add_Policies(
+
+      add_createworkflow(
         submittedData,
         (apiRes) => {
-          const code = 200;
-          if (code == 200) {
-            resetForm();
-            setOpen({ ...open, status: false });
-            getUsers();
+          if (apiRes.status === 201) {
+            notification["success"]({
+              placement: "top",
+              description: "",
+              message: apiRes.data.message,
+              style: {
+                height: 60,
+              },
+            });
+            onFormClose();
           }
-          setAuthToken(token);
         },
-        (apiErr) => {}
+        (apiErr) => {
+          if (apiErr.response.status === 400) {
+            notification["warning"]({
+              placement: "top",
+              description: "",
+              message: apiErr.response.data.message,
+              style: {
+                height: 60,
+              },
+            });
+            onFormClose();
+          }
+        }
       );
     }
   };
 
   const onEditClick = (id) => {
+    setModal({ ...open, add: true });
     tableDropdown.map((item) => {
+      console.log(item, "item==");
       if (item.id == id) {
         setAddPolicies({
           id: id,
           policy_name: item.policy_name,
-          policy_type: item.policy_type,
-          selected_user: item.selected_users,
-          selected_group: item.selected_group,
-          minimum_characters: item.minimum_character,
-          minimum_numeric: item.minimum_numeric,
-          minimum_alphabet: item.minimum_Alphabets,
-          minimum_special: item.minimum_special_character,
-          incorrect_password: item.inncorrect_password_attend,
-          file_extension: todos,
-          minimum_days: item.minimum_maximum_days[0],
-          maximum_days: item.minimum_maximum_days[1],
-          subject: item.subject,
-          message: item.message,
-          minimum_upload: item.Bandwidth_min_max[0],
-          minimum_download: item.Bandwidth_min_max[1],
-          view: item.view,
-          share: item.share,
-          rename: item.rename,
-          upload_folder: item.upload_folder,
-          enable: item.enable,
-          create_folder: item.create_folder,
-          upload_file: item.upload_file,
-          delete: item.delete,
-          download: item.download,
-          move: item.move,
-          rights: item.rights,
-          comment: item.comment,
-          properties: item.properties,
+          user_email: item.selected_user,
+          group_admin: item.group_admin,
+          workspace_name: item.workspace_name,
+          l_1: item.l1,
+          l_2: item.l2,
         });
-        setOpen({ ...open, status: true });
-        // setModal({ edit: false, add: true });
         setEditedId(id);
       }
     });
   };
   const onDeleteClick = (id) => {
-    handleCloseDelete();
-    notification["success"]({
-      placement: "top",
-      description: "",
-      message: "WorkFlow Deleted Successfully...",
-      style: {
-        marginTop: "43px",
-        height: "60px",
-      },
-    });
-    setDeleteId(true);
     let deleteId = { id: id };
-    deletepolicy(
+    deleteworkflow(
       deleteId,
       (apiRes) => {
-        const code = 200;
-        if (code == 200) {
-          resetForm();
-          setModal({ edit: false }, { add: false });
+        if (apiRes.status === 200) {
+          notification["success"]({
+            placement: "top",
+            description: "",
+            message: apiRes.data.message,
+            style: {
+              height: 60,
+            },
+          });
+          getTableData();
+          handleCloseDelete();
         }
-        setAuthToken(token);
       },
-      (apiErr) => {}
+      (apiErr) => {
+        if (apiErr.response.status === 500) {
+          notification["error"]({
+            placement: "top",
+            description: "",
+            message: apiErr.response.data.message,
+            style: {
+              height: 60,
+            },
+          });
+          handleCloseDelete();
+        }
+      }
     );
   };
   const tableHeader = [
@@ -424,13 +335,6 @@ const WorkFlow = () => {
       disablePadding: true,
       label: "Policy Name",
     },
-    {
-      id: "Policy Type",
-      numeric: false,
-      disablePadding: true,
-      label: "Policy Type",
-    },
-
     {
       id: "User Group",
       numeric: false,
@@ -475,8 +379,6 @@ const WorkFlow = () => {
   const access = [
     { label: "L1", name: "l1" },
     { label: "L2", name: "l2" },
-    { label: "L3", name: "l3" },
-    { label: "L4", name: "l4" },
   ];
   const { errors, register, handleSubmit, watch, triggerValidation } =
     useForm();
@@ -565,7 +467,7 @@ const WorkFlow = () => {
                 <Form
                   className="row gy-2 gx-2"
                   noValidate
-                  // onSubmit={handleSubmit(onFormSubmit)}
+                  onSubmit={handleSubmit(onFormSubmit)}
                 >
                   <Col md="6">
                     <FormGroup>
@@ -573,20 +475,20 @@ const WorkFlow = () => {
                         className="form-control"
                         type="text"
                         size="small"
-                        name="policys_name"
-                        defaultValue={formData.group_name}
+                        name="policy_name"
+                        defaultValue={addPolicies.policy_name}
                         onChange={(e) =>
-                          setFormData({
-                            ...formData,
+                          setAddPolicies({
+                            ...addPolicies,
                             [e.target.name]: e.target.value,
                           })
                         }
                         label="Policys Name"
                         ref={register({ required: "This field is required" })}
                       />
-                      {errors.group_name && (
+                      {errors.policy_name && (
                         <span className="invalid">
-                          {errors.group_name.message}
+                          {errors.policy_name.message}
                         </span>
                       )}
                     </FormGroup>
@@ -597,10 +499,20 @@ const WorkFlow = () => {
                       disablePortal
                       size="small"
                       id="Authentication"
+                      name="workspace_name"
                       options={userDropdown}
+                      defaultValue={addPolicies.workspace_name}
                       renderInput={(params) => (
                         <TextField {...params} label="WorkSpace Name" />
                       )}
+                      onChange={(event, selectedOption) => {
+                        setAddPolicies({
+                          ...addPolicies,
+                          workspace_name: selectedOption
+                            ? selectedOption.label
+                            : "", // Assuming you want to store the label in the state
+                        });
+                      }}
                     />
                   </Col>
                   <Col md="6">
@@ -609,13 +521,13 @@ const WorkFlow = () => {
                         size="small"
                         className="form-control"
                         name="group_admin"
-                        defaultValue={formData.group_admin}
+                        defaultValue={addPolicies.group_admin}
                         ref={register({ required: "This field is required" })}
                         minLength={10}
                         maxLength={10}
                         onChange={(e) =>
-                          setFormData({
-                            ...formData,
+                          setAddPolicies({
+                            ...addPolicies,
                             [e.target.name]: e.target.value,
                           })
                         }
@@ -633,15 +545,18 @@ const WorkFlow = () => {
                     <FormGroup>
                       <RSelect
                         options={userDropdowns}
-                        name="add_group"
-                        defaultValue="Please Select Groups"
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            selected_user: e.label,
-                            [e.label]: e.value,
-                          })
-                        }
+                        name="selected_user"
+                        defaultValue="Please Select User"
+                        isMulti // Assuming this prop makes RSelect support multiple selections
+                        onChange={(selectedOptions) => {
+                          // Assuming selectedOptions is an array of selected options
+                          setAddPolicies({
+                            ...addPolicies,
+                            selected_user: selectedOptions.map(
+                              (option) => option.label
+                            ),
+                          });
+                        }}
                         ref={register({ required: "This field is required" })}
                       />
                       {errors.selected_user && (
@@ -651,6 +566,7 @@ const WorkFlow = () => {
                       )}
                     </FormGroup>
                   </Col>
+
                   <Stack>
                     <Grid item xs={10} sx={{ mb: -2 }}>
                       <DialogTitle sx={{ ml: -3, mt: -2 }} fontSize="14px">
@@ -665,7 +581,7 @@ const WorkFlow = () => {
                               control={
                                 <Checkbox
                                   name={data.name}
-                                  checked={checkboxValues[data.name]}
+                                  checked={checkboxValues[data.name] || false}
                                   onChange={handleCheckboxChange}
                                 />
                               }

@@ -203,8 +203,7 @@ const TeamSpace = () => {
           description: "",
           message: "Delete Successfully...",
           style: {
-            marginTop: "45px",
-            height: "60px",
+            height: 60,
           },
         });
         setDeleteId(true);
@@ -246,14 +245,14 @@ const TeamSpace = () => {
       levels: currentFolderData.levels,
       parent_id: currentFolderData.parent_id,
       folder_id: currentFolderData.id,
+      policies_id: isLogin?.user_type == "Admin" ? "" : PermissionPolicy[0]?.id,
     };
     notification["success"]({
       placement: "top",
       description: "",
       message: "Folder Created Successfully...",
       style: {
-        marginTop: "45px",
-        height: "60px",
+        height: 60,
       },
     });
     addcreatefolder(
@@ -326,9 +325,10 @@ const TeamSpace = () => {
       formData.append("file", file);
       formData.append("data", JSON.stringify(data));
       const quary = [[file.size], [workSpaceData.workspace_name]];
+      const file_type = file.name.split(".")[1];
 
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL_LOCAL}/uploadcreate?q=${quary}`,
+        `${process.env.REACT_APP_API_URL_LOCAL}/uploadcreate?q=${quary}&fileExtension=${file_type}`,
         formData,
         {
           headers: {
@@ -340,29 +340,15 @@ const TeamSpace = () => {
       setFileName(response.data);
       resetFileForm();
       setFileUpload(false);
-      const notificationStyle = {
-        marginTop: "45px",
-      };
-
-      const notificationOptions = {
+      console.log(response, "response");
+      notification["success"]({
         placement: "top",
-        description: "", // You can add a description here if needed
-        style: notificationStyle,
-      };
-
-      if (response.message === "File Upload Successfully") {
-        notification["error"]({
-          ...notificationOptions,
-          message: response.data.message,
-          width: response.data.message.length * 10 + "px", // Adjust the factor to control width
-        });
-      } else {
-        notification["success"]({
-          ...notificationOptions,
-          message: response.data.message,
-          width: response.data.message.length * 10 + "px", // Adjust the factor to control width
-        });
-      }
+        description: "",
+        message: response.data.message,
+        style: {
+          height: 60,
+        },
+      });
     } catch (error) {
       console.error("Error uploading file:", error);
       // Show an error notification if necessary
@@ -385,7 +371,7 @@ const TeamSpace = () => {
           description: response.data.message,
           // message: response.data.message,
           style: {
-            marginTop: "45px",
+            height: 60,
           },
         });
       })
@@ -546,8 +532,7 @@ const TeamSpace = () => {
           description: "",
           message: "Link Shared Successfully...",
           style: {
-            marginTop: "45px",
-            height: "60px",
+            height: 60,
           },
         });
       },
@@ -559,8 +544,7 @@ const TeamSpace = () => {
           description: "An error occurred while sharing the link.",
           message: "Error",
           style: {
-            marginTop: "45px",
-            height: "60px",
+            height: 60,
           },
         });
       }
