@@ -73,8 +73,8 @@ function FileFolderComments({
           item
           xs={12}
           style={{
-            overflowY: "auto", // Enable vertical scrolling
-            maxHeight: "195px", // Set a maximum height for the card
+            overflowY: "auto",
+            maxHeight: "195px",
           }}
         >
           {notes?.map((ele, index) => {

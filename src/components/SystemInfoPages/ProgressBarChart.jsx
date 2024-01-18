@@ -95,7 +95,6 @@ const ProgressBarchat = ({ system_Info }) => {
       sx={{
         ml: 2,
         mr: 2,
-        mb: 1.1,
         overflowY: "auto", // Enable vertical scrolling
         maxHeight: "180px", // Set a maximum height for the card
       }}

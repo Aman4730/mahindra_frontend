@@ -29,6 +29,7 @@ import ThankyouPage from "./pages/ACME/ThankyouPage";
 import GuestLogin from "./pages/auth/GuestLogin";
 import { createTheme } from "@mui/material/styles";
 import { decryptData, encryptData } from "./components/hash/Hash";
+import Logout from "./pages/ACME/Logout";
 const darkTheme = createTheme({
   palette: {
     mode: "dark",
@@ -67,6 +68,15 @@ const App = () => {
         render={(props) => (
           <AuthContextProvider>
             <Login />
+          </AuthContextProvider>
+        )}
+      ></Route>
+      <Route
+        exact
+        path={`${process.env.PUBLIC_URL}/logout`}
+        render={(props) => (
+          <AuthContextProvider>
+            <Logout />
           </AuthContextProvider>
         )}
       ></Route>

@@ -1,51 +1,19 @@
 import React, { useState, useContext, useEffect } from "react";
-import Content from "../../layout/content/Content";
-import Head from "../../layout/head/Head";
-import {
-  BlockBetween,
-  BlockHead,
-  BlockHeadContent,
-} from "../../../src/components/Component";
-import "react-datepicker/dist/react-datepicker.css";
-import { Stack, Typography } from "@mui/material";
-import SmtpTable from "../../components/Tables/SmtpTable";
-import { UserContext } from "../../context/UserContext";
 import { notification } from "antd";
+import Head from "../../layout/head/Head";
+import { Stack, Typography } from "@mui/material";
+import Content from "../../layout/content/Content";
+import "react-datepicker/dist/react-datepicker.css";
+import SmtpForm from "../../components/Tables/SmtpForm";
+import { UserContext } from "../../context/UserContext";
+import SmtpMainTable from "../../components/Tables/SmtpMainTable";
 
 const Smtp = () => {
   const { createsmtp, getsmtp, addtestemail, editsmtp } =
     useContext(UserContext);
+  const [getSmpt, setGetSmpt] = useState([]);
   const [smptdata, setSmptdata] = useState([]);
-  useEffect(() => {
-    getsmptdata();
-  }, []);
-
-  const getsmptdata = () => {
-    getsmtp(
-      {},
-      (apiRes) => {
-        const apiData = apiRes.data.data[0];
-        setSmptdata(apiData);
-
-        // Update form data with API response
-        setFormData((prevFormData) => ({
-          ...prevFormData,
-          User_Name: apiData.username,
-          password: apiData.password,
-          Server_IP: apiData.host_serverip,
-          Server_Port: apiData.port,
-          From_Address: apiData.from_address,
-          From_Name: apiData.from_name,
-          Authentication: apiData.authentication,
-          Security: apiData.security,
-        }));
-      },
-      (apiErr) => {
-        console.log("====> api get", apiErr);
-      }
-    );
-  };
-
+  const [editId, setEditedId] = useState(0);
   // SMTP Details Form------
   const [formData, setFormData] = useState({
     User_Name: "",
@@ -57,6 +25,43 @@ const Smtp = () => {
     Authentication: "",
     Security: "",
   });
+  useEffect(() => {
+    getsmptdata();
+  }, []);
+
+  const getsmptdata = () => {
+    getsmtp(
+      {},
+      (apiRes) => {
+        setGetSmpt(apiRes?.data?.data);
+        const apiData = apiRes?.data?.data[0];
+        setSmptdata(apiData);
+      },
+      (apiErr) => {
+        console.log("====> api get", apiErr);
+      }
+    );
+  };
+
+  const onEditClick = (id) => {
+    getSmpt.map((item) => {
+      if (item.id == id) {
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          User_Name: item?.username,
+          password: item?.password,
+          Server_IP: item?.host_serverip,
+          Server_Port: item?.port,
+          From_Address: item?.from_address,
+          From_Name: item?.from_name,
+          Authentication: item?.authentication,
+          Security: item?.security,
+        }));
+        setEditedId(id);
+      }
+    });
+  };
+
   const handleChange = (event) => {
     const { id, value } = event.target;
     setFormData((prevFormData) => ({
@@ -70,37 +75,126 @@ const Smtp = () => {
       [id]: value,
     }));
   };
-  const handleSubmit = () => {
-    let data = {
-      username: formData.User_Name,
-      password: formData.password,
-      host_serverip: formData.Server_IP,
-      port: formData.Server_Port,
-      from_address: formData.From_Address,
-      from_name: formData.From_Name,
-      authentication: formData.Authentication,
-      security: formData.Security,
+  // const onBlockClick = (id, user_status) => {
+  //   console.log(user_status, "666666666666");
+  //   let statusCheck = {
+  //     id,
+  //     user_status,
+  //   };
+  //   // Display notifications based on the 'user_status'
+  //   if (user_status === false) {
+  //     notification["warning"]({
+  //       placement: "top",
+  //       description: "",
+  //       message: "User Inactive",
+  //       style: {
+  //         height: 60,
+  //       },
+  //     });
+  //   } else {
+  //     notification["success"]({
+  //       placement: "top",
+  //       description: "",
+  //       message: "User Active",
+  //       style: {
+  //         height: 60,
+  //       },
+  //     });
+  //   }
+  //   editsmtp(
+  //     statusCheck,
+  //     (apiRes) => {},
+  //     (apiErr) => {}
+  //   );
+  // };
+  const onBlockClick = (id, smtp_status) => {
+    let statusCheck = {
+      id,
+      smtp_status,
     };
-    createsmtp(
-      data,
+    editsmtp(
+      statusCheck,
       (apiRes) => {
+        console.log(apiRes, "kljghjhg");
         if (apiRes.status == 200) {
           notification["success"]({
             placement: "top",
             description: "",
-            message: "SMTP Created Successfully.",
+            message: apiRes.data.message,
             style: {
-              marginTop: "43px",
-              height: "55px",
+              height: 60,
             },
           });
+          getsmptdata();
         }
-        getUsers();
-        setAuthToken(token);
       },
       (apiErr) => {}
     );
   };
+
+  const handleSubmit = () => {
+    if (editId) {
+      let data = {
+        id: editId,
+        username: formData?.User_Name,
+        password: formData?.password,
+        host_serverip: formData?.Server_IP,
+        port: formData?.Server_Port,
+        from_address: formData?.From_Address,
+        from_name: formData?.From_Name,
+        authentication: formData?.Authentication,
+        security: formData?.Security,
+      };
+      editsmtp(
+        data,
+        (apiRes) => {
+          if (apiRes.status == 200) {
+            notification["success"]({
+              placement: "top",
+              description: "",
+              message: "SMTP Edited Successfully.",
+              style: {
+                height: 60,
+              },
+            });
+            getsmptdata();
+            resetFormSmtp();
+          }
+        },
+        (apiErr) => {}
+      );
+    } else {
+      let data = {
+        username: formData?.User_Name,
+        password: formData?.password,
+        host_serverip: formData?.Server_IP,
+        port: formData?.Server_Port,
+        from_address: formData?.From_Address,
+        from_name: formData?.From_Name,
+        authentication: formData?.Authentication,
+        security: formData?.Security,
+      };
+      createsmtp(
+        data,
+        (apiRes) => {
+          if (apiRes.status == 201) {
+            notification["success"]({
+              placement: "top",
+              description: "",
+              message: "SMTP Created Successfully.",
+              style: {
+                height: 60,
+              },
+            });
+            getsmptdata();
+            resetFormSmtp();
+          }
+        },
+        (apiErr) => {}
+      );
+    }
+  };
+
   const onEditSmtp = () => {
     let data = {
       id: smptdata.id,
@@ -122,13 +216,10 @@ const Smtp = () => {
             description: "",
             message: "SMTP Updated Successfully.",
             style: {
-              marginTop: "43px",
-              height: "55px",
+              height: 60,
             },
           });
         }
-        getUsers();
-        setAuthToken(token);
       },
       (apiErr) => {}
     );
@@ -161,8 +252,7 @@ const Smtp = () => {
             description: "",
             message: "Email Sent Successfully.",
             style: {
-              marginTop: "43px",
-              height: "60px",
+              height: 60,
             },
           });
         }
@@ -178,60 +268,34 @@ const Smtp = () => {
       Message: "",
     });
   };
-  const tableHeader = [
-    {
-      id: "Display Name",
-      numeric: false,
-      disablePadding: true,
-      label: "Display Name",
-    },
-    {
-      id: "Email",
-      numeric: false,
-      disablePadding: true,
-      label: "Email",
-    },
-    {
-      id: "Employee Code",
-      numeric: false,
-      disablePadding: true,
-      label: "Employee Code",
-    },
-    {
-      id: "Max Quota",
-      numeric: false,
-      disablePadding: true,
-      label: "Max Quota",
-    },
-    {
-      id: "User Role",
-      numeric: false,
-      disablePadding: true,
-      label: "User Role",
-    },
-    {
-      id: "Action",
-      numeric: false,
-      disablePadding: true,
-      label: "Action",
-    },
-  ];
+  const resetFormSmtp = () => {
+    setFormData({
+      User_Name: "",
+      password: "",
+      Server_IP: "",
+      Server_Port: "",
+      From_Address: "",
+      From_Name: "",
+      Authentication: "",
+      Security: "",
+    });
+    setEditedId(0);
+  };
   return (
     <React.Fragment>
       <Head title="SMTP - Regular"></Head>
       <Content>
-        <Stack style={{ marginTop: "-28px" }}>
-          <BlockHead size="sm">
-            <BlockBetween>
-              <BlockHeadContent>
-                <Typography style={{ fontSize: "24.5px", fontWeight: "bold" }}>
-                  SMTP Details
-                </Typography>
-              </BlockHeadContent>
-            </BlockBetween>
-          </BlockHead>
+        <Stack
+          flexDirection="row"
+          justifyContent="space-between"
+          sx={{ mt: -3.4 }}
+        >
+          <Typography style={{ fontSize: "24.5px", fontWeight: "bold" }}>
+            SMTP Details
+          </Typography>
         </Stack>
-        <SmtpTable
+        <SmtpForm
+          editId={editId}
           smptdata={smptdata}
           formData={formData}
           onEditSmtp={onEditSmtp}
@@ -241,6 +305,11 @@ const Smtp = () => {
           handleTestEmail={handleTestEmail}
           handleSubmitTestEmail={handleSubmitTestEmail}
           handleAutocompleteChange={handleAutocompleteChange}
+        />
+        <SmtpMainTable
+          getSmpt={getSmpt}
+          onEditClick={onEditClick}
+          onBlockClick={onBlockClick}
         />
       </Content>
     </React.Fragment>

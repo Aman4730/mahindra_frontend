@@ -250,8 +250,7 @@ const UserListRegularPage = () => {
             description: "",
             message: "Group Deleted Successfully.",
             style: {
-              marginTop: "43px",
-              height: "60px",
+              height: 60,
             },
           });
         }

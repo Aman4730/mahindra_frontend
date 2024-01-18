@@ -102,7 +102,9 @@ export default function LogTable({
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - allfolderlist.length) : 0;
+    page > 0
+      ? Math.max(0, (1 + page) * rowsPerPage - allfolderlist?.length)
+      : 0;
 
   return (
     <Box>
@@ -117,7 +119,7 @@ export default function LogTable({
             />
             <TableBody>
               {(rowsPerPage > 0
-                ? allfolderlist.slice(
+                ? allfolderlist?.slice(
                     page * rowsPerPage,
                     page * rowsPerPage + rowsPerPage
                   )
@@ -212,7 +214,7 @@ export default function LogTable({
         <TablePagination
           rowsPerPageOptions={[10, 20, 30]}
           component="div"
-          count={allfolderlist.length}
+          count={allfolderlist?.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

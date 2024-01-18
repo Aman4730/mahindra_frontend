@@ -146,6 +146,7 @@ export default function GuestTSFileUpload({
                     alignItems: "center",
                     padding: "0px 5px 0px 5px",
                     borderRadius: "5px",
+                    fontSize: "13px",
                   }}
                 >
                   Selected File: {selectedFile && selectedFile.name}(

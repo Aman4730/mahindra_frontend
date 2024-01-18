@@ -12,6 +12,7 @@ export const AuthContextProvider = (props) => {
   } else {
     console.log("not Logged in");
   }
+  console.log(isLogin, "login");
   //Login Guest
   let guestdata = localStorage.getItem("guestlogin");
   let guestlogin = null;

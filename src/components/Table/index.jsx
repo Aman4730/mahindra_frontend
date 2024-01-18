@@ -239,7 +239,13 @@ export default function CommonTable({
                       <TableCell style={{ fontSize: "13px" }}>
                         {`${data.user_type}, ${data.user_email}`}
                       </TableCell>
-                      <TableCell>{formattedSize}</TableCell>
+                      <TableCell
+                        style={{
+                          fontSize: "13px",
+                        }}
+                      >
+                        {formattedSize}
+                      </TableCell>
                       {isLogin.user_type == "Admin" ? (
                         <TableCell
                           style={{
@@ -316,7 +322,11 @@ export default function CommonTable({
                           <Tooltip
                             title="Share"
                             onClick={() =>
-                              handleClickLinkOpen(data.id, data.file_type)
+                              handleClickLinkOpen(
+                                data.id,
+                                data.file_type,
+                                data?.file_name || data.folder_name
+                              )
                             }
                           >
                             <ShareIcon sx={{ mr: 1 }} fontSize="small" />
@@ -429,7 +439,13 @@ export default function CommonTable({
                           {propertys.share == "true" ? (
                             <Tooltip
                               title="Share"
-                              onClick={() => handleClickLinkOpen(data.id)}
+                              onClick={() =>
+                                handleClickLinkOpen(
+                                  data.id,
+                                  data.file_type,
+                                  data?.file_name || data.folder_name
+                                )
+                              }
                             >
                               <ShareIcon sx={{ mr: 1 }} fontSize="small" />
                             </Tooltip>

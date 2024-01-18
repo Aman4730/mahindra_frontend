@@ -242,7 +242,13 @@ export default function TeamSpaceTable({
                       <TableCell style={{ fontSize: "13px" }}>
                         {/* {data.share_with} */}
                       </TableCell>
-                      <TableCell>{formattedSize}</TableCell>
+                      <TableCell
+                        style={{
+                          fontSize: "13px",
+                        }}
+                      >
+                        {formattedSize}
+                      </TableCell>
                       {isLogin.user_type == "Admin" ? (
                         <TableCell
                           style={{

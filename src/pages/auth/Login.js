@@ -13,16 +13,16 @@ import {
   Icon,
   PreviewCard,
 } from "../../components/Component";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Form, FormGroup, Spinner, Alert } from "reactstrap";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { notification } from "antd";
 import { useHistory } from "react-router-dom";
-import { Stack } from "@mui/material";
+import { Grid, IconButton, InputAdornment, TextField } from "@mui/material";
 
 const Login = () => {
-  const { setAuthToken, loginWithOTP, Login } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
   const [passState, setPassState] = useState(false);
   const [errorVal, setError] = useState("");
@@ -74,6 +74,11 @@ const Login = () => {
         console.log(error);
       });
   };
+
+  const [showPassword, setShowPassword] = React.useState(false);
+  const handleTogglePassword = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
   const { errors, register, handleSubmit } = useForm();
   return (
     <React.Fragment>
@@ -114,7 +119,7 @@ const Login = () => {
                 </div>
                 <div className="form-control-wrap">
                   <input
-                    type="email"
+                    type="text"
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
@@ -168,7 +173,58 @@ const Login = () => {
                   )}
                 </div>
               </FormGroup>
-
+              {/* <Grid container spacing={1}>
+                <Grid item xs={4}>
+                  <TextField
+                    autoFocus
+                    fullWidth
+                    size="small"
+                    type="email"
+                    id="User_Name"
+                    name="email"
+                    margin="dense"
+                    label="User Name"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    ref={register({ required: "This field is required" })}
+                  />
+                  {errors.email && (
+                    <span className="invalid">{errors.email.message}</span>
+                  )}
+                </Grid>
+                <Grid item xs={4}>
+                  <TextField
+                    autoFocus
+                    fullWidth
+                    size="small"
+                    type={showPassword ? "text" : "password"}
+                    id="password"
+                    name="password"
+                    margin="dense"
+                    label="Password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            onClick={handleTogglePassword}
+                            style={{
+                              outline: "none",
+                            }}
+                          >
+                            {showPassword ? (
+                              <VisibilityOff fontSize="small" />
+                            ) : (
+                              <Visibility fontSize="small" />
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Grid>
+              </Grid> */}
               <FormGroup>
                 <Button
                   size="lg"

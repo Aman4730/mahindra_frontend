@@ -142,7 +142,13 @@ export default function FileVersion({
                       />
                       {data?.file_name || data.folder_name}
                     </TableCell>
-                    <TableCell>{formattedSize}</TableCell>
+                    <TableCell
+                      style={{
+                        fontSize: "13px",
+                      }}
+                    >
+                      {formattedSize}
+                    </TableCell>
                     <TableCell style={{ fontSize: "13px" }}>
                       {`${data.created_by}`}
                     </TableCell>

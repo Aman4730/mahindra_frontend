@@ -27,7 +27,6 @@ export default function PropertiesModel({
     return originalDate.toLocaleString("en-US", options);
   }
 
-  // Example usage:
   const originalTimestamp1 = propertiesData?.updatedAt; // Replace with your actual timestamp
   const formattedDate1 = convertTimestampToFormattedDate(originalTimestamp1);
 

@@ -1,23 +1,33 @@
 import React, { useContext } from "react";
 import { Route, Redirect } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-const auth = localStorage.getItem("token");
+
 const PrivateRoute = ({ exact, component: Component, ...rest }) => {
   const { isLogin, guestlogin } = useContext(AuthContext);
-  // const [authUserData] = userAuthContextData;
-  // const { userOTPVerified } = authUserData
+
   return (
+    // <Route
+    //   exact={exact}
+    //   render={(props) =>
+    //     isLogin || (guestlogin && guestlogin.success) ? (
+    //       <Component {...props} {...rest} />
+    //     ) : (
+    //       <Redirect to={`${process.env.PUBLIC_URL}/logout`} />
+    //     )
+    //   }
+    // />
     <Route
-      exact={exact ? true : false}
-      rest
+      exact={exact}
       render={(props) =>
-        isLogin || guestlogin?.success ? (
-          <Component {...props} {...rest}></Component>
+        isLogin || (guestlogin && guestlogin.success) ? (
+          <Component {...props} {...rest} />
+        ) : isLogin ? (
+          <Redirect to={`${process.env.PUBLIC_URL}/logout`} />
         ) : (
-          <Redirect to={`${process.env.PUBLIC_URL}/auth-login`}></Redirect>
+          <Redirect to={`${process.env.PUBLIC_URL}/auth-login`} />
         )
       }
-    ></Route>
+    />
   );
 };
 

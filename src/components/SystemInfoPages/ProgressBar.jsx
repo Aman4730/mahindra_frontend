@@ -11,10 +11,9 @@ const ProgressBar = ({ system_Info }) => {
           p: 2,
           borderRadius: "5px",
           display: "flex",
-          justifyContent: "space-around",
           alignItems: "center",
           flexDirection: "row",
-          overflowX: "auto", // Add overflow-x for small screens
+          overflowX: "auto",
         }}
       >
         <Grid item xs={12} sm={6} md={3}>
@@ -35,13 +34,13 @@ const ProgressBar = ({ system_Info }) => {
               style={{ color: "green" }}
               value={system_Info.memoryUsage}
             />
-            <Typography
+            <p
               style={{
                 textAlign: "center",
               }}
             >
               {`Memory = ${system_Info.memoryUsage || 0}`}
-            </Typography>
+            </p>
           </Stack>
         </Grid>
         {system_Info?.cpuUsagePercentage?.map((item, index) => (
@@ -62,13 +61,13 @@ const ProgressBar = ({ system_Info }) => {
                 variant="determinate"
                 value={item.usage}
               />
-              <Typography
+              <p
                 style={{
                   textAlign: "center",
                 }}
               >
                 {`CPU ${item.core} = ${item.usage}`}
-              </Typography>
+              </p>
             </Stack>
           </Grid>
         ))}

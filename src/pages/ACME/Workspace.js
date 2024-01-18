@@ -39,7 +39,6 @@ const Workspace = () => {
     getWorkspace,
     addPermission,
     deleteworkspace,
-    getUser,
   } = useContext(UserContext);
   const { setAuthToken } = useContext(AuthContext);
   const [userData, setUserData] = contextData;
@@ -100,7 +99,7 @@ const Workspace = () => {
     getGroupsDropdown(
       {},
       (apiRes) => {
-        const data = apiRes.data;
+        const data = apiRes?.data;
         setGroupsDropdown(
           data.groups.map((gro) => ({
             label: gro.group_name,
@@ -116,7 +115,7 @@ const Workspace = () => {
     cabinetDropdown(
       {},
       (apiRes) => {
-        setcabinetList(apiRes.data.data);
+        setcabinetList(apiRes?.data?.data);
       },
       (apiErr) => {}
     );
@@ -128,7 +127,7 @@ const Workspace = () => {
   }, []);
   useEffect(() => {
     let newData;
-    newData = userData.map((item) => {
+    newData = userData?.map((item) => {
       item.checked = false;
       return item;
     });
@@ -146,23 +145,13 @@ const Workspace = () => {
     userDropdownU(
       {},
       (apiRes) => {
-        // const { data: { data :{data}},status, token }  = apiRes;
-        const data = apiRes.data;
-        const code = apiRes.status;
-        const message =
-          apiRes.data.message[
-            ({ value: "en", label: "English" },
-            { value: "es", label: "Spanish" },
-            { value: "fr", label: "French" })
-          ];
+        const data = apiRes?.data;
         setUserDropdowns(
-          data.data.map((gro) => ({
+          data?.data?.map((gro) => ({
             label: gro.email,
             value: gro.email,
           }))
         );
-
-        // setAuthToken(token);
       },
       (apiErr) => {}
     );
@@ -175,9 +164,9 @@ const Workspace = () => {
     getWorkspace(
       { pageNumber: currentPage, pageSize: itemPerPage, search: onSearchText },
       (apiRes) => {
-        setTotalUsers(apiRes.data.count);
-        if (apiRes.status == 200) {
-          setUserData(apiRes.data.data);
+        setTotalUsers(apiRes?.data?.count);
+        if (apiRes?.status == 200) {
+          setUserData(apiRes?.data?.data);
           setPermissionData({});
         }
       },
@@ -187,24 +176,6 @@ const Workspace = () => {
   useEffect(() => {
     getTotalWorkspace();
   }, [currentPage]);
-
-  // function to set the action to be taken in table header
-  const onActionText = (e) => {
-    setActionText(e.value);
-  };
-
-  // onChange function for searching name
-  const onFilterChange = (e) => {
-    setSearchText(e.target.value);
-  };
-
-  // function to change the selected property of an item
-  const onSelectChange = (e, id) => {
-    let newData = userData;
-    let index = newData.findIndex((item) => item.id === id);
-    newData[index].checked = e.currentTarget.checked;
-    setUserData([...newData]);
-  };
 
   // function to reset the form
   const resetForm = () => {
@@ -246,18 +217,12 @@ const Workspace = () => {
               description: "",
               message: "Workspace Updated, Please login again..",
               style: {
-                marginTop: "43px",
-                height: "80px",
+                height: 70,
               },
             });
-          }
-          const code = 200;
-          if (code == 200) {
-            resetForm();
-            setModal({ edit: false }, { add: false });
+            onFormCancel();
             getTotalWorkspace();
           }
-          setAuthToken(token);
         },
         (apiErr) => {}
       );
@@ -273,27 +238,31 @@ const Workspace = () => {
       addWorkspace(
         submittedData,
         (apiRes) => {
-          if (apiRes.status == 200) {
+          console.log(apiRes, "apiRes");
+          if (apiRes.status == 201) {
             notification["success"]({
               placement: "top",
               description: "",
               message: "Workspace Created, Please login again...",
               style: {
-                marginTop: "43px",
-                height: "80px",
+                height: 70,
+              },
+            });
+            onFormCancel();
+          }
+        },
+        (apiErr) => {
+          if (apiErr?.response?.status == 400) {
+            notification["success"]({
+              placement: "top",
+              description: "",
+              message: apiErr.response.data.message,
+              style: {
+                height: 60,
               },
             });
           }
-          const code = 200;
-          // const { data: { data: { data, total }, meta: { code, message }, token } } = apiRes;
-          if (code == 200) {
-            resetForm();
-            setModal({ edit: false }, { add: false });
-            getUsers();
-          }
-          setAuthToken(token);
-        },
-        (apiErr) => {}
+        }
       );
       // setUserData([submittedData, ...userData]);
     }
@@ -302,7 +271,6 @@ const Workspace = () => {
   };
 
   const onPermissionSubmit = () => {
-    // const { name, email, phone } = submitData;
     if (editId) {
       let submittedData = {
         workspace_id: String(editId),
@@ -314,13 +282,10 @@ const Workspace = () => {
         permission_share: permisssionData.permission_share,
         permission_rename: permisssionData.permission_rename,
       };
-
-      // setUserData([submittedData, ...userData]);
       addPermission(
         submittedData,
         (apiRes) => {
           const code = 200;
-          // const { data: { data: { data, total }, meta: { code, message }, token } } = apiRes;
           if (code == 200) {
             resetForm();
             setModal({ edit: false }, { add: false });
@@ -343,56 +308,16 @@ const Workspace = () => {
         submittedData,
         (apiRes) => {
           const code = 200;
-          // const { data: { data: { data, total }, meta: { code, message }, token } } = apiRes;
           if (code == 200) {
             resetForm();
             setModal({ edit: false }, { add: false });
-            getUsers();
           }
           setAuthToken(token);
         },
         (apiErr) => {}
       );
-      // setUserData([submittedData, ...userData]);
     }
-
-    // }
   };
-
-  // submit function to update a new item
-  // const onEditSubmit = (submitData) => {
-  //   debugger
-  //   const { workspace_name, email, path_name, addWorkspace, user_role } = submitData;
-  //   let submittedData;
-  //   let newitems = userData;
-  //   newitems.forEach((item) => {
-  //     if (item.id === editId) {
-  //       submittedData = {
-  //         id: item.id,
-  //         avatarBg: item.avatarBg,
-  //         workspace_name: workspace_name,
-  //         user_role: user_role,
-  //         selected_groups: selected_groups,
-  //         addWorkspace: addWorkspace,
-  //         image: item.image,
-  //         role: item.role,
-  //         email: email,
-  //         balance: formData.balance,
-  //         path_name: path_name,
-  //         emailStatus: item.emailStatus,
-  //         kycStatus: item.kycStatus,
-  //         lastLogin: item.lastLogin,
-  //         status: formData.status,
-  //         country: item.country,
-  //       };
-  //     }
-  //   });
-  //   let index = newitems.findIndex((item) => item.id === editId);
-
-  //   newitems[index] = submittedData;
-  //   setModal({ edit: false });
-  //   resetForm();
-  // };
 
   // function that loads the want to editted userData
   const onEditClick = (id) => {
@@ -412,9 +337,6 @@ const Workspace = () => {
           selected_cabinet: item.selected_cabinet,
           workspace_type: item.workspace_type,
           selected_groups: item.selected_groups,
-          // selected_cabinet: selected_cabinet,
-          // role: item.user_role,
-          // status: item.status
         });
 
         setModal({ edit: false, add: true });
@@ -436,8 +358,7 @@ const Workspace = () => {
             description: "",
             message: "Workspace Deleted Successfully.",
             style: {
-              marginTop: "43px",
-              height: "60px",
+              height: 60,
             },
           });
         }
@@ -472,13 +393,6 @@ const Workspace = () => {
     });
   };
 
-  // function to change to suspend property for an item
-  const suspendUser = (id) => {
-    let newData = userData;
-    let index = newData.findIndex((item) => item.id === id);
-    newData[index].status = "Suspend";
-    setUserData([...newData]);
-  };
   useEffect(() => {
     if (onSearchText !== "") {
       const filteredObject = userData.filter((item) => {
@@ -492,44 +406,6 @@ const Workspace = () => {
       setUserData([...userData]);
     }
   }, [onSearchText, setUserData]);
-  // function to change the check property of an item
-  const selectorCheck = (e) => {
-    let newData;
-    newData = userData.map((item) => {
-      item.checked = e.currentTarget.checked;
-      return item;
-    });
-    setUserData([...newData]);
-  };
-
-  // function which fires on applying selected action
-  const onActionClick = (e) => {
-    if (actionText === "suspend") {
-      let newData = userData.map((item) => {
-        if (item.checked === true) item.status = "Suspend";
-        return item;
-      });
-      setUserData([...newData]);
-    } else if (actionText === "delete") {
-      let newData;
-      newData = userData.filter((item) => item.checked !== true);
-      setUserData([...newData]);
-    }
-  };
-
-  // function to toggle the search option
-  const toggle = () => setonSearch(!onSearch);
-
-  // Get current list, pagination
-  const indexOfLastItem = currentPage * itemPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemPerPage;
-  const currentItems = userData.slice(indexOfFirstItem, indexOfLastItem);
-
-  // Change Page
-  const paginate = (pageNumber) => {
-    debugger;
-    setCurrentPage(pageNumber);
-  };
 
   const { errors, register, handleSubmit, watch, triggerValidation } =
     useForm();
@@ -699,7 +575,7 @@ const Workspace = () => {
                       disablePortal
                       size="small"
                       options={cabinetList.map(
-                        (cabinet) => cabinet.cabinet_name
+                        (cabinet) => cabinet?.cabinet_name
                       )}
                       getOptionLabel={(cabinet) => cabinet}
                       renderInput={(params) => (
@@ -767,8 +643,8 @@ const Workspace = () => {
                         onChange={(e) =>
                           setFormData({
                             ...formData,
-                            selected_groups: e.map((option) => option.label),
-                            [name]: e.map((option) => option.value),
+                            selected_groups: e.map((option) => option?.label),
+                            [name]: e.map((option) => option?.value),
                           })
                         }
                         ref={register({ required: "This field is required" })}
@@ -790,8 +666,8 @@ const Workspace = () => {
                         onChange={(e) =>
                           setFormData({
                             ...formData,
-                            selected_users: e.map((option) => option.label),
-                            [name]: e.map((option) => option.value),
+                            selected_users: e.map((option) => option?.label),
+                            [name]: e.map((option) => option?.value),
                           })
                         }
                         ref={register({ required: "This field is required" })}

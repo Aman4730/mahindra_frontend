@@ -3,24 +3,17 @@ import { findUpper } from "../../../../utils/Utils";
 import { Icon } from "../../../../components/Component";
 import { AuthContext } from "../../../../context/AuthContext";
 import { UserContext } from "../../../../context/UserContext";
+import { LinkList } from "../../../../components/links/Links";
 import UserAvatar from "../../../../components/user/UserAvatar";
 import { DropdownToggle, DropdownMenu, Dropdown } from "reactstrap";
-import { LinkList, LinkItem } from "../../../../components/links/Links";
 
 const User = () => {
-  const { isLogin, logout } = useContext(UserContext);
+  const { isLogin, logout, setIsLogin } = useContext(UserContext);
   const [open, setOpen] = useState(false);
   const toggle = () => setOpen((prevState) => !prevState);
   const { userAuthContextData, logOut, GuestLogOUt } = useContext(AuthContext);
   const [userData] = userAuthContextData;
-  const { userOTPVerified, userEmail, userName, userMobileNumber, userRole } =
-    userData;
-  const handleSignout = () => {
-    logOut();
-  };
-  const handleGuestSignout = () => {
-    GuestLogOUt();
-  };
+  const { userName } = userData;
   // useEffect(() => {
   //   const logoutTimer = setTimeout(() => {
   //     logOut();
@@ -42,9 +35,9 @@ const User = () => {
   // }, []);
   const OnLogOut = () => {
     if (userData.type == "guest") {
-      handleGuestSignout();
+      GuestLogOUt();
     } else {
-      handleSignout();
+      logOut();
     }
     let data = {
       email: isLogin?.email,
@@ -54,6 +47,7 @@ const User = () => {
       (apiRes) => {},
       (apiErr) => {}
     );
+    window.location = "/";
   };
   return (
     <Dropdown isOpen={open} className="user-dropdown" toggle={toggle}>
@@ -86,23 +80,9 @@ const User = () => {
               <span className="sub-text">
                 {isLogin.user_type || userData.email} !
               </span>
-              {/* <span className="sub-text">9101234567</span> */}
             </div>
           </div>
         </div>
-        {/* <div className="dropdown-inner">
-          <LinkList>
-            <LinkItem link="/user-profile-regular" icon="user-alt" onClick={toggle}>
-              View Profile
-            </LinkItem>
-            <LinkItem link="/user-profile-setting" icon="setting-alt" onClick={toggle}>
-              Account Setting
-            </LinkItem>
-            <LinkItem link="/user-profile-activity" icon="activity-alt" onClick={toggle}>
-              Login Activity
-            </LinkItem>
-          </LinkList>
-        </div> */}
         {userData.type == "guest" ? (
           <div className="dropdown-inner">
             <LinkList>
@@ -118,10 +98,7 @@ const User = () => {
         ) : (
           <div className="dropdown-inner">
             <LinkList>
-              <a
-                href={`${process.env.PUBLIC_URL}/auth-login`}
-                onClick={OnLogOut}
-              >
+              <a href={`${process.env.PUBLIC_URL}/logout`} onClick={OnLogOut}>
                 <Icon name="signout"></Icon>
                 <span>Sign Out</span>
               </a>

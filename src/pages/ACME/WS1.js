@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { notification } from "antd";
 import Head from "../../layout/head/Head";
@@ -16,6 +16,7 @@ import Foldercreate from "../../components/Foldercreate/Foldercreate";
 import FileFolderMove from "../../components/FileFolderMove/index.jsx";
 import FileFolderProperties from "../../components/FileFolderProperties/index.jsx";
 import FileFolderComments from "../../components/FileFolderComments/index.jsx";
+import { Document, Page } from "react-pdf";
 const WS1 = () => {
   useEffect(() => {
     getAllfoldernames({
@@ -427,53 +428,128 @@ const WS1 = () => {
         console.error("Error downloading the folder:", error);
       });
   };
-  const onFileDownload = (filemongo_id, file_name) => {
+  // const onFileDownload = (filemongo_id, file_name) => {
+  //   const apiUrl = `${process.env.REACT_APP_API_URL_LOCAL}/downloadfile`;
+  //   const requestData = { filemongo_id: filemongo_id };
+
+  //   axios
+  //     .post(apiUrl, requestData, {
+  //       responseType: "blob",
+  //     })
+  //     .then((response) => {
+  //       notification["success"]({
+  //         placement: "top",
+  //         description: "",
+  //         message: "File Download Successfully...",
+  //         style: {
+  //           height: 60,
+  //         },
+  //       });
+  //       const blob = new Blob([response.data]);
+  //       const fileName = file_name;
+  //       // Use the split() method to separate the name and extension
+  //       const parts = fileName.split(".");
+  //       const name = parts[0];
+  //       const extension = parts[1];
+
+  //       // Create a temporary URL for the Blob
+  //       const url = URL.createObjectURL(blob);
+  //       console.log(url, "aman");
+  //       // Create a link element
+  //       const link = document.createElement("a");
+  //       link.href = url;
+
+  //       // Replace 'your_file_name.extension' with the desired file name and extension
+  //       link.download = `${name}.${extension}`;
+  //       // Append the link to the DOM and trigger the download
+  //       document.body.appendChild(link);
+  //       link.click();
+
+  //       // Clean up the temporary URL and link
+  //       URL.revokeObjectURL(url);
+  //       link.remove();
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error downloading the file:", error);
+  //     });
+  // };
+
+  // const onFileDownload = (filemongo_id, file_name) => {
+  //   const apiUrl = `${process.env.REACT_APP_API_URL_LOCAL}/downloadfile`;
+  //   const requestData = { filemongo_id: filemongo_id };
+
+  //   axios
+  //     .post(apiUrl, requestData, {
+  //       responseType: "arraybuffer",
+  //     })
+  //     .then((response) => {
+  //       notification["success"]({
+  //         placement: "top",
+  //         description: "",
+  //         message: "File Download Successfully...",
+  //         style: {
+  //           height: 60,
+  //         },
+  //       });
+  //       console.log(response.da);
+  //       const blob = new Blob([response.data], { type: "application/pdf" });
+  //       const url = URL.createObjectURL(blob);
+  //       // Use window.open to open the PDF file in a new tab
+  //       window.open(url, "_blank");
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error downloading the file:", error);
+  //     });
+  // };
+  const [pdfData, setPdfData] = useState(null);
+  const [numPages, setNumPages] = useState(null);
+  const [pageNumber, setPageNumber] = useState(1);
+  // const onFileDownload = (filemongo_id, file_name) => {
+  //   const apiUrl = `${process.env.REACT_APP_API_URL_LOCAL}/downloadfile`;
+  //   const requestData = { filemongo_id: filemongo_id };
+
+  //   axios
+  //     .post(apiUrl, requestData, {
+  //       responseType: "arraybuffer",
+  //     })
+  //     .then((response) => {
+  //       notification["success"]({
+  //         placement: "top",
+  //         description: "",
+  //         message: "File Download Successfully...",
+  //         style: {
+  //           height: 60,
+  //         },
+  //       });
+  //       const pdfData = new Uint8Array(response.data);
+  //       setPdfData(pdfData);
+  //     })
+
+  //     .catch((error) => {
+  //       console.error("Error downloading the file:", error);
+  //     });
+  // };
+
+  // ------------------------------------------------file Download
+  // ------------------------------------------------Start Share Link Modal
+
+  const onFileDownload = (filemongo_id) => {
     const apiUrl = `${process.env.REACT_APP_API_URL_LOCAL}/downloadfile`;
     const requestData = { filemongo_id: filemongo_id };
 
     axios
       .post(apiUrl, requestData, {
-        responseType: "blob",
+        responseType: "arraybuffer",
       })
       .then((response) => {
-        notification["success"]({
-          placement: "top",
-          description: "",
-          message: "File Download Successfully...",
-          style: {
-            height: 60,
-          },
-        });
-        const blob = new Blob([response.data]);
-        const fileName = file_name;
-        // Use the split() method to separate the name and extension
-        const parts = fileName.split(".");
-        const name = parts[0];
-        const extension = parts[1];
-
-        // Create a temporary URL for the Blob
-        const url = URL.createObjectURL(blob);
-
-        // Create a link element
-        const link = document.createElement("a");
-        link.href = url;
-
-        // Replace 'your_file_name.extension' with the desired file name and extension
-        link.download = `${name}.${extension}`;
-        // Append the link to the DOM and trigger the download
-        document.body.appendChild(link);
-        link.click();
-
-        // Clean up the temporary URL and link
-        URL.revokeObjectURL(url);
-        link.remove();
+        const pdfData = new Uint8Array(response.data);
+        setPdfData(pdfData);
       })
       .catch((error) => {
         console.error("Error downloading the file:", error);
       });
   };
-  // ------------------------------------------------file Download
-  // ------------------------------------------------Start Share Link Modal
+  const memoizedFile = useMemo(() => ({ data: pdfData }), [pdfData]);
   const [shareId, setShareId] = useState({});
   const [shareLink, setShareLink] = useState([]);
   const [openLink, setOpenLink] = useState(false);
@@ -503,8 +579,9 @@ const WS1 = () => {
     properties: false,
   });
 
-  const handleClickLinkOpen = (id, file_type) => {
-    setShareId({ id: id, file_type: file_type });
+  const handleClickLinkOpen = (id, file_type, name) => {
+    console.log(id, file_type, name);
+    setShareId({ id: id, file_type: file_type, name: name });
     setOpenLink(true);
   };
   const handleLinkClose = () => {
@@ -546,7 +623,7 @@ const WS1 = () => {
       email: shareFormData?.Email,
       file_type: shareId.file_type || "",
       workspace_name: shareFormData.workspace_name,
-      file_folder_name: shareId.name,
+      name: shareId.name,
       message: shareFormData.Message,
       subject: shareFormData.Subject,
       password: shareFormData.Password,
@@ -1107,6 +1184,36 @@ const WS1 = () => {
             openFileUpload={() => setFileUpload(true)}
             callApiHeader={callApiHeader}
           />
+          {/* {pdfData && (
+            <Document
+              file={{ data: pdfData }}
+              onLoadSuccess={({ numPages }) => setNumPages(numPages)}
+            >
+              {Array.from(new Array(numPages), (el, index) => (
+                <Page
+                  key={`page_${index + 1}`}
+                  pageNumber={index + 1}
+                  width={500} // Set the width as needed
+                  height={700}
+                />
+              ))}
+            </Document>
+          )} */}
+          {/* {pdfData && (
+            <Document
+              file={memoizedFile}
+              onLoadSuccess={({ numPages }) => setNumPages(numPages)}
+            >
+              {Array.from(new Array(numPages), (el, index) => (
+                <Page
+                  key={`page_${index + 1}`}
+                  pageNumber={index + 1}
+                  width={500} // Set the width as needed
+                  height={700}
+                />
+              ))}
+            </Document>
+          )} */}
           <Foldercreate
             open={open.status}
             handleClose={handleClose}
@@ -1123,6 +1230,7 @@ const WS1 = () => {
             handleOkay={onFormSubmit}
             folderNameInput={folderNameInput}
           />
+
           <CommonTable
             rows={folderList}
             callApi={callApi}

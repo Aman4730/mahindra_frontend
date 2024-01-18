@@ -113,6 +113,7 @@ const GuestTeamSpace = () => {
     );
   };
   const [allfolderlist, setAllfolderlist] = useState([]);
+  console.log(allfolderlist, "allfolderlist");
   // const getAllfoldernames = (
   //   data = {
   //     workspace_name: workSpaceData?.workspace_name,
@@ -153,8 +154,10 @@ const GuestTeamSpace = () => {
       },
     })
       .then((response) => response.json())
-      .then((data) => {
-        setAllfolderlist(data);
+      .then((apiRes) => {
+        console.log(apiRes?.response_file, "fvfddfv");
+        setAllfolderlist([...apiRes?.response_file, apiRes?.response_folders]);
+        // setAllfolderlist(data);
       })
       .catch((error) => {
         console.log(error);
@@ -221,8 +224,7 @@ const GuestTeamSpace = () => {
           description: "",
           message: "Delete Successfully...",
           style: {
-            marginTop: "49px",
-            height: "60px",
+            height: 60,
           },
         });
         setDeleteId(true);
@@ -274,8 +276,7 @@ const GuestTeamSpace = () => {
             description: "",
             message: "Folder Created Successfully...",
             style: {
-              marginTop: "49px",
-              height: "60px",
+              height: 60,
             },
           });
         }
@@ -361,8 +362,7 @@ const GuestTeamSpace = () => {
       resetFileForm();
       setFileUpload(false);
       const notificationStyle = {
-        marginTop: "49px",
-        height: "60px",
+        height: 60,
       };
 
       const notificationOptions = {
@@ -406,8 +406,7 @@ const GuestTeamSpace = () => {
             description: "",
             message: response.data.message,
             style: {
-              marginTop: "49px",
-              height: "60px",
+              height: 60,
             },
           });
         }
@@ -430,8 +429,7 @@ const GuestTeamSpace = () => {
           description: "",
           message: "Folder Download Successfully...",
           style: {
-            marginTop: "48px",
-            height: "63px",
+            height: 60,
           },
         });
         const blob = new Blob([response.data], { type: "application/zip" });
@@ -462,8 +460,7 @@ const GuestTeamSpace = () => {
           description: "",
           message: "File Download Successfully...",
           style: {
-            marginTop: "48px",
-            height: "63px",
+            height: 60,
           },
         });
         const blob = new Blob([response.data]);
@@ -580,8 +577,7 @@ const GuestTeamSpace = () => {
           description: "",
           message: "Link Shared Successfully...",
           style: {
-            marginTop: "45px",
-            height: "60px",
+            height: 60,
           },
         });
       },
@@ -593,8 +589,7 @@ const GuestTeamSpace = () => {
           description: "An error occurred while sharing the link.",
           message: "Error",
           style: {
-            marginTop: "45px",
-            height: "60px",
+            height: 60,
           },
         });
       }
@@ -860,7 +855,7 @@ const GuestTeamSpace = () => {
             handleOkay={onFormSubmit}
             folderNameInput={folderNameInput}
           />
-          <GuestTSTable
+          {/* <GuestTSTable
             rows={folderList}
             callApi={callApi}
             isLogin={isLogin}
@@ -877,7 +872,7 @@ const GuestTeamSpace = () => {
             handleClickLinkOpen={handleClickLinkOpen}
             openFileUpload={() => setFileUpload(true)}
             openModal={() => setOpen({ ...open, status: true })}
-          />
+          /> */}
         </Stack>
       </Content>
     </>

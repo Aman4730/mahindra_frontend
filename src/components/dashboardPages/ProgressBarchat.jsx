@@ -61,48 +61,6 @@ const ProgressBar = ({ label, initialPercentage, isUser, used_quota }) => {
   );
 };
 
-// const ProgressBarchat = ({ quotadetail, userquota }) => {
-//   return (
-//     <Card
-//       sx={{
-//         ml: 2,
-//         mr: 2,
-//         mb: 1.1,
-//         overflowY: "auto", // Enable vertical scrolling
-//         maxHeight: "180px", // Set a maximum height for the card
-//       }}
-//       style={{
-//         fontFamily: "Arial, sans-serif",
-//         padding: "15px",
-//         borderRadius: "10px",
-//       }}
-//     >
-//       <h6>Storage Quota</h6>
-//       <Grid container>
-//         {quotadetail.map((data, index) => (
-//           <Grid item xs={12} key={index}>
-//             <ProgressBar
-//               label={data.workspace_name}
-//               initialPercentage={data.workspace_quota}
-//               used_quota={data.used_quota}
-//               isUser={false}
-//             />
-//           </Grid>
-//         ))}
-//         {userquota.map((data, index) => (
-//           <Grid item xs={12} key={index}>
-//             <ProgressBar
-//               label={data.user_email}
-//               initialPercentage={data.max_quota}
-//               used_quota={data.used_quota}
-//               isUser={true}
-//             />
-//           </Grid>
-//         ))}
-//       </Grid>
-//     </Card>
-//   );
-// };
 const ProgressBarchat = ({ quotadetail, userquota }) => {
   return (
     <Card
@@ -110,8 +68,8 @@ const ProgressBarchat = ({ quotadetail, userquota }) => {
         ml: 2,
         mr: 2,
         mb: 1.1,
-        overflowY: "hidden", // Set overflow to hidden
-        maxHeight: "184px", // Set a maximum height for the card
+        overflowY: "hidden",
+        maxHeight: "184px",
         fontFamily: "Arial, sans-serif",
         padding: "15px 0px 15px 15px",
         borderRadius: "10px",

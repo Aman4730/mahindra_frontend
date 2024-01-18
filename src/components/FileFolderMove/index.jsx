@@ -61,14 +61,8 @@ export default function FileFolderMove({
             </div>
           ))}
         </div>
-        <Paper style={{ width: 600, padding: 16 }}>
-          <div
-            style={{
-              display: "flex",
-              margin: "7px 0px 3px 10px",
-              fontSize: "16px",
-            }}
-          >
+        <Paper style={{ width: 600 }}>
+          <div>
             {hideMoveData === false ? (
               <TableContainer component={Paper}>
                 <Table size="small" aria-label="a dense table">
@@ -196,7 +190,13 @@ export default function FileFolderMove({
                             />
                             {data.folder_name}
                           </TableCell>
-                          <TableCell>{formattedSize}</TableCell>
+                          <TableCell
+                            style={{
+                              fontSize: "13px",
+                            }}
+                          >
+                            {formattedSize}
+                          </TableCell>
                           <TableCell>{data.user_email}</TableCell>
                         </TableRow>
                       );

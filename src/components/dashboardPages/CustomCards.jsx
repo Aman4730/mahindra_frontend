@@ -1,4 +1,4 @@
-import { Card, Stack } from "@mui/material";
+import { Card, Grid, Stack } from "@mui/material";
 import React from "react";
 import "./style.css";
 
@@ -42,63 +42,102 @@ const CustomCards = ({ counts }) => {
   ];
 
   return (
-    <Stack
-      style={{
-        display: "flex",
-        flexDirection: "row",
-        textAlign: "left",
-        flexWrap: "wrap",
-      }}
-      sx={{ pl: 1 }}
-    >
-      {arr.map((data) => (
-        <Card
-          key={data.name}
-          sx={{
-            mt: 2.5,
-            mb: 1,
-            ml: 1,
-            width: "100%",
-            maxWidth: "19%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between", // Align items horizontally with space between
-            overflow: "hidden",
-            flexDirection: !data.column ? "row" : "column",
-            textAlign: "left",
-            "@media screen and (max-width: 768px)": {
-              maxWidth: "30%",
-            },
-          }}
-        >
-          <Stack
-            style={{
+    <>
+      <Stack
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          textAlign: "left",
+          flexWrap: "wrap",
+        }}
+        sx={{ pl: 1 }}
+      >
+        {arr.map((data) => (
+          <Card
+            key={data.name}
+            sx={{
+              mt: 2.5,
+              mb: 1,
+              ml: 1,
+              width: "100%",
+              maxWidth: "19%",
               display: "flex",
               alignItems: "center",
-              flexDirection: "row",
+              justifyContent: "space-between",
+              overflow: "hidden",
+              flexDirection: !data.column ? "row" : "column",
               textAlign: "left",
+              "@media screen and (max-width: 768px)": {
+                maxWidth: "30%",
+              },
             }}
           >
-            <div
-              className="verticleLine"
+            <Stack
               style={{
-                border: `4px solid ${data.color}`,
+                display: "flex",
+                alignItems: "center",
+                flexDirection: "row",
+                textAlign: "left",
               }}
-            ></div>
-            <h4 style={{ margin: "5px 0px 0px 16px" }}>{data.counts || 0}</h4>
-            <h6 style={{ margin: "5px 0px 0px 16px" }}>{data.name}</h6>
-          </Stack>
-          <i
-            className={data.icon}
-            style={{
-              padding: "20px 5px 0px 0px",
-              fontSize: "33px",
-              color: "lightgrey",
-            }}
-          ></i>
-        </Card>
-      ))}
-    </Stack>
+            >
+              <div
+                className="verticleLine"
+                style={{
+                  border: `4px solid ${data.color}`,
+                }}
+              ></div>
+              <h4 style={{ margin: "5px 0px 0px 16px" }}>{data.counts || 0}</h4>
+              <h6 style={{ margin: "5px 0px 0px 16px" }}>{data.name}</h6>
+            </Stack>
+            <i
+              className={data.icon}
+              style={{
+                padding: "20px 5px 0px 0px",
+                fontSize: "33px",
+                color: "lightgrey",
+              }}
+            ></i>
+          </Card>
+        ))}
+      </Stack>
+      {/* <Stack sx={{ pl: 1 }} spacing={2}>
+        <Grid container spacing={2}>
+          {arr.map((data) => (
+            <Grid item xs={12} sm={6} md={4} lg={3} key={data.name}>
+              <Card>
+                <Stack
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    flexDirection: "row",
+                    textAlign: "left",
+                  }}
+                >
+                  <div
+                    className="verticleLine"
+                    style={{
+                      border: `4px solid ${data.color}`,
+                    }}
+                  ></div>
+                  <h4 style={{ margin: "5px 0px 0px 16px" }}>
+                    {data.counts || 0}
+                  </h4>
+                  <h6 style={{ margin: "5px 0px 0px 16px" }}>{data.name}</h6>
+                  <i
+                    className={data.icon}
+                    style={{
+                      padding: "20px 5px 0px 0px",
+                      fontSize: "33px",
+                      color: "lightgrey",
+                    }}
+                  ></i>
+                </Stack>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Stack> */}
+    </>
   );
 };
 

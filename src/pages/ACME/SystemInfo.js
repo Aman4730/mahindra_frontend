@@ -10,7 +10,6 @@ const SystemInfo = () => {
   const { getSystemInfo } = useContext(UserContext);
   const [system_Info, setSystem_Info] = useState([]);
   const [loading, setLoading] = useState(false);
-  console.log(loading, "loading");
   useEffect(() => {
     getsystemInfo();
   }, []);
@@ -24,12 +23,6 @@ const SystemInfo = () => {
       (apiErr) => {}
     );
   };
-  // console.log(system_Info, "system_Info");
-  // if (system_Info?.cpuUsagePercentage?.length > 0) {
-  //   console.log("workk");
-  // } else {
-  //   console.log("underrr");
-  // }
   return (
     <React.Fragment>
       <Head title="SystemInfo - Regular"></Head>

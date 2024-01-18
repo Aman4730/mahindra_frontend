@@ -164,8 +164,7 @@ const UserListRegularPage = () => {
               description: "",
               message: "User Updated Successfully.",
               style: {
-                marginTop: "43px",
-                height: "60px",
+                height: 60,
               },
             });
           }
@@ -201,8 +200,7 @@ const UserListRegularPage = () => {
               description: "",
               message: "User Created Successfully.",
               style: {
-                marginTop: "43px",
-                height: "60px",
+                height: 60,
               },
             });
           }
@@ -258,8 +256,7 @@ const UserListRegularPage = () => {
             description: "",
             message: "User Deleted Successfully.",
             style: {
-              marginTop: "43px",
-              height: "60px",
+              height: 60,
             },
           });
         }
@@ -290,8 +287,7 @@ const UserListRegularPage = () => {
         description: "",
         message: "User Inactive",
         style: {
-          marginTop: "43px",
-          height: "60px",
+          height: 60,
         },
       });
     } else {
@@ -300,8 +296,7 @@ const UserListRegularPage = () => {
         description: "",
         message: "User Active",
         style: {
-          marginTop: "43px",
-          height: "60px",
+          height: 60,
         },
       });
     }
@@ -752,13 +747,7 @@ const UserListRegularPage = () => {
                         }
                         style={{ marginTop: "-8px", marginBottom: "10px" }}
                         placeholder="L1 Email Id"
-                        ref={register({ required: "This field is required" })}
                       />
-                      {errors.level_1 && (
-                        <span className="invalid">
-                          {errors.level_1.message}
-                        </span>
-                      )}
                     </FormGroup>
                   </Col>
                   <Col md="6">
@@ -776,13 +765,7 @@ const UserListRegularPage = () => {
                         }
                         style={{ marginTop: "-8px", marginBottom: "10px" }}
                         placeholder="L2 Email Id"
-                        ref={register({ required: "This field is required" })}
                       />
-                      {errors.level_2 && (
-                        <span className="invalid">
-                          {errors.level_2.message}
-                        </span>
-                      )}
                     </FormGroup>
                   </Col>
                   <Col size="12">

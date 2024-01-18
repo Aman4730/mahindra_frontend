@@ -48,7 +48,6 @@ const ReactDualList = ({ options, icon, canFilter, preSelected }) => {
     setSelected(selected);
   };
 
-  // Filtering users by search
   useEffect(() => {
     if (filterText !== "") {
       const filteredObject = options.filter((item) => {
@@ -63,7 +62,11 @@ const ReactDualList = ({ options, icon, canFilter, preSelected }) => {
   return (
     <div className="dual-listbox">
       {canFilter && (
-        <input className="dual-listbox__search" placeholder="Search" onChange={(e) => setFilterText(e.target.value)} />
+        <input
+          className="dual-listbox__search"
+          placeholder="Search"
+          onChange={(e) => setFilterText(e.target.value)}
+        />
       )}
       <DualListBox
         options={data}

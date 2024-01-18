@@ -287,7 +287,13 @@ export default function GlobalSearchTable({
                       <TableCell style={{ fontSize: "13px" }}>
                         {convertedTimestamp}
                       </TableCell>
-                      <TableCell>{formattedSize}</TableCell>
+                      <TableCell
+                        style={{
+                          fontSize: "13px",
+                        }}
+                      >
+                        {formattedSize}
+                      </TableCell>
                       {isLogin.user_type == "Admin" ? (
                         <TableCell
                           style={{

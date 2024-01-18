@@ -132,7 +132,39 @@ const Pages = () => {
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
   });
-  function hideEndpoints() {
+  // function hideEndpoints() {
+  //   // Get the current URL
+  //   const currentURL = window.location.href;
+
+  //   const endpointsToHide = [
+  //     "/my-workspace",
+  //     "/teamSpace",
+  //     "/GlobalSearch",
+  //     "/recyclebin",
+  //     "/logs",
+  //     "/user-list",
+  //     "/groups",
+  //     "/smtp",
+  //     "/policies",
+  //     "/workflow",
+  //     "/cabinet",
+  //     "/workspace",
+  //     "/doctype",
+  //     "/docmetadata",
+  //     "/fileviewer",
+  //     "/systemInfo",
+  //   ];
+
+  //   endpointsToHide.forEach((endpoint) => {
+  //     if (currentURL.includes(endpoint)) {
+  //       const newURL = currentURL.replace(endpoint, "");
+
+  //       window.history.pushState({}, "", newURL);
+  //     }
+  //   });
+  // }
+  // hideEndpoints();
+  function hideEndpointsOnLoad() {
     // Get the current URL
     const currentURL = window.location.href;
 
@@ -163,7 +195,13 @@ const Pages = () => {
       }
     });
   }
-  hideEndpoints();
+
+  // Run the function only once on page load
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", hideEndpointsOnLoad);
+  } else {
+    hideEndpointsOnLoad();
+  }
 
   return (
     <Suspense fallback={<div />}>

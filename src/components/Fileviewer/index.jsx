@@ -14,11 +14,13 @@ import { UserContext } from "../../context/UserContext";
 import DialogActions from "@mui/material/DialogActions";
 import LinearProgress from "@mui/material/LinearProgress";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import { Viewer } from "@cyntler/react-doc-viewer";
 import {
   BlockBetween,
   BlockHead,
   BlockHeadContent,
   Button,
+  RSelect,
 } from "../../../src/components/Component";
 import {
   Autocomplete,
@@ -29,11 +31,15 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+import { Document, Page } from "react-pdf";
+
 function Fileviewer() {
   const {
     CommonNotes,
     getnotes,
     deleteNotes,
+    workSpaceData,
+    getmetalist,
     getdoclist,
     add_metaproperties,
     addmetaproperties,
@@ -68,27 +74,64 @@ function Fileviewer() {
     getNoteslist();
   }, [todos]);
   useEffect(() => {
+    getmetatypelist();
     getdoclistuploadfile();
   }, []);
   // ------------------------------------------apis
+  function openBase64NewTap(base64Pdf) {
+    console.log(base64Pdf, "gfdfdhbg");
+    const blob = base64toblob(base64Pdf);
+    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+      window.navigator.msSaveOrOpenBlob(blob, "pdfBase64.pdf");
+    } else {
+      const blobUrl = URL.createObjectURL(blob);
+      window.open(blobUrl);
+    }
+  }
+  function base64toblob(base64Data) {
+    const sliceSize = 1024;
+    const byteCharacters = atob(base64Data);
+    const bytesLength = byteCharacters.length;
+    const slicesCount = math.ceil(bytesLength / sliceSize);
+    const byteArrays = new Array(slicesCount);
+    for (let sliceIndex = 0; sliceIndex < slicesCount; ++sliceIndex) {
+      const begin = sliceIndex * sliceSize;
+      const end = Math.min(begin + sliceSize, bytesLength);
+
+      const bytes = new Array(end - begin);
+      for (let offset = begin, i = 0; offset < end; ++i, ++offset) {
+        bytes[i] = byteCharacters[offset].charCodeAt(0);
+      }
+      byteArrays[sliceIndex] = new Uint8Array(bytes);
+    }
+    return new Blob(byteArrays, { type: "application/pdf" });
+  }
+  const [pdfData, setPdfData] = useState(null);
+  const [numPages, setNumPages] = useState(null);
+  const [pageNumber, setPageNumber] = useState(1);
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.post(
           `${process.env.REACT_APP_API_URL_LOCAL}/filedata`,
           {
-            // id: location?.state?.id,
             filemongo_id: location.state.filemongo_id,
           }
         );
-        setFileType(response.data.newdata.file_type);
+        // console.log(response, "gdfghdfgh");
+        // setPdfData(response);
+        setFileType(response?.data.newdata.file_type);
+
         const data = response.data.file_data.data;
+
         const uint8Array = new Uint8Array(data);
 
         const blob = new Blob([uint8Array], {
           type: response.data.newdata.file_type,
+          // type: "application/pdf",
         });
         const url = URL.createObjectURL(blob);
+        console.log(url, "rtrtrt");
         setUrl(url);
       } catch (error) {
         console.error(error);
@@ -161,9 +204,23 @@ function Fileviewer() {
       }
     );
   };
-  const onSubmitProperties = (selectedOption) => {
+  const [metaList, setMetaList] = useState([]);
+
+  const getmetatypelist = () => {
+    getmetalist(
+      {},
+      (apiRes) => {
+        setMetaList(apiRes?.data);
+      },
+      (apiErr) => {
+        console.log(apiErr);
+      }
+    );
+  };
+  const onSubmitProperties = (e) => {
     let data = {
-      doctype: selectedOption?.doctype_name,
+      doctype: e?.label,
+      workspace_name: workSpaceData?.workspace_name,
     };
     add_metaproperties(
       data,
@@ -194,6 +251,16 @@ function Fileviewer() {
       (apiErr) => {}
     );
   };
+
+  const matchedWorkspace = metaList?.filter(
+    (data) => data.workspace_name === workSpaceData?.workspace_name
+  );
+
+  const metadata = matchedWorkspace?.map((data) => ({
+    label: data?.doctype,
+    value: data?.doctype,
+  }));
+
   // ------------------------------------------apis
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -202,9 +269,9 @@ function Fileviewer() {
       [name]: value,
     }));
   };
-  const handleOnClick = (selectedOption) => {
-    onSubmitProperties(selectedOption);
-    setDoctypeName(selectedOption?.doctype_name);
+  const handleOnClick = (e) => {
+    onSubmitProperties(e);
+    setDoctypeName(e?.label);
   };
   const property = () => {
     addProperties?.map((data) => {
@@ -254,6 +321,19 @@ function Fileviewer() {
             </BlockBetween>
           </BlockHead>
         </Stack>
+        {/* <Document
+          file={{ data: pdfData }}
+          onLoadSuccess={({ numPages }) => setNumPages(numPages)}
+        >
+          {Array.from(new Array(numPages), (el, index) => (
+            <Page
+              key={`page_${index + 1}`}
+              pageNumber={index + 1}
+              width={500} // Set the width as needed
+              height={700}
+            />
+          ))}
+        </Document> */}
         <Stack flexDirection="row" style={{ width: "fitContent" }}>
           <div
             style={{
@@ -272,6 +352,8 @@ function Fileviewer() {
                     onLoad={() => {}}
                     quality="hd"
                   />
+
+                  // <object data={url} width="100%" height="600px"></object>
                 )}
               </>
             ) : (
@@ -295,19 +377,13 @@ function Fileviewer() {
           </div>
           <Stack flexDirection="column">
             <Stack sx={{ pt: 1, pl: 1 }}>
-              <Autocomplete
-                freeSolo
-                disablePortal
-                size="small"
-                options={docListUpload}
-                getOptionLabel={(docListUpload) => docListUpload?.doctype_name} // Adjust this based on your API response structure
-                sx={{ width: 248, pb: 1.5 }}
-                renderInput={(params) => (
-                  <TextField {...params} label="Select Doc Type" size="small" />
-                )}
-                onChange={(event, value) => handleOnClick(value)}
-              />
-
+              <div style={{ marginBottom: "11px" }}>
+                <RSelect
+                  options={metadata}
+                  defaultValue="Please Select Doctype"
+                  onChange={handleOnClick}
+                />
+              </div>
               <Grid
                 container
                 rowSpacing={1}
@@ -333,7 +409,7 @@ function Fileviewer() {
                           onChange={handleInputChange}
                           inputProps={{
                             style: {
-                              height: "15px",
+                              height: "20px",
                             },
                           }}
                         />
@@ -361,7 +437,7 @@ function Fileviewer() {
               <Button
                 color="primary"
                 onClick={addmetapropertie}
-                style={{ width: "35%" }}
+                style={{ width: "35%", marginTop: "4px" }}
               >
                 Submit
               </Button>

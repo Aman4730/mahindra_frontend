@@ -33,7 +33,6 @@ const PieDoughnutChart = ({ extension }) => {
     },
   });
   useEffect(() => {
-    // Update state when the extension prop changes
     if (extension && Object.keys(extension).length > 0) {
       const labels = Object.keys(extension);
       const labels1 = labels.map((key) => extension[key]);
@@ -47,7 +46,7 @@ const PieDoughnutChart = ({ extension }) => {
 
           dataLabels: {
             style: {
-              colors: ["#1C2833"], // Set the color of each segment
+              colors: ["#1C2833"],
             },
           },
           responsive: [

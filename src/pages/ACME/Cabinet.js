@@ -174,19 +174,13 @@ const Cabinet = () => {
               description: "",
               message: "Cabinet Updated Successfully.",
               style: {
-                marginTop: "43px",
-                height: "60px",
+                height: 60,
               },
             });
-          }
-          const code = 200;
-          // const { data: { data: { data, total }, meta: { code, message }, token } } = apiRes;
-          if (code == 200) {
-            resetForm();
-            setModal({ edit: false }, { add: false });
+            onFormCancel();
             getTotalGroups();
           }
-          setAuthToken(token);
+          // const { data: { data: { data, total }, meta: { code, message }, token } } = apiRes;
         },
         (apiErr) => {}
       );
@@ -200,36 +194,27 @@ const Cabinet = () => {
       addCabinet(
         submittedData,
         (apiRes) => {
-          if (apiRes.status == 200) {
+          if (apiRes.status == 201) {
             notification["success"]({
               placement: "top",
               description: "",
               message: "Cabinet Created Successfully.",
               style: {
-                marginTop: "43px",
-                height: "60px",
+                height: 60,
               },
             });
+            onFormCancel();
           }
-          const code = 200;
-          // const { data: { data: { data, total }, meta: { code, message }, token } } = apiRes;
-          if (code == 200) {
-            resetForm();
-            setModal({ edit: false }, { add: false });
-            getUsers();
-          }
-          setAuthToken(token);
         },
         (apiErr) => {}
       );
-      // setUserData([submittedData, ...userData]);
     }
 
     // }
   };
   // function that loads the want to editted userData
   const onEditClick = (id) => {
-    userData.map((item) => {
+    userData?.map((item) => {
       if (item.id == id) {
         setFormData({
           id: id,
@@ -260,8 +245,7 @@ const Cabinet = () => {
             description: "",
             message: "Cabinet Deleted Successfully.",
             style: {
-              marginTop: "43px",
-              height: "60px",
+              height: 60,
             },
           });
         }

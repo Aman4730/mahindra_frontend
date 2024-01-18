@@ -1,26 +1,28 @@
 import * as React from "react";
 import {
-  Autocomplete,
   Card,
   Grid,
   Stack,
+  Button,
   TextField,
   Typography,
-  Button,
-  InputAdornment,
   IconButton,
+  Autocomplete,
+  InputAdornment,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-export default function SmtpTable({
+import SmtpMainTable from "./SmtpMainTable";
+export default function SmtpForm({
   formData,
+  smptdata,
+  editId,
+  onEditSmtp,
   handleChange,
   handleSubmit,
-  handleAutocompleteChange,
   testEmailForm,
   handleTestEmail,
   handleSubmitTestEmail,
-  onEditSmtp,
-  smptdata,
+  handleAutocompleteChange,
 }) {
   const [showPassword, setShowPassword] = React.useState(false);
   const handleTogglePassword = () => {
@@ -28,9 +30,9 @@ export default function SmtpTable({
   };
   return (
     <Stack>
-      <Card sx={{ p: 2, mt: 1, mb: 1 }}>
+      <Card sx={{ p: 2, mb: 1 }}>
         <Grid container spacing={1}>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <TextField
               autoFocus
               fullWidth
@@ -39,11 +41,11 @@ export default function SmtpTable({
               id="User_Name"
               margin="dense"
               label="User Name"
-              value={formData.User_Name}
+              value={formData?.User_Name}
               onChange={handleChange}
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <TextField
               autoFocus
               fullWidth
@@ -52,7 +54,7 @@ export default function SmtpTable({
               id="password"
               margin="dense"
               label="Password"
-              value={formData.password}
+              value={formData?.password}
               onChange={handleChange}
               InputProps={{
                 endAdornment: (
@@ -74,7 +76,7 @@ export default function SmtpTable({
               }}
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <TextField
               autoFocus
               fullWidth
@@ -87,7 +89,7 @@ export default function SmtpTable({
               onChange={handleChange}
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <TextField
               autoFocus
               fullWidth
@@ -96,12 +98,11 @@ export default function SmtpTable({
               type="text"
               margin="dense"
               label="Server Port"
-              style={{ marginTop: "-0.5px" }}
               value={formData.Server_Port}
               onChange={handleChange}
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <TextField
               autoFocus
               fullWidth
@@ -110,12 +111,12 @@ export default function SmtpTable({
               margin="dense"
               id="From_Address"
               label="From Address"
-              style={{ marginTop: "-0.5px" }}
+              sx={{ mt: -0 }}
               value={formData.From_Address}
               onChange={handleChange}
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <TextField
               autoFocus
               fullWidth
@@ -124,12 +125,12 @@ export default function SmtpTable({
               margin="dense"
               id="From_Name"
               label="From Name"
-              style={{ marginTop: "-0.5px" }}
+              sx={{ mt: -0 }}
               value={formData.From_Name}
               onChange={handleChange}
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <Autocomplete
               fullWidth
               disablePortal
@@ -145,7 +146,7 @@ export default function SmtpTable({
               }
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <Autocomplete
               fullWidth
               disablePortal
@@ -161,20 +162,21 @@ export default function SmtpTable({
               }
             />
           </Grid>
-          {smptdata.length > 0 ? (
-            <Grid item xs={7} display="flex" justifyContent="end">
-              <Button
-                variant="contained"
-                onClick={handleSubmit}
-                style={{
-                  outline: "none",
-                }}
-              >
-                Submit
-              </Button>
-            </Grid>
-          ) : (
-            <Grid item xs={7} display="flex" justifyContent="end">
+          {/* {smptdata?.length > 0 ? ( */}
+          <Grid item xs={7} display="flex" justifyContent="end">
+            <Button
+              variant="contained"
+              onClick={handleSubmit}
+              style={{
+                outline: "none",
+              }}
+              sx={{ mr: 10.5 }}
+            >
+              {editId ? "Update" : "Submit"}
+            </Button>
+          </Grid>
+          {/* ) : ( */}
+          {/* <Grid item xs={7} display="flex" justifyContent="end">
               <Button
                 variant="contained"
                 onClick={onEditSmtp}
@@ -184,17 +186,16 @@ export default function SmtpTable({
               >
                 Update
               </Button>
-            </Grid>
-          )}
+            </Grid> */}
+          {/* )} */}
         </Grid>
       </Card>
-
       <Typography style={{ fontSize: "24.5px", fontWeight: "bold" }}>
         Test Email
       </Typography>
-      <Card sx={{ p: 2 }}>
+      <Card sx={{ p: 2, mb: 1 }}>
         <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <TextField
               autoFocus
               fullWidth
@@ -207,7 +208,7 @@ export default function SmtpTable({
               onChange={handleTestEmail}
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <TextField
               autoFocus
               fullWidth
@@ -220,7 +221,7 @@ export default function SmtpTable({
               onChange={handleTestEmail}
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <TextField
               autoFocus
               fullWidth
@@ -233,13 +234,14 @@ export default function SmtpTable({
               onChange={handleTestEmail}
             />
           </Grid>
-          <Grid item xs={7.2} display="flex" justifyContent="end">
+          <Grid item xs={3}>
             <Button
               variant="contained"
               onClick={handleSubmitTestEmail}
               style={{
                 outline: "none",
               }}
+              sx={{ mt: 1.2 }}
             >
               Test Email
             </Button>

@@ -93,7 +93,7 @@ export default function DataGridCard({ tableData }) {
       case "zip":
         return "/Image/zip.svg";
       default:
-        return "default.svg";
+        return "/Image/default.svg";
     }
   }
   const isSelected = (name) => selected.indexOf(name) !== -1;
@@ -132,7 +132,7 @@ export default function DataGridCard({ tableData }) {
                   "en-US",
                   options
                 );
-                const isEvenRow = index % 2 === 1; // Check if it's an even row
+                const isEvenRow = index % 2 === 1;
                 function formatFileSize(sizeInBytes) {
                   if (sizeInBytes < 1024) {
                     return sizeInBytes + " B";
@@ -163,7 +163,7 @@ export default function DataGridCard({ tableData }) {
                     <TableCell
                       className="tablefont"
                       style={{
-                        fontSize: "13px",
+                        fontSize: "12px",
                         whiteSpace: "nowrap",
                         overflow: "hidden",
                         textOverflow: "ellipsis",
@@ -188,13 +188,23 @@ export default function DataGridCard({ tableData }) {
                       {data?.file_name || data?.folder_name}
                     </TableCell>
 
-                    <TableCell>{data.email}</TableCell>
-                    <TableCell style={{ fontSize: "13px" }}>
+                    <TableCell style={{ fontSize: "12px" }}>
+                      {data.email}
+                    </TableCell>
+                    <TableCell style={{ fontSize: "12px" }}>
                       {data.workspace_name}
                     </TableCell>
 
-                    <TableCell>{formattedSize}</TableCell>
-                    <TableCell>{updateAtdate}</TableCell>
+                    <TableCell
+                      style={{
+                        fontSize: "12px",
+                      }}
+                    >
+                      {formattedSize}
+                    </TableCell>
+                    <TableCell style={{ fontSize: "12px" }}>
+                      {updateAtdate}
+                    </TableCell>
                   </TableRow>
                 );
               })}

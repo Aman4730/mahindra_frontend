@@ -35,10 +35,14 @@ const SystemLineChart = ({ system_Info }) => {
         return {
           createdAt: convertedTimestamp,
           rx_sec: item.networkInfo.map((item) =>
-            item.operstate === "up" ? item.rx_sec / 125 : ""
+            item.operstate === "up"
+              ? Math.floor((item.rx_sec / 125) * 100) / 100
+              : ""
           ),
           tx_sec: item.networkInfo.map((item) =>
-            item.operstate === "up" ? item.tx_sec / 125 : ""
+            item.operstate === "up"
+              ? Math.floor((item.tx_sec / 125) * 100) / 100
+              : ""
           ),
         };
       });
@@ -57,33 +61,11 @@ const SystemLineChart = ({ system_Info }) => {
         fontFamily: "Arial, sans-serif",
         padding: "15px",
         borderRadius: "10px",
+        overflowX: "auto",
       }}
     >
-      <h6>Disk Storage</h6>
+      <h6>Network Stats</h6>
       <Grid container>
-        {/* <Container>
-          <LineChart width={1100} height={300} data={data}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="createdAt" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line
-              type="monotone"
-              dataKey="rx_sec"
-              stroke="#8884D8"
-              dot={{ r: 5 }}
-              name="Rx"
-            />
-            <Line
-              type="monotone"
-              dataKey="tx_sec"
-              stroke="#82CA9D"
-              dot={{ r: 5 }}
-              name="Tx"
-            />
-          </LineChart>
-        </Container> */}
         <ResponsiveContainer width="100%" height={300}>
           <LineChart width={1100} height={300} data={data}>
             <CartesianGrid strokeDasharray="3 3" />
@@ -97,7 +79,7 @@ const SystemLineChart = ({ system_Info }) => {
               stroke="#8884d8"
               dot={{ fill: "#8884d8" }}
               curve="catmullRom"
-              strokeWidth={2} // Set the stroke width for series1
+              strokeWidth={3} // Set the stroke width for series1
             />
             <Line
               type="monotone"
@@ -106,7 +88,7 @@ const SystemLineChart = ({ system_Info }) => {
               dot={{ fill: "#82ca9d" }}
               name="Tx"
               curve="catmullRom"
-              strokeWidth={2}
+              strokeWidth={3}
             />
           </LineChart>
         </ResponsiveContainer>
