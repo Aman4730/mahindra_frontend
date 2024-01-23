@@ -63,7 +63,6 @@ const GuestLogin = () => {
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
-          console.log(data);
           localStorage.setItem("guestlogin", JSON.stringify(data));
           localStorage.setItem("token", data.token);
           history.push("/guestTeamSpace");

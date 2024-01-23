@@ -85,12 +85,17 @@ export const chatData = [
       {
         id: "chat_2",
         me: true,
-        chat: ["Thanks for inform. We just solved the issues. Please check now."],
+        chat: [
+          "Thanks for inform. We just solved the issues. Please check now.",
+        ],
         date: "29 Apr, 2020 4:12 PM",
       },
       {
         id: "chat_3",
-        chat: ["This is really cool.", "It’s perfect. Thanks for letting me know."],
+        chat: [
+          "This is really cool.",
+          "It’s perfect. Thanks for letting me know.",
+        ],
         date: "29 Apr, 2020 4:28 PM",
       },
       {
@@ -101,7 +106,9 @@ export const chatData = [
       },
       {
         id: "chat_4",
-        chat: ["Hey, I am facing problem as i can not login into application. Can you help me to reset my password?"],
+        chat: [
+          "Hey, I am facing problem as i can not login into application. Can you help me to reset my password?",
+        ],
         date: "3:49 PM",
       },
       {
@@ -148,12 +155,17 @@ export const chatData = [
       {
         id: "chat_2",
         me: true,
-        chat: ["Thanks for inform. We just solved the issues. Please check now."],
+        chat: [
+          "Thanks for inform. We just solved the issues. Please check now.",
+        ],
         date: "4:12 PM",
       },
       {
         id: "chat_3",
-        chat: ["This is really cool.", "It’s perfect. Thanks for letting me know."],
+        chat: [
+          "This is really cool.",
+          "It’s perfect. Thanks for letting me know.",
+        ],
         date: "4:28 PM",
       },
     ],
@@ -179,7 +191,10 @@ export const chatData = [
       {
         id: "chat_3",
         me: true,
-        chat: ["No I haven't. I will look into it", "It’s perfect. Thanks for letting me know."],
+        chat: [
+          "No I haven't. I will look into it",
+          "It’s perfect. Thanks for letting me know.",
+        ],
         date: "4:28 PM",
       },
     ],
@@ -205,7 +220,10 @@ export const chatData = [
       {
         id: "chat_3",
         me: true,
-        chat: ["Hey, I have been great. It has been a long time.", "How have you been doing?."],
+        chat: [
+          "Hey, I have been great. It has been a long time.",
+          "How have you been doing?.",
+        ],
         date: "29 Apr, 2020 4:28 PM",
       },
       {
@@ -386,13 +404,18 @@ export const chatData = [
       {
         id: "chat_2",
         me: true,
-        chat: ["Thanks for inform. We just solved the issues. Please check now."],
+        chat: [
+          "Thanks for inform. We just solved the issues. Please check now.",
+        ],
         date: "29 Apr, 2020 4:12 PM",
       },
       {
         id: "chat_3",
         user: { name: "Abu Bin Ishtiak", theme: "purple" },
-        chat: ["This is really cool.", "It’s perfect. Thanks for letting me know."],
+        chat: [
+          "This is really cool.",
+          "It’s perfect. Thanks for letting me know.",
+        ],
         date: "29 Apr, 2020 4:28 PM",
       },
       {
@@ -404,7 +427,9 @@ export const chatData = [
       {
         id: "chat_4",
         user: { name: "Marele Jhonson", image: User3 },
-        chat: ["Hey, I am facing problem as i can not login into application. Can you help me to reset my password?"],
+        chat: [
+          "Hey, I am facing problem as i can not login into application. Can you help me to reset my password?",
+        ],
         date: "3:49 PM",
       },
       {
@@ -459,7 +484,9 @@ export const chatData = [
       {
         id: "chat_1",
         me: true,
-        chat: ["We need a website for an ecommerce project, please inbox us for further details"],
+        chat: [
+          "We need a website for an ecommerce project, please inbox us for further details",
+        ],
         date: "27 Mar",
       },
       {
@@ -508,7 +535,9 @@ export const chatData = [
       {
         id: "chat_1",
         user: { name: "Khabi Khawab", theme: "orange" },
-        chat: ["We need a website for an car dealing site, Can you guys do it ?"],
+        chat: [
+          "We need a website for an car dealing site, Can you guys do it ?",
+        ],
         date: "27 Mar",
       },
       {
@@ -522,7 +551,10 @@ export const chatData = [
         date: "3:55 PM",
         me: true,
         now: true,
-        chat: ["We need will need some time to let you know", "Please, give us around 2 working days"],
+        chat: [
+          "We need will need some time to let you know",
+          "Please, give us around 2 working days",
+        ],
       },
     ],
   },
@@ -613,13 +645,18 @@ export const chatData = [
       {
         id: "chat_2",
         me: true,
-        chat: ["Thanks for inform. We just solved the issues. Please check now."],
+        chat: [
+          "Thanks for inform. We just solved the issues. Please check now.",
+        ],
         date: "29 Apr, 2020 4:12 PM",
       },
       {
         id: "chat_3",
         user: { name: "Abu Bin Ishtiak", theme: "purple" },
-        chat: ["This is really cool.", "It’s perfect. Thanks for letting me know."],
+        chat: [
+          "This is really cool.",
+          "It’s perfect. Thanks for letting me know.",
+        ],
         date: "29 Apr, 2020 4:28 PM",
       },
       {
@@ -631,7 +668,9 @@ export const chatData = [
       {
         id: "chat_4",
         user: { name: "Marele Jhonson", image: User3 },
-        chat: ["Hey, I am facing problem as i can not login into application. Can you help me to reset my password?"],
+        chat: [
+          "Hey, I am facing problem as i can not login into application. Can you help me to reset my password?",
+        ],
         date: "3:49 PM",
       },
       {
@@ -697,7 +736,9 @@ export const chatData = [
           name: "Michael Kenon",
           theme: "primary",
         },
-        chat: ["Please help with an issue that I have faced, need a new feature on chat application"],
+        chat: [
+          "Please help with an issue that I have faced, need a new feature on chat application",
+        ],
       },
     ],
   },
@@ -740,7 +781,9 @@ export const chatData = [
           name: "Keating Beat",
           theme: "pink",
         },
-        chat: ["I seem t have a new ideas, and now looking for sponsers. Anyone care to join in ? "],
+        chat: [
+          "I seem t have a new ideas, and now looking for sponsers. Anyone care to join in ? ",
+        ],
       },
       {
         id: "chat_2",
@@ -753,7 +796,9 @@ export const chatData = [
       {
         id: "chat_3",
         me: true,
-        chat: ["Sure, let us meet and share our several views on the application? "],
+        chat: [
+          "Sure, let us meet and share our several views on the application? ",
+        ],
       },
     ],
   },
@@ -806,14 +851,21 @@ const sortedDataFunc = (array) => {
   chatData.sort(function (a, b) {
     return a.name === b.name ? 0 : a.name < b.name ? -1 : 1;
   });
-  return chatData.filter((item) => array.includes(item.name.split("")[0].toUpperCase()) && !item.group);
+  return chatData.filter(
+    (item) =>
+      array.includes(item.name?.split("")[0].toUpperCase()) && !item.group
+  );
 };
 
 const sortedDataNotFavFunc = (array) => {
   chatData.sort(function (a, b) {
     return a.name === b.name ? 0 : a.name < b.name ? -1 : 1;
   });
-  return chatData.filter((item) => array.includes(item.name.split("")[0].toUpperCase()) && item.fav === false);
+  return chatData.filter(
+    (item) =>
+      array.includes(item.name?.split("")[0].toUpperCase()) &&
+      item.fav === false
+  );
 };
 
 export const contacts = [
@@ -904,7 +956,17 @@ export const nonFavContacts = [
   {
     id: 5,
     title: "L-T",
-    contacts: sortedDataNotFavFunc(["L", "M", "N", "O", "P", "Q", "R", "S", "T"]),
+    contacts: sortedDataNotFavFunc([
+      "L",
+      "M",
+      "N",
+      "O",
+      "P",
+      "Q",
+      "R",
+      "S",
+      "T",
+    ]),
   },
   {
     id: 6,

@@ -11,7 +11,7 @@ import {
   InputAdornment,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import SmtpMainTable from "./SmtpMainTable";
+import SmtpMainTable from "../Tables/SmtpMainTable";
 export default function SmtpForm({
   formData,
   smptdata,
@@ -31,7 +31,7 @@ export default function SmtpForm({
   return (
     <Stack>
       <Card sx={{ p: 2, mb: 1 }}>
-        <Grid container spacing={1}>
+        <Grid container spacing={1} id="form">
           <Grid item xs={3}>
             <TextField
               autoFocus
@@ -162,7 +162,6 @@ export default function SmtpForm({
               }
             />
           </Grid>
-          {/* {smptdata?.length > 0 ? ( */}
           <Grid item xs={7} display="flex" justifyContent="end">
             <Button
               variant="contained"
@@ -175,27 +174,14 @@ export default function SmtpForm({
               {editId ? "Update" : "Submit"}
             </Button>
           </Grid>
-          {/* ) : ( */}
-          {/* <Grid item xs={7} display="flex" justifyContent="end">
-              <Button
-                variant="contained"
-                onClick={onEditSmtp}
-                style={{
-                  outline: "none",
-                }}
-              >
-                Update
-              </Button>
-            </Grid> */}
-          {/* )} */}
         </Grid>
       </Card>
       <Typography style={{ fontSize: "24.5px", fontWeight: "bold" }}>
         Test Email
       </Typography>
       <Card sx={{ p: 2, mb: 1 }}>
-        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-          <Grid item xs={3}>
+        <Grid container spacing={1} id="form">
+          <Grid item xs={3.5}>
             <TextField
               autoFocus
               fullWidth
@@ -208,7 +194,7 @@ export default function SmtpForm({
               onChange={handleTestEmail}
             />
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={3.5}>
             <TextField
               autoFocus
               fullWidth
@@ -221,7 +207,7 @@ export default function SmtpForm({
               onChange={handleTestEmail}
             />
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={3.5}>
             <TextField
               autoFocus
               fullWidth
@@ -234,7 +220,7 @@ export default function SmtpForm({
               onChange={handleTestEmail}
             />
           </Grid>
-          <Grid item xs={3}>
+          <Grid item>
             <Button
               variant="contained"
               onClick={handleSubmitTestEmail}

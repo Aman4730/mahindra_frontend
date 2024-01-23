@@ -162,7 +162,10 @@ const UserContactCardPage = () => {
                 >
                   <Icon name="menu-alt-r"></Icon>
                 </a>
-                <div className="toggle-expand-content" style={{ display: smOption ? "block" : "none" }}>
+                <div
+                  className="toggle-expand-content"
+                  style={{ display: smOption ? "block" : "none" }}
+                >
                   <ul className="nk-block-tools g-3">
                     <li>
                       <Button color="light" outline className="btn-white">
@@ -171,7 +174,11 @@ const UserContactCardPage = () => {
                       </Button>
                     </li>
                     <li className="nk-block-tools-opt">
-                      <Button color="primary" className="btn-icon" onClick={() => setModal({ add: true })}>
+                      <Button
+                        color="primary"
+                        className="btn-icon"
+                        onClick={() => setModal({ add: true })}
+                      >
                         <Icon name="plus"></Icon>
                       </Button>
                     </li>
@@ -200,13 +207,20 @@ const UserContactCardPage = () => {
                       >
                         <Icon
                           name={`${
-                            item.status === "Active" ? "check-thick" : item.status === "Pending" ? "clock" : "na"
+                            item.status === "Active"
+                              ? "check-thick"
+                              : item.status === "Pending"
+                              ? "clock"
+                              : "na"
                           }`}
                         ></Icon>
                       </div>
                       <div className="team-options">
                         <UncontrolledDropdown>
-                          <DropdownToggle tag="a" className="dropdown-toggle btn btn-icon btn-trigger">
+                          <DropdownToggle
+                            tag="a"
+                            className="dropdown-toggle btn btn-icon btn-trigger"
+                          >
                             <Icon name="more-h"></Icon>
                           </DropdownToggle>
                           <DropdownMenu right>
@@ -245,12 +259,19 @@ const UserContactCardPage = () => {
                         </UncontrolledDropdown>
                       </div>
                       <div className="user-card user-card-s2">
-                        <UserAvatar theme={item.avatarBg} className="md" text={findUpper(item.name)} image={item.image}>
+                        <UserAvatar
+                          theme={item.avatarBg}
+                          className="md"
+                          text={findUpper(item.name)}
+                          image={item.image}
+                        >
                           <div className="status dot dot-lg dot-success"></div>
                         </UserAvatar>
                         <div className="user-info">
                           <h6>{item.name}</h6>
-                          <span className="sub-text">@{item.name.split(" ")[0].toLowerCase()}</span>
+                          <span className="sub-text">
+                            @{item.name?.split(" ")[0].toLowerCase()}
+                          </span>
                         </div>
                       </div>
                       <div className="team-details">
@@ -271,8 +292,14 @@ const UserContactCardPage = () => {
                         </li>
                       </ul>
                       <div className="team-view">
-                        <Link to={`${process.env.PUBLIC_URL}/user-details-regular/${item.id}`}>
-                          <Button outline color="light" className="btn-round w-150px">
+                        <Link
+                          to={`${process.env.PUBLIC_URL}/user-details-regular/${item.id}`}
+                        >
+                          <Button
+                            outline
+                            color="light"
+                            className="btn-round w-150px"
+                          >
                             <span>View Profile</span>
                           </Button>
                         </Link>
@@ -304,7 +331,10 @@ const UserContactCardPage = () => {
                     <div className="team">
                       <div className="team-options">
                         <UncontrolledDropdown>
-                          <DropdownToggle tag="a" className="dropdown-toggle btn btn-icon btn-trigger">
+                          <DropdownToggle
+                            tag="a"
+                            className="dropdown-toggle btn btn-icon btn-trigger"
+                          >
                             <Icon name="more-h"></Icon>
                           </DropdownToggle>
                           <DropdownMenu right>
@@ -338,12 +368,19 @@ const UserContactCardPage = () => {
                         </UncontrolledDropdown>
                       </div>
                       <div className="user-card user-card-s2">
-                        <UserAvatar theme={item.avatarBg} className="lg" text={findUpper(item.name)} image={item.image}>
+                        <UserAvatar
+                          theme={item.avatarBg}
+                          className="lg"
+                          text={findUpper(item.name)}
+                          image={item.image}
+                        >
                           <div className="status dot dot-lg dot-success"></div>
                         </UserAvatar>
                         <div className="user-info">
                           <h6>{item.name}</h6>
-                          <span className="sub-text">@{item.name.split(" ")[0].toLowerCase()}</span>
+                          <span className="sub-text">
+                            @{item.name?.split(" ")[0].toLowerCase()}
+                          </span>
                         </div>
                       </div>
                       <div className="team-details">
@@ -364,7 +401,9 @@ const UserContactCardPage = () => {
                         </li>
                       </ul>
                       <div className="team-view">
-                        <Link to={`${process.env.PUBLIC_URL}/user-details-regular/${item.id}`}>
+                        <Link
+                          to={`${process.env.PUBLIC_URL}/user-details-regular/${item.id}`}
+                        >
                           <Button color="primary" className="btn-block btn-dim">
                             <span>View Profile</span>
                           </Button>
@@ -378,7 +417,12 @@ const UserContactCardPage = () => {
           </Row>
         </Block>
 
-        <Modal isOpen={modal.add} toggle={() => setModal({ add: false })} className="modal-dialog-centered" size="lg">
+        <Modal
+          isOpen={modal.add}
+          toggle={() => setModal({ add: false })}
+          className="modal-dialog-centered"
+          size="lg"
+        >
           <ModalBody>
             <a
               href="#cancel"
@@ -393,7 +437,10 @@ const UserContactCardPage = () => {
             <div className="p-2">
               <h5 className="title">Add User</h5>
               <div className="mt-4">
-                <Form className="row gy-4" onSubmit={handleSubmit(onFormSubmit)}>
+                <Form
+                  className="row gy-4"
+                  onSubmit={handleSubmit(onFormSubmit)}
+                >
                   <Col md="6">
                     <FormGroup>
                       <label className="form-label">Name</label>
@@ -405,7 +452,9 @@ const UserContactCardPage = () => {
                         defaultValue={formData.name}
                         placeholder="Enter name"
                       />
-                      {errors.name && <span className="invalid">{errors.name.message}</span>}
+                      {errors.name && (
+                        <span className="invalid">{errors.name.message}</span>
+                      )}
                     </FormGroup>
                   </Col>
                   <Col md="6">
@@ -419,7 +468,11 @@ const UserContactCardPage = () => {
                         defaultValue={formData.designation}
                         placeholder="Enter Designation"
                       />
-                      {errors.designation && <span className="invalid">{errors.designation.message}</span>}
+                      {errors.designation && (
+                        <span className="invalid">
+                          {errors.designation.message}
+                        </span>
+                      )}
                     </FormGroup>
                   </Col>
                   <Col md="4">
@@ -432,7 +485,11 @@ const UserContactCardPage = () => {
                         name="projects"
                         defaultValue={formData.projects}
                       />
-                      {errors.projects && <span className="invalid">{errors.projects.message}</span>}
+                      {errors.projects && (
+                        <span className="invalid">
+                          {errors.projects.message}
+                        </span>
+                      )}
                     </FormGroup>
                   </Col>
                   <Col md="4">
@@ -445,7 +502,11 @@ const UserContactCardPage = () => {
                         name="performed"
                         defaultValue={formData.performed}
                       />
-                      {errors.performed && <span className="invalid">{errors.performed.message}</span>}
+                      {errors.performed && (
+                        <span className="invalid">
+                          {errors.performed.message}
+                        </span>
+                      )}
                     </FormGroup>
                   </Col>
                   <Col md="4">
@@ -458,7 +519,9 @@ const UserContactCardPage = () => {
                         name="tasks"
                         defaultValue={formData.tasks}
                       />
-                      {errors.tasks && <span className="invalid">{errors.tasks.message}</span>}
+                      {errors.tasks && (
+                        <span className="invalid">{errors.tasks.message}</span>
+                      )}
                     </FormGroup>
                   </Col>
                   <Col size="12">
@@ -486,7 +549,12 @@ const UserContactCardPage = () => {
             </div>
           </ModalBody>
         </Modal>
-        <Modal isOpen={modal.edit} toggle={() => setModal({ edit: false })} className="modal-dialog-centered" size="lg">
+        <Modal
+          isOpen={modal.edit}
+          toggle={() => setModal({ edit: false })}
+          className="modal-dialog-centered"
+          size="lg"
+        >
           <ModalBody>
             <a
               href="#cancel"
@@ -501,7 +569,11 @@ const UserContactCardPage = () => {
             <div className="p-2">
               <h5 className="title">Update User</h5>
               <div className="mt-4">
-                <Form className="row gy-4" onSubmit={handleSubmit(onEditSubmit)} noValidate>
+                <Form
+                  className="row gy-4"
+                  onSubmit={handleSubmit(onEditSubmit)}
+                  noValidate
+                >
                   <Col md="6">
                     <FormGroup>
                       <label className="form-label">Name</label>
@@ -513,7 +585,9 @@ const UserContactCardPage = () => {
                         defaultValue={formData.name}
                         placeholder="Enter name"
                       />
-                      {errors.name && <span className="invalid">{errors.name.message}</span>}
+                      {errors.name && (
+                        <span className="invalid">{errors.name.message}</span>
+                      )}
                     </FormGroup>
                   </Col>
                   <Col md="6">
@@ -527,7 +601,11 @@ const UserContactCardPage = () => {
                         defaultValue={formData.designation}
                         placeholder="Enter Designation"
                       />
-                      {errors.designation && <span className="invalid">{errors.designation.message}</span>}
+                      {errors.designation && (
+                        <span className="invalid">
+                          {errors.designation.message}
+                        </span>
+                      )}
                     </FormGroup>
                   </Col>
                   <Col md="4">
@@ -540,7 +618,11 @@ const UserContactCardPage = () => {
                         name="projects"
                         defaultValue={formData.projects}
                       />
-                      {errors.projects && <span className="invalid">{errors.projects.message}</span>}
+                      {errors.projects && (
+                        <span className="invalid">
+                          {errors.projects.message}
+                        </span>
+                      )}
                     </FormGroup>
                   </Col>
                   <Col md="4">
@@ -554,7 +636,11 @@ const UserContactCardPage = () => {
                         max={100}
                         defaultValue={Number(formData.performed)}
                       />
-                      {errors.performed && <span className="invalid">{errors.performed.message}</span>}
+                      {errors.performed && (
+                        <span className="invalid">
+                          {errors.performed.message}
+                        </span>
+                      )}
                     </FormGroup>
                   </Col>
                   <Col md="4">
@@ -567,7 +653,9 @@ const UserContactCardPage = () => {
                         name="tasks"
                         defaultValue={formData.tasks}
                       />
-                      {errors.tasks && <span className="invalid">{errors.tasks.message}</span>}
+                      {errors.tasks && (
+                        <span className="invalid">{errors.tasks.message}</span>
+                      )}
                     </FormGroup>
                   </Col>
                   <Col size="12">

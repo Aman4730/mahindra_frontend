@@ -5,9 +5,9 @@ export var url = "";
 if (process.env.NODE_ENV === "development") {
   url = "";
 } else {
-  url = window.location.host.split("/")[1];
+  url = window.location.host?.split("/")[1];
   if (url) {
-    url = `/${window.location.host.split("/")[1]}`;
+    url = `/${window.location.host?.split("/")[1]}`;
   } else url = process.env.PUBLIC_URL; /// ADD YOUR CPANEL SUB-URL
 }
 
@@ -27,7 +27,10 @@ export const findUpper = (string) => {
   let extractedString = [];
 
   for (var i = 0; i < string.length; i++) {
-    if (string.charAt(i) === string.charAt(i).toUpperCase() && string.charAt(i) !== " ") {
+    if (
+      string.charAt(i) === string.charAt(i).toUpperCase() &&
+      string.charAt(i) !== " "
+    ) {
       extractedString.push(string.charAt(i));
     }
   }
@@ -86,7 +89,7 @@ export const dateFormatterAlt = (date, reverse) => {
 
 //Date formatter function
 export const dateFormatter = (date, reverse, string) => {
-  var dateformat = date.split("-");
+  var dateformat = date?.split("-");
   //var date = dateformat[1]+"-"+dateformat[2]+"-"+dateformat[0];
   reverse
     ? (date = dateformat[2] + "-" + dateformat[0] + "-" + dateformat[1])
@@ -118,7 +121,9 @@ export const calcPercentage = (str1, str2) => {
 };
 
 export const truncate = (str, n) => {
-  return str.length > n ? str.substr(0, n - 1) + " " + truncate(str.substr(n - 1, str.length), n) : str;
+  return str.length > n
+    ? str.substr(0, n - 1) + " " + truncate(str.substr(n - 1, str.length), n)
+    : str;
 };
 
 export const RedirectAs404 = ({ location }) => (

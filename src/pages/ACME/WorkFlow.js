@@ -1,63 +1,56 @@
 import React, { useContext, useEffect, useState } from "react";
 import { notification } from "antd";
+import { Stack } from "@mui/material";
 import { useForm } from "react-hook-form";
 import Head from "../../layout/head/Head";
+import { Modal, ModalBody } from "reactstrap";
 import ModalPop from "../../components/Modal";
 import SearchBar from "../../components/SearchBar";
 import Content from "../../layout/content/Content";
 import "react-datepicker/dist/react-datepicker.css";
 import { UserContext } from "../../context/UserContext";
 import { AuthContext } from "../../context/AuthContext";
-import {
-  Autocomplete,
-  Checkbox,
-  DialogTitle,
-  FormControlLabel,
-  Grid,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
-import { FormGroup, Modal, ModalBody, Form } from "reactstrap";
+import WorkFlowForm from "../../components/Forms/WorkFlowForm";
+import WorkFlowTable from "../../components/Tables/WorkFlowTable";
 import {
   Block,
-  BlockBetween,
+  Icon,
+  Button,
   BlockDes,
   BlockHead,
-  BlockHeadContent,
   BlockTitle,
-  Icon,
-  Col,
-  Button,
-  RSelect,
+  BlockBetween,
+  BlockHeadContent,
 } from "../../../src/components/Component";
-import WorkFlowTable from "../../components/Tables/WorkFlowTable";
 const WorkFlow = () => {
   const {
     contextData,
-    userDropdownU,
-    add_createworkflow,
     getworkflow,
-    deletepolicy,
     getWorkspace,
+    userDropdownU,
     deleteworkflow,
+    add_createworkflow,
   } = useContext(UserContext);
   const [sm, updateSm] = useState(false);
-  const [editId, setEditedId] = useState();
-  const [userData, setUserData] = contextData;
-  const [deleteId, setDeleteId] = useState(false);
+  const [editId, setEditedId] = useState(0);
   const [totalUsers, setTotalUsers] = useState(0);
-  const { setAuthToken } = useContext(AuthContext);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemPerPage, setItemPerPage] = useState(5);
-  const [onSearchText, setSearchText] = useState("");
+  const [openForm, setOpenForm] = React.useState(false);
   const [searchTerm, setSearchTerm] = React.useState("");
   const [userDropdowns, setUserDropdowns] = useState([]);
+  const [getWorkspaces, setGetWorkspaces] = useState([]);
+  const [tableDropdown, setTableDropdown] = useState([]);
   const [modal, setModal] = useState({
     edit: false,
     add: false,
   });
-
+  const [open, setOpen] = React.useState({
+    status: false,
+    data: "",
+  });
+  const [deleteModal, setDeleteModal] = React.useState({
+    status: false,
+    data: "",
+  });
   const [addPolicies, setAddPolicies] = useState({
     policy_name: "",
     group_admin: "",
@@ -68,7 +61,26 @@ const WorkFlow = () => {
     l1: false,
     l2: false,
   });
-
+  const handleClickOpenForm = () => {
+    setOpenForm(true);
+  };
+  const handleCloseForm = () => {
+    resetForm();
+    setOpenForm(false);
+  };
+  const handleChange = (event) => {
+    const { id, value } = event.target;
+    setAddPolicies((prevFormData) => ({
+      ...prevFormData,
+      [id]: value,
+    }));
+  };
+  const handleAutocompleteChange = (id, value) => {
+    setAddPolicies((prevFormData) => ({
+      ...prevFormData,
+      [id]: value,
+    }));
+  };
   const handleCheckboxChange = (event) => {
     const { name, checked } = event.target;
     setCheckboxValues((prevValues) => ({
@@ -76,16 +88,6 @@ const WorkFlow = () => {
       [name]: checked,
     }));
   };
-
-  const [open, setOpen] = React.useState({
-    status: false,
-    data: "",
-  });
-
-  const [deleteModal, setDeleteModal] = React.useState({
-    status: false,
-    data: "",
-  });
   const handleClickOpen = (id) => {
     setDeleteModal({
       status: true,
@@ -99,59 +101,31 @@ const WorkFlow = () => {
     });
   };
   useEffect(() => {
-    let newData;
-    newData = userData.map((item) => {
-      item.checked = false;
-      return item;
-    });
-    setUserData([...newData]);
-  }, []);
-  useEffect(() => {
-    getRolesDropdown();
     getTableData();
+    getUserRselect();
+    getRolesDropdown();
   }, []);
 
   const getUserRselect = () => {
     userDropdownU(
       {},
       (apiRes) => {
-        const data = apiRes.data;
-        const code = apiRes.status;
-        const message =
-          apiRes.data.message[
-            ({ value: "en", label: "English" },
-            { value: "es", label: "Spanish" },
-            { value: "fr", label: "French" })
-          ];
-        setUserDropdowns(
-          data.data.map((gro) => ({
-            label: gro.email,
-            value: gro.email,
-          }))
-        );
+        const data = apiRes?.data;
+        setUserDropdowns(data?.data?.map((user) => user?.email));
       },
       (apiErr) => {}
     );
   };
-
-  const [userDropdown, setUserDropdown] = useState([]);
-
   const getRolesDropdown = () => {
     getWorkspace(
       {},
       (apiRes) => {
-        const data = apiRes.data.data;
-        setUserDropdown(
-          data.map((gro) => ({
-            label: gro.workspace_name,
-            value: gro.id,
-          }))
-        );
+        const data = apiRes?.data.data;
+        setGetWorkspaces(data?.map((workspace) => workspace?.workspace_name));
       },
       (apiErr) => {}
     );
   };
-  const [tableDropdown, setTableDropdown] = useState([]);
   const getTableData = () => {
     getworkflow(
       {},
@@ -162,9 +136,6 @@ const WorkFlow = () => {
       (apiErr) => {}
     );
   };
-  useEffect(() => {
-    getUserRselect();
-  }, []);
   // function to reset the form
   const resetForm = () => {
     setAddPolicies({
@@ -174,15 +145,6 @@ const WorkFlow = () => {
       workspace_name: "",
     });
     setEditedId(0);
-  };
-  // function to close the form modal
-  const onFormCancel = () => {
-    setModal({ edit: false, add: false });
-    resetForm();
-  };
-  const onFormClose = () => {
-    resetForm();
-    setModal({ edit: false }, { add: false });
   };
   // submit function to add a new item
   const onFormSubmit = () => {
@@ -199,7 +161,6 @@ const WorkFlow = () => {
       add_createworkflow(
         submittedData,
         (apiRes) => {
-          console.log(apiRes, "====");
           if (apiRes.status === 200) {
             notification["success"]({
               placement: "top",
@@ -209,7 +170,8 @@ const WorkFlow = () => {
                 height: 60,
               },
             });
-            onFormClose();
+            getTableData();
+            handleCloseForm();
           } else if (apiRes.status === 400) {
             notification["success"]({
               placement: "top",
@@ -231,7 +193,8 @@ const WorkFlow = () => {
                 height: 60,
               },
             });
-            onFormClose();
+            getTableData();
+            handleCloseForm();
           }
         }
       );
@@ -257,7 +220,8 @@ const WorkFlow = () => {
                 height: 60,
               },
             });
-            onFormClose();
+            getTableData();
+            handleCloseForm();
           }
         },
         (apiErr) => {
@@ -270,22 +234,21 @@ const WorkFlow = () => {
                 height: 60,
               },
             });
-            onFormClose();
+            getTableData();
+            handleCloseForm();
           }
         }
       );
     }
   };
-
   const onEditClick = (id) => {
-    setModal({ ...open, add: true });
+    setOpenForm(true);
     tableDropdown.map((item) => {
-      console.log(item, "item==");
       if (item.id == id) {
         setAddPolicies({
           id: id,
           policy_name: item.policy_name,
-          user_email: item.selected_user,
+          selected_user: item.user_email,
           group_admin: item.group_admin,
           workspace_name: item.workspace_name,
           l_1: item.l1,
@@ -401,7 +364,7 @@ const WorkFlow = () => {
               <BlockHeadContent>
                 <BlockTitle>Work Flow</BlockTitle>
                 <BlockDes className="text-soft">
-                  <p>You have total {totalUsers} work flow.</p>
+                  <p>You have total {totalUsers} Work Flow.</p>
                 </BlockDes>
               </BlockHeadContent>
               <BlockHeadContent>
@@ -421,7 +384,7 @@ const WorkFlow = () => {
                     <ul className="nk-block-tools g-3">
                       <li className="nk-block-tools-opt">
                         <SearchBar
-                          handleClick={() => setModal({ ...open, add: true })}
+                          handleClick={handleClickOpenForm}
                           searchTerm={searchTerm}
                           setSearchTerm={setSearchTerm}
                         />
@@ -434,6 +397,17 @@ const WorkFlow = () => {
           </BlockHead>
         </Stack>
         <Block>
+          <WorkFlowForm
+            editId={editId}
+            openForm={openForm}
+            addPolicies={addPolicies}
+            handleChange={handleChange}
+            onFormSubmit={onFormSubmit}
+            getWorkspaces={getWorkspaces}
+            userDropdowns={userDropdowns}
+            handleCloseForm={handleCloseForm}
+            handleAutocompleteChange={handleAutocompleteChange}
+          />
           <WorkFlowTable
             headCells={tableHeader}
             searchTerm={searchTerm}
@@ -442,214 +416,6 @@ const WorkFlow = () => {
             handleClickOpen={handleClickOpen}
           />
         </Block>
-        <Modal
-          isOpen={modal.add}
-          toggle={() => setModal({ add: true })}
-          className="modal-dialog-centered"
-          size="lg"
-        >
-          <ModalBody>
-            <a
-              href="#close"
-              onClick={(ev) => {
-                ev.preventDefault();
-                onFormCancel();
-              }}
-              className="close"
-            >
-              <Icon name="cross-sm"></Icon>
-            </a>
-            <div>
-              <h5 className="title">
-                {editId ? "Update Policy" : "Add Policy"}
-              </h5>
-              <div>
-                <Form
-                  className="row gy-2 gx-2"
-                  noValidate
-                  onSubmit={handleSubmit(onFormSubmit)}
-                >
-                  <Col md="6">
-                    <FormGroup>
-                      <TextField
-                        className="form-control"
-                        type="text"
-                        size="small"
-                        name="policy_name"
-                        defaultValue={addPolicies.policy_name}
-                        onChange={(e) =>
-                          setAddPolicies({
-                            ...addPolicies,
-                            [e.target.name]: e.target.value,
-                          })
-                        }
-                        label="Policys Name"
-                        ref={register({ required: "This field is required" })}
-                      />
-                      {errors.policy_name && (
-                        <span className="invalid">
-                          {errors.policy_name.message}
-                        </span>
-                      )}
-                    </FormGroup>
-                  </Col>
-                  <Col md="6">
-                    <Autocomplete
-                      fullWidth
-                      disablePortal
-                      size="small"
-                      id="Authentication"
-                      name="workspace_name"
-                      options={userDropdown}
-                      defaultValue={addPolicies.workspace_name}
-                      renderInput={(params) => (
-                        <TextField {...params} label="WorkSpace Name" />
-                      )}
-                      onChange={(event, selectedOption) => {
-                        setAddPolicies({
-                          ...addPolicies,
-                          workspace_name: selectedOption
-                            ? selectedOption.label
-                            : "", // Assuming you want to store the label in the state
-                        });
-                      }}
-                    />
-                  </Col>
-                  <Col md="6">
-                    <FormGroup>
-                      <TextField
-                        size="small"
-                        className="form-control"
-                        name="group_admin"
-                        defaultValue={addPolicies.group_admin}
-                        ref={register({ required: "This field is required" })}
-                        minLength={10}
-                        maxLength={10}
-                        onChange={(e) =>
-                          setAddPolicies({
-                            ...addPolicies,
-                            [e.target.name]: e.target.value,
-                          })
-                        }
-                        label="Enter Group Admin"
-                        required
-                      />
-                      {errors.group_admin && (
-                        <span className="invalid">
-                          {errors.group_admin.message}
-                        </span>
-                      )}
-                    </FormGroup>
-                  </Col>
-                  <Col md="6">
-                    <FormGroup>
-                      <RSelect
-                        options={userDropdowns}
-                        name="selected_user"
-                        defaultValue="Please Select User"
-                        isMulti // Assuming this prop makes RSelect support multiple selections
-                        onChange={(selectedOptions) => {
-                          // Assuming selectedOptions is an array of selected options
-                          setAddPolicies({
-                            ...addPolicies,
-                            selected_user: selectedOptions.map(
-                              (option) => option.label
-                            ),
-                          });
-                        }}
-                        ref={register({ required: "This field is required" })}
-                      />
-                      {errors.selected_user && (
-                        <span className="invalid">
-                          {errors.selected_user.message}
-                        </span>
-                      )}
-                    </FormGroup>
-                  </Col>
-
-                  <Stack>
-                    <Grid item xs={10} sx={{ mb: -2 }}>
-                      <DialogTitle sx={{ ml: -3, mt: -2 }} fontSize="14px">
-                        Aproval Levels
-                      </DialogTitle>
-                    </Grid>
-                    <Stack flexDirection="row">
-                      {access?.map((data, index) => (
-                        <>
-                          <Grid item key={data.id}>
-                            <FormControlLabel
-                              control={
-                                <Checkbox
-                                  name={data.name}
-                                  checked={checkboxValues[data.name] || false}
-                                  onChange={handleCheckboxChange}
-                                />
-                              }
-                              label={
-                                <Typography
-                                  variant="body2"
-                                  style={{ fontSize: "15px" }}
-                                >
-                                  {data.label}
-                                </Typography>
-                              }
-                              sx={{ mb: -1 }}
-                              style={data.style}
-                            />
-                          </Grid>
-                        </>
-                      ))}
-                    </Stack>
-                  </Stack>
-                  <Col size="12">
-                    <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
-                      <li>
-                        <Button color="primary" size="md">
-                          Add
-                        </Button>
-                      </li>
-                      <li>
-                        <a
-                          href="#cancel"
-                          onClick={(ev) => {
-                            ev.preventDefault();
-                            onFormCancel();
-                          }}
-                          className="link link-light"
-                        >
-                          Cancel
-                        </a>
-                      </li>
-                    </ul>
-                  </Col>
-                </Form>
-              </div>
-            </div>
-          </ModalBody>
-        </Modal>
-        <Modal
-          isOpen={modal.edit}
-          toggle={() => setModal({ edit: false })}
-          className="modal-dialog-centered"
-          size="lg"
-        >
-          <ModalBody>
-            <a
-              href="#cancel"
-              onClick={(ev) => {
-                ev.preventDefault();
-                onFormCancel();
-              }}
-              className="close"
-            >
-              <Icon name="cross-sm"></Icon>
-            </a>
-            <div className="p-2">
-              <h5 className="title">Update User</h5>
-              <div className="mt-4"></div>
-            </div>
-          </ModalBody>
-        </Modal>
       </Content>
     </React.Fragment>
   );

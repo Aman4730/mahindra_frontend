@@ -4,9 +4,9 @@ import Head from "../../layout/head/Head";
 import { Stack, Typography } from "@mui/material";
 import Content from "../../layout/content/Content";
 import "react-datepicker/dist/react-datepicker.css";
-import SmtpForm from "../../components/Tables/SmtpForm";
 import { UserContext } from "../../context/UserContext";
 import SmtpMainTable from "../../components/Tables/SmtpMainTable";
+import SmtpForm from "../../components/Forms/SmtpForm";
 
 const Smtp = () => {
   const { createsmtp, getsmtp, addtestemail, editsmtp } =
@@ -75,38 +75,7 @@ const Smtp = () => {
       [id]: value,
     }));
   };
-  // const onBlockClick = (id, user_status) => {
-  //   console.log(user_status, "666666666666");
-  //   let statusCheck = {
-  //     id,
-  //     user_status,
-  //   };
-  //   // Display notifications based on the 'user_status'
-  //   if (user_status === false) {
-  //     notification["warning"]({
-  //       placement: "top",
-  //       description: "",
-  //       message: "User Inactive",
-  //       style: {
-  //         height: 60,
-  //       },
-  //     });
-  //   } else {
-  //     notification["success"]({
-  //       placement: "top",
-  //       description: "",
-  //       message: "User Active",
-  //       style: {
-  //         height: 60,
-  //       },
-  //     });
-  //   }
-  //   editsmtp(
-  //     statusCheck,
-  //     (apiRes) => {},
-  //     (apiErr) => {}
-  //   );
-  // };
+
   const onBlockClick = (id, smtp_status) => {
     let statusCheck = {
       id,
@@ -115,7 +84,6 @@ const Smtp = () => {
     editsmtp(
       statusCheck,
       (apiRes) => {
-        console.log(apiRes, "kljghjhg");
         if (apiRes.status == 200) {
           notification["success"]({
             placement: "top",

@@ -139,7 +139,6 @@ export default function LogTable({
                     .includes(searchTerm?.toLowerCase())
                 )
                 .map((row, index) => {
-                  console.log(row.user_status, "row++++");
                   const isItemSelected = isSelected(row.name);
                   const labelId = `enhanced-table-checkbox-${index}`;
                   const originalTimestamp = row.createdAt;

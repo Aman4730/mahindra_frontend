@@ -12,7 +12,14 @@ import SpecificFolder from "./preview/SpecificFolder";
 import { folderList } from "./Data";
 import { Icon } from "../../../components/Component";
 import { Route, Switch } from "react-router";
-import { Button, DropdownItem, DropdownMenu, DropdownToggle, Modal, UncontrolledDropdown } from "reactstrap";
+import {
+  Button,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  Modal,
+  UncontrolledDropdown,
+} from "reactstrap";
 
 const FileManagerBody = ({ data, setData, toggleScreenLg }) => {
   const [dataList, setDataList] = useState();
@@ -40,7 +47,12 @@ const FileManagerBody = ({ data, setData, toggleScreenLg }) => {
     if (dataList) {
       let findFolder = dataList.find(
         (item) =>
-          item.id === Number(window.location.pathname.split("/")[window.location.pathname.split("/").length - 1])
+          item.id ===
+          Number(
+            window.location.pathname?.split("/")[
+              window.location.pathname?.split("/").length - 1
+            ]
+          )
       );
       if (findFolder) {
         let children = [];
@@ -61,12 +73,16 @@ const FileManagerBody = ({ data, setData, toggleScreenLg }) => {
     if (searchText !== "") {
       if (children.length > 0) {
         defaultData = children.filter((item) => {
-          return item.meta.name.toLowerCase().includes(searchText.toLowerCase());
+          return item.meta.name
+            .toLowerCase()
+            .includes(searchText.toLowerCase());
         });
         setChildren(defaultData);
       } else {
         defaultData = folderList.filter((item) => {
-          return item.meta.name.toLowerCase().includes(searchText.toLowerCase());
+          return item.meta.name
+            .toLowerCase()
+            .includes(searchText.toLowerCase());
         });
         setDataList([...defaultData]);
       }
@@ -77,8 +93,12 @@ const FileManagerBody = ({ data, setData, toggleScreenLg }) => {
 
   return (
     <div className="nk-fmg-body">
-      {window.location.pathname.split("/")[window.location.pathname.split("/").length - 1] !== "settings" &&
-        window.location.pathname.split("/")[window.location.pathname.split("/").length - 1] !== "pricing" && (
+      {window.location.pathname?.split("/")[
+        window.location.pathname?.split("/").length - 1
+      ] !== "settings" &&
+        window.location.pathname?.split("/")[
+          window.location.pathname?.split("/").length - 1
+        ] !== "pricing" && (
           <div className="nk-fmg-body-head d-none d-lg-flex">
             <div className="nk-fmg-search">
               <Icon name="search"></Icon>
@@ -236,7 +256,9 @@ const FileManagerBody = ({ data, setData, toggleScreenLg }) => {
               <Route
                 exact
                 path={`${process.env.PUBLIC_URL}/app-file-manager/settings`}
-                render={() => <SettingsPreview toggleScreenLg={toggleScreenLg} />}
+                render={() => (
+                  <SettingsPreview toggleScreenLg={toggleScreenLg} />
+                )}
               ></Route>
               <Route
                 exact

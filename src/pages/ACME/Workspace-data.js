@@ -187,19 +187,6 @@ const Workspacedata = () => {
     setUserData([...newData]);
   }, []);
 
-  const handleFileChange = (event) => {
-    debugger;
-    const file = event.target.files[0];
-
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const base64String = event.target.result.split(",")[1];
-      setFormData({ ...formData, file: base64String });
-    };
-
-    reader.readAsDataURL(file);
-  };
-
   useEffect(() => {
     getTotalWorkspace();
   }, [currentPage]);
@@ -261,12 +248,6 @@ const Workspacedata = () => {
       (apiErr) => {}
     );
   };
-
-  const [timezone, setTimezone] = useState("");
-  const timezoneOptions = Intl.DateTimeFormat()
-    .resolvedOptions()
-    .timeZone.split("/")
-    .map((zone) => ({ value: zone, label: zone }));
 
   useEffect(() => {
     getTotalWorkspace();

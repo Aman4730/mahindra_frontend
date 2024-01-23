@@ -38,8 +38,13 @@ var month = [
 
 export const returnDate = (date) => {
   if (date !== undefined) {
-    const dateSection = date.split("-");
-    let newDate = dateSection[2] + " " + month[Number(dateSection[1]) - 1] + " " + dateSection[0];
+    const dateSection = date?.split("-");
+    let newDate =
+      dateSection[2] +
+      " " +
+      month[Number(dateSection[1]) - 1] +
+      " " +
+      dateSection[0];
     return newDate;
   }
 };
@@ -52,7 +57,8 @@ export const events = [
     end: YM + "-03",
     className: "fc-event-danger",
     type: { value: "fc-event-danger", label: "Business dinners" },
-    description: "Use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden.",
+    description:
+      "Use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden.",
   },
   {
     id: "default-event-id-" + Math.floor(Math.random() * 9999999),
@@ -61,7 +67,8 @@ export const events = [
     end: YM + "-14",
     className: "fc-event-success",
     type: { value: "fc-event-success", label: "Seminars" },
-    description: "Use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden.",
+    description:
+      "Use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden.",
   },
   {
     id: "default-event-id-" + Math.floor(Math.random() * 9999999),
@@ -70,7 +77,8 @@ export const events = [
     end: YM + "-06",
     className: "fc-event-primary",
     type: { value: "fc-event-primary", label: "Company" },
-    description: "Use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden.",
+    description:
+      "Use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden.",
   },
   {
     id: "default-event-id-" + Math.floor(Math.random() * 9999999),
@@ -79,7 +87,8 @@ export const events = [
     end: YM + "-04",
     className: "fc-event-primary",
     type: { value: "fc-event-primary", label: "Company" },
-    description: "Use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden.",
+    description:
+      "Use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden.",
   },
   {
     id: "default-event-id-" + Math.floor(Math.random() * 9999999),
@@ -88,7 +97,8 @@ export const events = [
     end: YM + "-10",
     className: "fc-event-pink",
     type: { value: "fc-event-pink", label: "Private" },
-    description: "Use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden.",
+    description:
+      "Use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden.",
   },
   {
     id: "default-event-id-" + Math.floor(Math.random() * 9999999),
@@ -97,7 +107,8 @@ export const events = [
     end: YM + "-07",
     className: "fc-event-danger",
     type: { value: "fc-event-danger", label: "Business dinners" },
-    description: "Use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden.",
+    description:
+      "Use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden.",
   },
   {
     id: "default-event-id-" + Math.floor(Math.random() * 9999999),
@@ -106,7 +117,8 @@ export const events = [
     end: YM + "-16",
     className: "fc-event-info",
     type: { value: "fc-event-info", label: "Conferences" },
-    description: "Use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden.",
+    description:
+      "Use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden.",
   },
   {
     id: "default-event-id-" + Math.floor(Math.random() * 9999999),
@@ -115,7 +127,8 @@ export const events = [
     end: TODAY + "-01",
     className: "fc-event-primary",
     type: { value: "fc-event-primary", label: "Company" },
-    description: "Use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden.",
+    description:
+      "Use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden.",
   },
   {
     id: "default-event-id-" + Math.floor(Math.random() * 9999999),
@@ -124,7 +137,8 @@ export const events = [
     end: TODAY,
     className: "fc-event-info",
     type: { value: "fc-event-info", label: "Conferences" },
-    description: "Use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden.",
+    description:
+      "Use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden.",
   },
   {
     id: "default-event-id-" + Math.floor(Math.random() * 9999999),
@@ -133,7 +147,8 @@ export const events = [
     end: TODAY,
     className: "fc-event-warning",
     type: { value: "fc-event-warning", label: "Meeting" },
-    description: "Use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden.",
+    description:
+      "Use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden.",
   },
   {
     id: "default-event-id-" + Math.floor(Math.random() * 9999999),
@@ -142,7 +157,8 @@ export const events = [
     end: TODAY,
     className: "fc-event-info",
     type: { value: "fc-event-info", label: "Conferences" },
-    description: "Use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden.",
+    description:
+      "Use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden.",
   },
   {
     id: "default-event-id-" + Math.floor(Math.random() * 9999999),
@@ -151,7 +167,8 @@ export const events = [
     end: YESTERDAY,
     className: "fc-event-danger",
     type: { value: "fc-event-danger", label: "Business dinners" },
-    description: "Use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden.",
+    description:
+      "Use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden.",
   },
   {
     id: "default-event-id-" + Math.floor(Math.random() * 9999999),
@@ -160,7 +177,8 @@ export const events = [
     end: YESTERDAY,
     className: "fc-event-primary",
     type: { value: "fc-event-primary", label: "Company" },
-    description: "Use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden.",
+    description:
+      "Use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden.",
   },
 ];
 

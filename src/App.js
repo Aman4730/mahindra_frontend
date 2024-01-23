@@ -30,6 +30,7 @@ import GuestLogin from "./pages/auth/GuestLogin";
 import { createTheme } from "@mui/material/styles";
 import { decryptData, encryptData } from "./components/hash/Hash";
 import Logout from "./pages/ACME/Logout";
+import "./style.css";
 const darkTheme = createTheme({
   palette: {
     mode: "dark",

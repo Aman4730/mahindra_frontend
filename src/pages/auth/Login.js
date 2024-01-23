@@ -173,58 +173,6 @@ const Login = () => {
                   )}
                 </div>
               </FormGroup>
-              {/* <Grid container spacing={1}>
-                <Grid item xs={4}>
-                  <TextField
-                    autoFocus
-                    fullWidth
-                    size="small"
-                    type="email"
-                    id="User_Name"
-                    name="email"
-                    margin="dense"
-                    label="User Name"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    ref={register({ required: "This field is required" })}
-                  />
-                  {errors.email && (
-                    <span className="invalid">{errors.email.message}</span>
-                  )}
-                </Grid>
-                <Grid item xs={4}>
-                  <TextField
-                    autoFocus
-                    fullWidth
-                    size="small"
-                    type={showPassword ? "text" : "password"}
-                    id="password"
-                    name="password"
-                    margin="dense"
-                    label="Password"
-                    value={formData.password}
-                    onChange={handleInputChange}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            onClick={handleTogglePassword}
-                            style={{
-                              outline: "none",
-                            }}
-                          >
-                            {showPassword ? (
-                              <VisibilityOff fontSize="small" />
-                            ) : (
-                              <Visibility fontSize="small" />
-                            )}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </Grid>
-              </Grid> */}
               <FormGroup>
                 <Button
                   size="lg"

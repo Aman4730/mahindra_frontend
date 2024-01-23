@@ -122,11 +122,7 @@ export default function PolicyModal({
                       options={groupsDropdown}
                       name="addCabinet"
                       placeholder="Select Groups"
-                      defaultValue={groupsDropdown?.filter((option) =>
-                        console.log(option)
-                      )}
                       styles={{
-                        // Adjust the height value here
                         control: (provided) => ({
                           ...provided,
                           minHeight: "10px", // Adjust the height value as per your requirement
@@ -148,11 +144,7 @@ export default function PolicyModal({
                       options={userDropdowns}
                       name="addCabinet"
                       placeholder="Select User"
-                      defaultValue={addPolicies?.selected_user?.filter(
-                        (option) => console.log(option)
-                      )}
                       styles={{
-                        // Adjust the height value here
                         control: (provided) => ({
                           ...provided,
                           minHeight: "10px", // Adjust the height value as per your requirement
@@ -805,8 +797,6 @@ export default function PolicyModal({
                     {versionfield?.map((data) => (
                       <>
                         <Grid item xs={4} key={data.name}>
-                          {console.log(data)}
-
                           <TextField
                             fullWidth
                             size="small"

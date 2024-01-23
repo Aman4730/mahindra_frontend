@@ -79,7 +79,6 @@ function Fileviewer() {
   }, []);
   // ------------------------------------------apis
   function openBase64NewTap(base64Pdf) {
-    console.log(base64Pdf, "gfdfdhbg");
     const blob = base64toblob(base64Pdf);
     if (window.navigator && window.navigator.msSaveOrOpenBlob) {
       window.navigator.msSaveOrOpenBlob(blob, "pdfBase64.pdf");
@@ -118,8 +117,6 @@ function Fileviewer() {
             filemongo_id: location.state.filemongo_id,
           }
         );
-        // console.log(response, "gdfghdfgh");
-        // setPdfData(response);
         setFileType(response?.data.newdata.file_type);
 
         const data = response.data.file_data.data;
@@ -128,14 +125,10 @@ function Fileviewer() {
 
         const blob = new Blob([uint8Array], {
           type: response.data.newdata.file_type,
-          // type: "application/pdf",
         });
         const url = URL.createObjectURL(blob);
-        console.log(url, "rtrtrt");
         setUrl(url);
-      } catch (error) {
-        console.error(error);
-      }
+      } catch (error) {}
     };
     fetchData();
   }, []);

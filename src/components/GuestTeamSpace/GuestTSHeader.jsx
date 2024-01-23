@@ -198,8 +198,6 @@ const GuestTSHeader = ({
             onClick={() => callApiHeader({ ...data, index })}
             style={{ cursor: "pointer" }}
           >
-            {console.log(data, "listt")}
-
             {data?.folder_name ? (
               <p onClick={() => findFolder(data)} style={{ cursor: "pointer" }}>
                 {data?.folder_name} /

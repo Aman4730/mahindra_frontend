@@ -21,6 +21,7 @@ import {
   BlockBetween,
   BlockHeadContent,
 } from "../../components/Component";
+import DocMetaData from "../../components/Forms/DocMetaData";
 
 const Docmetadata = () => {
   const {
@@ -46,6 +47,34 @@ const Docmetadata = () => {
   const [metaList, setMetaList] = useState([]);
   const [searchTerm, setSearchTerm] = React.useState("");
   const [cabinetList, setcabinetList] = useState([]);
+  console.log(cabinetList, "cabinetList");
+  const [openForm, setOpenForm] = React.useState(false);
+  const [addDocMetaData, setAddDocMetaData] = useState({
+    selected_cabinet: "",
+    selected_workspace: "",
+    selected_doctype: "",
+    metadata_name: "",
+  });
+  const handleClickOpenForm = () => {
+    setOpenForm(true);
+  };
+  const handleCloseForm = () => {
+    resetForm();
+    setOpenForm(false);
+  };
+  const handleChange = (event) => {
+    const { id, value } = event.target;
+    setAddDocMetaData((prevFormData) => ({
+      ...prevFormData,
+      [id]: value,
+    }));
+  };
+  const handleAutocompleteChange = (id, value) => {
+    setAddDocMetaData((prevFormData) => ({
+      ...prevFormData,
+      [id]: value,
+    }));
+  };
   const [modal, setModal] = useState({
     edit: false,
     add: false,
@@ -82,11 +111,28 @@ const Docmetadata = () => {
   // -----------------------------Autocomplete data store
 
   // ----------------list Dropdown
+  useEffect(() => {
+    getdoctypelist();
+    getCabinetDropdown();
+    getWorkspaceDropdown();
+  }, []);
+  const [getWorkspaces, setGetWorkspaces] = useState([]);
+  const getWorkspaceDropdown = () => {
+    getWorkspace(
+      {},
+      (apiRes) => {
+        const data = apiRes?.data.data;
+        setGetWorkspaces(data?.map((workspace) => workspace?.workspace_name));
+      },
+      (apiErr) => {}
+    );
+  };
   const getCabinetDropdown = () => {
     cabinetDropdown(
       {},
       (apiRes) => {
-        setcabinetList(apiRes.data.data);
+        const data = apiRes?.data.data;
+        setcabinetList(data?.map((cabinet) => cabinet?.cabinet_name));
       },
       (apiErr) => {}
     );
@@ -95,7 +141,9 @@ const Docmetadata = () => {
     getdoclist(
       {},
       (apiRes) => {
-        setDocList(apiRes.data);
+        console.log(apiRes);
+        const data = apiRes?.data;
+        setDocList(data?.map((doctype) => doctype?.doctype_name));
       },
       (apiErr) => {
         console.log(apiErr);
@@ -166,6 +214,7 @@ const Docmetadata = () => {
       (apiErr) => {}
     );
   };
+
   //block meta properties
   const onBlockClick = (id, checked) => {
     let statusCheck = {
@@ -191,10 +240,12 @@ const Docmetadata = () => {
   };
   // function to reset the form
   const resetForm = () => {
-    setPropertyDropdown("");
-    setDoctype("");
-    setworkspace("");
-    setCabinet("");
+    setAddDocMetaData({
+      selected_cabinet: "",
+      selected_workspace: "",
+      selected_doctype: "",
+      metadata_name: "",
+    });
     setEditedId(0);
   };
   // function to close the form modal
@@ -258,15 +309,20 @@ const Docmetadata = () => {
       );
     }
   };
+
+  // selected_cabinet: "",
+  // selected_workspace: "",
+  // selected_doctype: "",
+  // metadata_name: "",
   //doc type properties on submit
   const onFormSubmit = () => {
     if (editId) {
       let submittedData = {
         id: editId,
-        metadata_name: metadata,
-        workspace_name: workspace.workspace_name,
-        doctype: doctype.doctype_name,
-        cabinet_name: cabinet.cabinet_name,
+        metadata_name: addDocMetaData.metadata_name,
+        workspace_name: addDocMetaData.selected_workspace,
+        doctype: addDocMetaData.selected_doctype,
+        cabinet_name: addDocMetaData.selected_cabinet,
       };
       add_docmetadata(
         submittedData,
@@ -280,23 +336,22 @@ const Docmetadata = () => {
                 height: 60,
               },
             });
-            onFormCancel();
+            handleCloseForm();
           }
         },
         (apiErr) => {}
       );
     } else {
       let submittedData = {
-        metadata_name: metadata,
-        workspace_name: workspace?.workspace_name,
-        doctype: doctype?.doctype_name,
-        cabinet_name: cabinet?.cabinet_name,
+        metadata_name: addDocMetaData.metadata_name,
+        workspace_name: addDocMetaData.selected_workspace,
+        doctype: addDocMetaData.selected_doctype,
+        cabinet_name: addDocMetaData.selected_cabinet,
       };
       add_docmetadata(
         submittedData,
         (apiRes) => {
           if (apiRes.status == 201) {
-            console.log(apiRes, "tfuysduy");
             notification["success"]({
               placement: "top",
               description: "",
@@ -305,18 +360,17 @@ const Docmetadata = () => {
                 height: 60,
               },
             });
-            onFormCancel();
+            handleCloseForm();
           }
         },
         (apiErr) => {
           if (apiErr.response.status == 400) {
-            console.log("kgyuf");
             notification["success"]({
               placement: "top",
               description: "",
               message: apiErr.response.data.message,
               style: {
-                height: 60,
+                height: 70,
               },
             });
           }
@@ -457,7 +511,8 @@ const Docmetadata = () => {
                     <ul className="nk-block-tools g-3">
                       <li className="nk-block-tools-opt">
                         <SearchBar
-                          handleClick={() => setModal({ add: true })}
+                          // handleClick={() => setModal({ add: true })}
+                          handleClick={handleClickOpenForm}
                           searchTerm={searchTerm}
                           setSearchTerm={setSearchTerm}
                         />
@@ -469,6 +524,18 @@ const Docmetadata = () => {
             </BlockBetween>
           </BlockHead>
         </Stack>
+        <DocMetaData
+          editId={editId}
+          docList={docList}
+          openForm={openForm}
+          cabinetList={cabinetList}
+          addDocMetaData={addDocMetaData}
+          handleChange={handleChange}
+          onFormSubmit={onFormSubmit}
+          getWorkspaces={getWorkspaces}
+          handleCloseForm={handleCloseForm}
+          handleAutocompleteChange={handleAutocompleteChange}
+        />
         <DocmetaTable
           searchTerm={searchTerm}
           headCells={tableHeader}
@@ -597,6 +664,7 @@ const Docmetadata = () => {
             </div>
           </ModalBody>
         </Modal>
+        {/* edit */}
         <Modal
           isOpen={modal.edit}
           toggle={() => setModal({ edit: false })}

@@ -128,7 +128,7 @@ const GlobalSearch = () => {
         const fileName = file_name;
 
         // Use the split() method to separate the name and extension
-        const parts = fileName.split(".");
+        const parts = fileName?.split(".");
         const name = parts[0];
         const extension = parts[1];
 

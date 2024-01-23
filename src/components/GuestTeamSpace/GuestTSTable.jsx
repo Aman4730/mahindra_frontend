@@ -139,7 +139,6 @@ export default function GuestTSTable({
         return "/Image/default.svg";
     }
   }
-  console.log(allfolderlist, "allfolderlist");
 
   return (
     <Box>
@@ -157,7 +156,6 @@ export default function GuestTSTable({
             />
             <TableBody>
               {allfolderlist?.map((data, index) => {
-                console.log(data, "====");
                 const isItemSelected = isSelected(data.name);
                 const labelId = `enhanced-table-checkbox-${index}`;
                 const originalTimestamp = data.updatedAt;

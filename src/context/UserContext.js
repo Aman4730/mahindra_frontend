@@ -9,7 +9,6 @@ export const UserContextProvider = (props) => {
       const userData = JSON.parse(data);
       setIsLogin(userData);
     } else {
-      console.log("User Not Login");
       localStorage.removeItem("user");
     }
   }, []);

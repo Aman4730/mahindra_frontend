@@ -325,7 +325,7 @@ const TeamSpace = () => {
       formData.append("file", file);
       formData.append("data", JSON.stringify(data));
       const quary = [[file.size], [workSpaceData.workspace_name]];
-      const file_type = file.name.split(".")[1];
+      const file_type = file.name?.split(".")[1];
 
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL_LOCAL}/uploadcreate?q=${quary}&fileExtension=${file_type}`,
@@ -340,7 +340,6 @@ const TeamSpace = () => {
       setFileName(response.data);
       resetFileForm();
       setFileUpload(false);
-      console.log(response, "response");
       notification["success"]({
         placement: "top",
         description: "",
@@ -418,7 +417,7 @@ const TeamSpace = () => {
         const fileName = file_name;
 
         // Use the split() method to separate the name and extension
-        const parts = fileName.split(".");
+        const parts = fileName?.split(".");
         const name = parts[0];
         const extension = parts[1];
 
@@ -501,7 +500,6 @@ const TeamSpace = () => {
   };
   const onFetchlink = () => {
     handleLinkClose();
-    console.log(shareFormData?.Email, "email");
     let data = {
       id: shareId.id,
       link_expiry: selectedDate,
@@ -521,7 +519,6 @@ const TeamSpace = () => {
       create_folder: checkboxValues.create_folder,
       upload_folder: checkboxValues.upload_folder,
     };
-    console.log(data, "dataaaa");
     getfetchlink(
       data,
       (apiRes) => {

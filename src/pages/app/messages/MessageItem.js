@@ -2,10 +2,27 @@ import React, { useEffect, useState, useRef } from "react";
 import SimpleBar from "simplebar-react";
 import classNames from "classnames";
 import MessageProfileSidebar from "./MessageProfile";
-import { Modal, ModalBody, DropdownMenu, DropdownToggle, UncontrolledDropdown, DropdownItem } from "reactstrap";
-import { Button, Icon, TooltipComponent, UserAvatar } from "../../../components/Component";
+import {
+  Modal,
+  ModalBody,
+  DropdownMenu,
+  DropdownToggle,
+  UncontrolledDropdown,
+  DropdownItem,
+} from "reactstrap";
+import {
+  Button,
+  Icon,
+  TooltipComponent,
+  UserAvatar,
+} from "../../../components/Component";
 import { ReplyItem, MetaItem } from "./MessagePartials";
-import { currentTime, findUpper, todaysDate, monthNames } from "../../../utils/Utils";
+import {
+  currentTime,
+  findUpper,
+  todaysDate,
+  monthNames,
+} from "../../../utils/Utils";
 import { assignMembers } from "./MessageData";
 
 const MessageItem = ({ id, onClosed, mobileView, setMobileView, data }) => {
@@ -68,7 +85,7 @@ const MessageItem = ({ id, onClosed, mobileView, setMobileView, data }) => {
     let defaultObject = item;
     var htmlMarkup = [];
     if (textInput.trim() !== "") {
-      var text = textInput.replace(/\r/g, "").split(/\n/);
+      var text = textInput.replace(/\r/g, "")?.split(/\n/);
       text.forEach((item) => {
         htmlMarkup.push(item);
       });
@@ -77,7 +94,9 @@ const MessageItem = ({ id, onClosed, mobileView, setMobileView, data }) => {
         name: "Illias Hossain",
         note: note,
         theme: "purple",
-        date: `${monthNames[todaysDate.getMonth()]} ${todaysDate.getDate()}, ${todaysDate.getFullYear()}`,
+        date: `${
+          monthNames[todaysDate.getMonth()]
+        } ${todaysDate.getDate()}, ${todaysDate.getFullYear()}`,
         time: `${currentTime()}`,
         replyMarkup: htmlMarkup,
       };
@@ -106,13 +125,17 @@ const MessageItem = ({ id, onClosed, mobileView, setMobileView, data }) => {
                 <ul className="nk-msg-tags">
                   <li>
                     <span className="label-tag">
-                      <Icon name="flag-fill"></Icon> <span>Technical Problem</span>
+                      <Icon name="flag-fill"></Icon>{" "}
+                      <span>Technical Problem</span>
                     </span>
                   </li>
                 </ul>
               </div>
               <div className="d-lg-none">
-                <Button className="btn-icon btn-trigger nk-msg-hide ml-n1" onClick={() => setMobileView(false)}>
+                <Button
+                  className="btn-icon btn-trigger nk-msg-hide ml-n1"
+                  onClick={() => setMobileView(false)}
+                >
                   <Icon name="arrow-left"></Icon>
                 </Button>
               </div>
@@ -126,7 +149,13 @@ const MessageItem = ({ id, onClosed, mobileView, setMobileView, data }) => {
                   </li>
                 ) : (
                   <li>
-                    <Button outline size="sm" color="light" className="btn-dim" onClick={() => onClosed(id)}>
+                    <Button
+                      outline
+                      size="sm"
+                      color="light"
+                      className="btn-dim"
+                      onClick={() => onClosed(id)}
+                    >
                       <Icon name="check"></Icon>
                       <span>Mark as Closed</span>
                     </Button>
@@ -145,7 +174,10 @@ const MessageItem = ({ id, onClosed, mobileView, setMobileView, data }) => {
                 </li>
                 <li>
                   <UncontrolledDropdown>
-                    <DropdownToggle tag="a" className="btn btn-icon btn-sm btn-white btn-light dropdown-toggle">
+                    <DropdownToggle
+                      tag="a"
+                      className="btn btn-icon btn-sm btn-white btn-light dropdown-toggle"
+                    >
                       <Icon name="more-h"></Icon>
                     </DropdownToggle>
                     <DropdownMenu right>
@@ -190,19 +222,25 @@ const MessageItem = ({ id, onClosed, mobileView, setMobileView, data }) => {
                 ev.preventDefault();
                 toggleSidebar();
               }}
-              className={`nk-msg-profile-toggle profile-toggle ${sidebar ? "active" : ""}`}
+              className={`nk-msg-profile-toggle profile-toggle ${
+                sidebar ? "active" : ""
+              }`}
             >
               <Icon name="arrow-left"></Icon>
             </a>
           </div>
           {/*nk-msg-head*/}
-          <SimpleBar className="nk-msg-reply nk-reply" scrollableNodeProps={{ ref: messagesEndRef }}>
+          <SimpleBar
+            className="nk-msg-reply nk-reply"
+            scrollableNodeProps={{ ref: messagesEndRef }}
+          >
             <div className="nk-msg-head py-4 d-lg-none">
               <h4 className="title">{item.messageTitle}</h4>
               <ul className="nk-msg-tags">
                 <li>
                   <span className="label-tag">
-                    <Icon name="flag-fill"></Icon> <span>Technical Problem</span>
+                    <Icon name="flag-fill"></Icon>{" "}
+                    <span>Technical Problem</span>
                   </span>
                 </li>
               </ul>
@@ -210,7 +248,12 @@ const MessageItem = ({ id, onClosed, mobileView, setMobileView, data }) => {
             <div className="nk-reply-item">
               <div className="nk-reply-header">
                 <div className="user-card">
-                  <UserAvatar size="sm" theme={item.theme} text={findUpper(item.name)} image={item.image} />
+                  <UserAvatar
+                    size="sm"
+                    theme={item.theme}
+                    text={findUpper(item.name)}
+                    image={item.image}
+                  />
                   <div className="user-name">{item.name}</div>
                 </div>
                 <div className="date-time">{item.date}</div>
@@ -226,9 +269,19 @@ const MessageItem = ({ id, onClosed, mobileView, setMobileView, data }) => {
             {item.reply &&
               item.reply.map((replyItem) => {
                 if (!replyItem.meta === true) {
-                  return <ReplyItem item={replyItem} key={replyItem.replyId}></ReplyItem>;
+                  return (
+                    <ReplyItem
+                      item={replyItem}
+                      key={replyItem.replyId}
+                    ></ReplyItem>
+                  );
                 } else {
-                  return <MetaItem item={replyItem.meta.metaMarkup} key={replyItem.meta.metaId}></MetaItem>;
+                  return (
+                    <MetaItem
+                      item={replyItem.meta.metaMarkup}
+                      key={replyItem.meta.metaId}
+                    ></MetaItem>
+                  );
                 }
               })}
             <div className="nk-reply-form">
@@ -280,13 +333,20 @@ const MessageItem = ({ id, onClosed, mobileView, setMobileView, data }) => {
                     <div className="nk-reply-form-tools">
                       <ul className="nk-reply-form-actions g-1">
                         <li className="mr-2">
-                          <Button color="primary" type="submit" onClick={(e) => onFormSubmit(e)}>
+                          <Button
+                            color="primary"
+                            type="submit"
+                            onClick={(e) => onFormSubmit(e)}
+                          >
                             Reply
                           </Button>
                         </li>
                         <li>
                           <UncontrolledDropdown>
-                            <DropdownToggle tag="a" className="btn btn-icon btn-sm btn-tooltip">
+                            <DropdownToggle
+                              tag="a"
+                              className="btn btn-icon btn-sm btn-tooltip"
+                            >
                               <Icon name="hash"></Icon>
                             </DropdownToggle>
                             <DropdownMenu right className="dropdown-menu">
@@ -372,13 +432,21 @@ const MessageItem = ({ id, onClosed, mobileView, setMobileView, data }) => {
                           ></TooltipComponent>
                         </li>
                         <li>
-                          <TooltipComponent icon="img" direction="top" text="Upload Images" id="img-tooltip">
+                          <TooltipComponent
+                            icon="img"
+                            direction="top"
+                            text="Upload Images"
+                            id="img-tooltip"
+                          >
                             <Icon name="img"></Icon>
                           </TooltipComponent>
                         </li>
                       </ul>
                       <UncontrolledDropdown>
-                        <DropdownToggle tag="a" className="dropdown-toggle btn-trigger btn btn-icon mr-n2">
+                        <DropdownToggle
+                          tag="a"
+                          className="dropdown-toggle btn-trigger btn btn-icon mr-n2"
+                        >
                           <Icon name="more-v"></Icon>
                         </DropdownToggle>
                         <DropdownMenu right>
@@ -426,7 +494,11 @@ const MessageItem = ({ id, onClosed, mobileView, setMobileView, data }) => {
                     <div className="nk-reply-form-tools">
                       <ul className="nk-reply-form-actions g-1">
                         <li className="mr-2">
-                          <Button color="primary" onClick={(e) => onFormSubmit(e, "note")} type="submit">
+                          <Button
+                            color="primary"
+                            onClick={(e) => onFormSubmit(e, "note")}
+                            type="submit"
+                          >
                             Add Note
                           </Button>
                         </li>
@@ -444,7 +516,10 @@ const MessageItem = ({ id, onClosed, mobileView, setMobileView, data }) => {
                         </li>
                       </ul>
                       <UncontrolledDropdown>
-                        <DropdownToggle tag="a" className="dropdown-toggle btn-trigger btn btn-icon mr-n2">
+                        <DropdownToggle
+                          tag="a"
+                          className="dropdown-toggle btn-trigger btn btn-icon mr-n2"
+                        >
                           <Icon name="more-v"></Icon>
                         </DropdownToggle>
                         <DropdownMenu right>
@@ -486,13 +561,23 @@ const MessageItem = ({ id, onClosed, mobileView, setMobileView, data }) => {
           <MessageProfileSidebar sidebar={sidebar} profile={item} />
 
           {sidebar && (
-            <div className={window.innerWidth < 1550 ? "nk-msg-profile-overlay" : ""} onClick={() => toggleSidebar()} />
+            <div
+              className={
+                window.innerWidth < 1550 ? "nk-msg-profile-overlay" : ""
+              }
+              onClick={() => toggleSidebar()}
+            />
           )}
         </div>
       )}
 
       {/*Assign Members Modal*/}
-      <Modal isOpen={assignModal} toggle={toggleAssignModal} className="modal-dialog-centered" size="xs">
+      <Modal
+        isOpen={assignModal}
+        toggle={toggleAssignModal}
+        className="modal-dialog-centered"
+        size="xs"
+      >
         <ModalBody>
           <a
             href="#cancel"
@@ -505,7 +590,9 @@ const MessageItem = ({ id, onClosed, mobileView, setMobileView, data }) => {
             <Icon name="cross-sm"></Icon>
           </a>
           <div className="nk-modal-head">
-            <h4 className="nk-modal-title title">Assign users to this message</h4>
+            <h4 className="nk-modal-title title">
+              Assign users to this message
+            </h4>
             <div className="m-2">
               <ul className="link-list-plain">
                 {assignMembers.map((user, index) => {
@@ -516,7 +603,12 @@ const MessageItem = ({ id, onClosed, mobileView, setMobileView, data }) => {
                       onClick={toggleAssignModal}
                       key={index}
                     >
-                      <UserAvatar text={findUpper(user.name)} theme={user.theme} className="sm" image={null} />
+                      <UserAvatar
+                        text={findUpper(user.name)}
+                        theme={user.theme}
+                        className="sm"
+                        image={null}
+                      />
                       <div className="m-1 ml-2 fs-15px">{user.name}</div>
                     </li>
                   );

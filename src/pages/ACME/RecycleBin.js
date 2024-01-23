@@ -64,16 +64,13 @@ const RecycleBin = () => {
     getrecycle(
       {},
       (apiRes) => {
-        console.log(apiRes, "pop");
         setTotalUsers(apiRes.data.data.length);
         setGetRecycleBin(apiRes?.data?.data);
       },
       (apiErr) => {}
     );
   };
-  console.log(isLogin, "isLogin");
   const onRestoreFiles = (row) => {
-    console.log(row, "pppppp");
     setRestore(true);
     let data;
     if (row?.file_type) {
@@ -112,13 +109,11 @@ const RecycleBin = () => {
   };
   // Delete Recycle Bin item
   const onDeleteClick = (id, file_type) => {
-    console.log(id, file_type);
     handleClose();
     let data = {
       id: id,
       file: file_type,
     };
-    console.log(data);
     deleterestore(
       data,
       (apiRes) => {

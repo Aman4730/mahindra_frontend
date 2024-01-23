@@ -180,7 +180,6 @@ const Workspace = () => {
     }
   };
   const onBlockClick = (id, user_status) => {
-    console.log(id, user_status, "user_status");
     let statusCheck = {
       id,
       user_status,

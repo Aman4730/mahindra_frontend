@@ -75,6 +75,7 @@ const WS1 = () => {
   }, []);
   // ------------------------------------------------getApis Start
   const PermissionPolicy = isLogin?.Permission;
+  console.log(PermissionPolicy, "kjhf");
 
   const getdoclistuploadfile = () => {
     getdoclist(
@@ -329,7 +330,7 @@ const WS1 = () => {
       formData.append("file", file);
       formData.append("data", JSON.stringify(data));
       const quary = [[file.size], [workSpaceData.workspace_name]];
-      const file_type = file.name.split(".")[1];
+      const file_type = file.name?.split(".")[1];
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL_LOCAL}/uploadcreate?q=${quary}&fileExtension=${file_type}`,
         formData,
@@ -580,7 +581,6 @@ const WS1 = () => {
   });
 
   const handleClickLinkOpen = (id, file_type, name) => {
-    console.log(id, file_type, name);
     setShareId({ id: id, file_type: file_type, name: name });
     setOpenLink(true);
   };

@@ -74,7 +74,8 @@ const InvoicePrint = ({ match }) => {
                         <span>Invoice ID</span>:<span>{user.orderId}</span>
                       </li>
                       <li className="invoice-date">
-                        <span>Date</span>:<span>{user.date.split(",")[0]}</span>
+                        <span>Date</span>:
+                        <span>{user.date?.split(",")[0]}</span>
                       </li>
                     </ul>
                   </div>
@@ -95,7 +96,10 @@ const InvoicePrint = ({ match }) => {
                       <tbody>
                         <tr>
                           <td>24108054</td>
-                          <td>Dashlite - Conceptual App Dashboard - Regular License</td>
+                          <td>
+                            Dashlite - Conceptual App Dashboard - Regular
+                            License
+                          </td>
                           <td>${user.invoiceItem1}</td>
                           <td>1</td>
                           <td>${user.invoiceItem1}</td>
@@ -153,7 +157,8 @@ const InvoicePrint = ({ match }) => {
                       </tfoot>
                     </table>
                     <div className="nk-notes ff-italic fs-12px text-soft">
-                      Invoice was created on a computer and is valid without the signature and seal.
+                      Invoice was created on a computer and is valid without the
+                      signature and seal.
                     </div>
                   </div>
                 </div>

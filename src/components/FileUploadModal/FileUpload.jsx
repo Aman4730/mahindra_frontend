@@ -152,10 +152,6 @@ export default function FileUpload({
                   }}
                 >
                   {selectedFile && selectedFile.name}({formattedSize})
-                  {console.log(
-                    selectedFile && selectedFile.name,
-                    "selectedFile"
-                  )}
                 </span>
               ) : (
                 ""

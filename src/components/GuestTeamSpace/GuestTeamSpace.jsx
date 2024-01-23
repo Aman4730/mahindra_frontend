@@ -113,28 +113,6 @@ const GuestTeamSpace = () => {
     );
   };
   const [allfolderlist, setAllfolderlist] = useState([]);
-  console.log(allfolderlist, "allfolderlist");
-  // const getAllfoldernames = (
-  //   data = {
-  //     workspace_name: workSpaceData?.workspace_name,
-  //     user_id: userIdStore.user_id,
-  //     workspace_id: retrievedWorkspaceId,
-  //   }
-  // ) => {
-  //   getfoldernameslist(
-  //     data,
-  //     (apiRes) => {
-  //       console.log(apiRes, "alldata ");
-  //       setAllfolderlist([...apiRes?.data?.files, ...apiRes?.data?.folders]);
-  //     },
-  //     (apiErr) => {
-  //       console.log("====> api get folder name", apiErr);
-  //     }
-  //   );
-  // };
-  // useEffect(() => {
-  //   getGuestData();
-  // }, []);
   let token = localStorage.getItem("token") || "";
   const getAllfoldernames = (apiData) => {
     let data = {
@@ -155,16 +133,12 @@ const GuestTeamSpace = () => {
     })
       .then((response) => response.json())
       .then((apiRes) => {
-        console.log(apiRes?.response_file, "fvfddfv");
         setAllfolderlist([...apiRes?.response_file, apiRes?.response_folders]);
-        // setAllfolderlist(data);
       })
       .catch((error) => {
         console.log(error);
       })
-      .finally(() => {
-        // setLoading(false);
-      });
+      .finally(() => {});
   };
   // ------------------------------------------------getApis End
   // ------------------------------------------------postApis Start
@@ -466,7 +440,7 @@ const GuestTeamSpace = () => {
         const blob = new Blob([response.data]);
         const fileName = file_name;
         // Use the split() method to separate the name and extension
-        const parts = fileName.split(".");
+        const parts = fileName?.split(".");
         const name = parts[0];
         const extension = parts[1];
 

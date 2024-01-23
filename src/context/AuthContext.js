@@ -9,17 +9,12 @@ export const AuthContextProvider = (props) => {
   let isLogin = null;
   if (stringifyData) {
     isLogin = JSON.parse(stringifyData);
-  } else {
-    console.log("not Logged in");
   }
-  console.log(isLogin, "login");
   //Login Guest
   let guestdata = localStorage.getItem("guestlogin");
   let guestlogin = null;
   if (guestdata) {
     guestlogin = JSON.parse(guestdata);
-  } else {
-    console.log("not Logged in");
   }
   const [authMenu, setAuthMenu] = useState([]);
   useEffect(() => {

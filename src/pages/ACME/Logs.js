@@ -36,7 +36,6 @@ const WS1 = () => {
       selectedToDate: null,
     });
   };
-  console.log(formDataLogs?.selectedToDate, "pppppppp");
 
   // ------------------------------------------------postApis Start
   const [ipAddress, setIpAddress] = useState("");

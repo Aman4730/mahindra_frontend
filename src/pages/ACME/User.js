@@ -13,25 +13,24 @@ import { AuthContext } from "../../context/AuthContext";
 import UserTable from "../../components/Tables/UserTable";
 import { FormGroup, Modal, ModalBody, Form } from "reactstrap";
 import {
-  BlockBetween,
-  BlockDes,
-  BlockHead,
-  BlockHeadContent,
-  Icon,
   Col,
+  Icon,
   Button,
   RSelect,
+  BlockDes,
+  BlockHead,
+  BlockBetween,
+  BlockHeadContent,
 } from "../../../src/components/Component";
 const UserListRegularPage = () => {
   // Destructure useContext variables
   const {
-    contextData,
     addUser,
     getUser,
-    getGroupsDropdown,
-    deleteUser,
     blockUser,
-    get_togggle,
+    deleteUser,
+    contextData,
+    getGroupsDropdown,
   } = useContext(UserContext);
   // Destructure the states
   const { setAuthToken } = useContext(AuthContext);
@@ -275,7 +274,6 @@ const UserListRegularPage = () => {
   };
   // Function to handle the click event when the user clicks on the block/unblock button associated with a specific user
   const onBlockClick = (id, user_status) => {
-    console.log(user_status, "666666666666");
     let statusCheck = {
       id,
       user_status,

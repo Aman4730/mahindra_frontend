@@ -24,8 +24,13 @@ export const FileManagerContextProvider = (props) => {
       subFolder: [],
     };
     let defaultData = data;
-    let folderId = window.location.pathname.split("/")[window.location.pathname.split("/").length - 1];
-    let findFolder = defaultData.findIndex((item) => item.id === Number(folderId));
+    let folderId =
+      window.location.pathname?.split("/")[
+        window.location.pathname?.split("/").length - 1
+      ];
+    let findFolder = defaultData.findIndex(
+      (item) => item.id === Number(folderId)
+    );
     if (folderId !== "" && defaultData[findFolder] !== undefined) {
       defaultData[findFolder].subFolder.push({ fileId: data.length + 1 });
       defaultData = [newFolder, ...defaultData];
@@ -38,14 +43,22 @@ export const FileManagerContextProvider = (props) => {
   // Creates a file
   const createFile = (files) => {
     let defaultData = data;
-    let folderId = window.location.pathname.split("/")[window.location.pathname.split("/").length - 1];
-    let findFolder = defaultData.findIndex((item) => item.id === Number(folderId));
+    let folderId =
+      window.location.pathname?.split("/")[
+        window.location.pathname?.split("/").length - 1
+      ];
+    let findFolder = defaultData.findIndex(
+      (item) => item.id === Number(folderId)
+    );
     if (folderId !== "" && defaultData[findFolder] !== undefined) {
       let fileArray = [];
       files.forEach((item) => {
         fileArray.push({ fileId: item.id });
       });
-      defaultData[findFolder].subFolder = [...defaultData[findFolder].subFolder, ...fileArray];
+      defaultData[findFolder].subFolder = [
+        ...defaultData[findFolder].subFolder,
+        ...fileArray,
+      ];
       defaultData = [...defaultData, ...files];
       setData([...defaultData]);
     } else {
@@ -57,7 +70,11 @@ export const FileManagerContextProvider = (props) => {
   // Download a folder/file
   const downloadFile = (file) => {
     const downloadLink = document.createElement("a");
-    downloadLink.href = "data:" + file.meta.ext + ";charset=utf-8," + encodeURIComponent(file.meta.name);
+    downloadLink.href =
+      "data:" +
+      file.meta.ext +
+      ";charset=utf-8," +
+      encodeURIComponent(file.meta.name);
     downloadLink.download = file.meta.name;
     downloadLink.click();
   };
@@ -76,7 +93,9 @@ export const FileManagerContextProvider = (props) => {
     let defaultData = data;
 
     if (folder !== "") {
-      let findNewFolderIndex = defaultData.findIndex((item) => item.id === folder);
+      let findNewFolderIndex = defaultData.findIndex(
+        (item) => item.id === folder
+      );
 
       defaultData[findNewFolderIndex].subFolder.push({ fileId: file.id });
       setData([...defaultData]);
@@ -99,12 +118,16 @@ export const FileManagerContextProvider = (props) => {
       if (currentFolder === null) {
         copyToFolder(file, folder);
       } else {
-        let findNewFolderIndex = defaultData.findIndex((item) => item.id === folder);
-        let findPrevFolderIndex = defaultData.findIndex((item) => item.id === Number(currentFolder));
-        defaultData[findNewFolderIndex].subFolder.push({ fileId: file.id });
-        defaultData[findPrevFolderIndex].subFolder = defaultData[findPrevFolderIndex].subFolder.filter(
-          (item) => item.fileId !== file.id
+        let findNewFolderIndex = defaultData.findIndex(
+          (item) => item.id === folder
         );
+        let findPrevFolderIndex = defaultData.findIndex(
+          (item) => item.id === Number(currentFolder)
+        );
+        defaultData[findNewFolderIndex].subFolder.push({ fileId: file.id });
+        defaultData[findPrevFolderIndex].subFolder = defaultData[
+          findPrevFolderIndex
+        ].subFolder.filter((item) => item.fileId !== file.id);
         setData([...defaultData]);
       }
     }
@@ -114,8 +137,13 @@ export const FileManagerContextProvider = (props) => {
   const shareFiles = (id) => {
     let defaultData = data;
     let found = defaultData.findIndex((item) => item.id === id);
-    defaultData[found].shared = { sharedTime: currentTime(), sharedDate: "Today" };
-    defaultData[found].meta.members = [{ user: "Illiash Hossain", theme: "purple" }];
+    defaultData[found].shared = {
+      sharedTime: currentTime(),
+      sharedDate: "Today",
+    };
+    defaultData[found].meta.members = [
+      { user: "Illiash Hossain", theme: "purple" },
+    ];
     setData([...defaultData]);
   };
 
@@ -148,7 +176,10 @@ export const FileManagerContextProvider = (props) => {
   const deleteFolder = (id) => {
     let defaultData = data;
     let found = defaultData.findIndex((item) => item.id === id);
-    defaultData[found]["recovery"] = { deletedAt: "Today", deletedOn: currentTime() };
+    defaultData[found]["recovery"] = {
+      deletedAt: "Today",
+      deletedOn: currentTime(),
+    };
     setData([...defaultData]);
   };
 

@@ -133,10 +133,32 @@ export default function LogTable({
                 .map((row, index) => {
                   const isItemSelected = isSelected(row.name);
                   const labelId = `enhanced-table-checkbox-${index}`;
-                  function formatSizeInGB(sizeInBytes) {
-                    return sizeInBytes / (1024 * 1024);
+                  // function formatSizeInGB(sizeInBytes) {
+                  //   return sizeInBytes / (1024 * 1024 * 1024);
+                  // }
+
+                  // const formattedSize = formatSizeInGB(row.quota);
+                  // console.log(formattedSize, "formattedSize");
+                  function formatFileSize(sizeInBytes) {
+                    if (sizeInBytes < 1024) {
+                      return sizeInBytes + " B";
+                    } else if (sizeInBytes < 1024 * 1024) {
+                      return (sizeInBytes / 1024).toFixed(2) + " KB";
+                    } else if (sizeInBytes < 1024 * 1024 * 1024) {
+                      return (sizeInBytes / (1024 * 1024)).toFixed(2) + " MB";
+                    } else {
+                      return (
+                        (sizeInBytes / (1024 * 1024 * 1024)).toFixed(2) + " GB"
+                      );
+                    }
                   }
-                  const formattedSize = formatSizeInGB(row.quota);
+                  const fileSizeInBytes = row.quota;
+                  const formattedSize = formatFileSize(fileSizeInBytes);
+                  let userName = "";
+                  for (let i = 0; i < row.selected_users.length; i++) {
+                    userName = userName + "\n" + row.selected_users[i];
+                  }
+
                   return (
                     <TableRow
                       hover
@@ -148,7 +170,12 @@ export default function LogTable({
                       selected={isItemSelected}
                       sx={{ cursor: "pointer" }}
                     >
-                      <TableCell style={{ fontSize: "12px" }}>
+                      <TableCell
+                        style={{
+                          fontSize: "12px",
+                          textOverflow: "ellipsis",
+                        }}
+                      >
                         {row.workspace_name}
                       </TableCell>
                       <TableCell style={{ fontSize: "12px" }}>
@@ -157,8 +184,21 @@ export default function LogTable({
                       <TableCell style={{ fontSize: "12px" }}>
                         {row.selected_groups}
                       </TableCell>
-                      <TableCell style={{ fontSize: "12px" }}>
-                        {row.selected_users}
+                      <TableCell
+                        style={{
+                          fontSize: "12px",
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          maxWidth: "150px",
+                        }}
+                      >
+                        <abbr
+                          title={userName}
+                          style={{ cursor: "pointer", textDecoration: "none" }}
+                        >
+                          {row.selected_users}
+                        </abbr>
                       </TableCell>
                       <TableCell style={{ fontSize: "12px" }}>
                         {row.workspace_type}

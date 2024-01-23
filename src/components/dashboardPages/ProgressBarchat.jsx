@@ -54,7 +54,7 @@ const ProgressBar = ({ label, initialPercentage, isUser, used_quota }) => {
           </div>
         </div>
         <div
-          style={{ marginLeft: "10px", width: "50px" }}
+          style={{ marginLeft: "10px", width: "50px", marginRight: "10px" }}
         >{`${roundedPercentage}%`}</div>
       </div>
     </>

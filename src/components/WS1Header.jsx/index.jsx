@@ -25,6 +25,7 @@ const WS1Header = ({
   callApiHeader,
   openFileUpload,
 }) => {
+  console.log(policies, "lkjh");
   const [open, setOpen] = useState(false);
   const [modal, setModal] = useState({
     edit: false,
@@ -149,6 +150,7 @@ const WS1Header = ({
                         ))
                       }
                     </li>
+                    {console.log(policies.upload_folder, "lkjhjfkl")}
                     <li className="nk-block-tools-opt">
                       {policies.upload_folder == "true" ? (
                         <Button
