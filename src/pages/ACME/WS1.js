@@ -17,6 +17,7 @@ import FileFolderMove from "../../components/FileFolderMove/index.jsx";
 import FileFolderProperties from "../../components/FileFolderProperties/index.jsx";
 import FileFolderComments from "../../components/FileFolderComments/index.jsx";
 import { Document, Page } from "react-pdf";
+import WorkspacePermission from "../../components/Forms/WorkspacePermission.jsx";
 const WS1 = () => {
   useEffect(() => {
     getAllfoldernames({
@@ -24,10 +25,12 @@ const WS1 = () => {
       workspace_name: workSpaceData.workspace_name,
     }),
       getdoclistuploadfile();
-    getWorkspacedata();
+    getWorkspaces();
     getUserRselect();
+    getGroupDropdown();
     getmetatypelist();
   }, []);
+
   const {
     isLogin,
     getnotes,
@@ -42,11 +45,14 @@ const WS1 = () => {
     userDropdownU,
     workSpaceData,
     getallversions,
+    add_permission,
     addcreatefolder,
     add_updatefolder,
+    getGroupsDropdown,
     getfoldernameslist,
     add_metaproperties,
   } = useContext(UserContext);
+
   const [sm, updateSm] = useState(false);
   const [userData, setUserData] = contextData;
   const [fileDesc, setFileDesc] = useState("");
@@ -75,7 +81,6 @@ const WS1 = () => {
   }, []);
   // ------------------------------------------------getApis Start
   const PermissionPolicy = isLogin?.Permission;
-  console.log(PermissionPolicy, "kjhf");
 
   const getdoclistuploadfile = () => {
     getdoclist(
@@ -88,10 +93,12 @@ const WS1 = () => {
       }
     );
   };
-  const getWorkspacedata = () => {
+
+  const getWorkspaces = () => {
     getWorkspace(
       {},
       (apiRes) => {
+        console.log(apiRes, "apiRes====");
         setWorkspace(apiRes?.data.data);
       },
       (apiErr) => {
@@ -99,6 +106,17 @@ const WS1 = () => {
       }
     );
   };
+
+  const [workspacePermissionWs1, setWorkspacePermissionWs1] = useState({});
+  console.log(workspacePermissionWs1, "workspacePermissionWs1===");
+  const workspacePermission = () => {
+    workspace?.map((data) => {
+      setWorkspacePermissionWs1(data?.workspacePermission);
+    });
+  };
+  useEffect(() => {
+    workspacePermission();
+  }, [workspace]);
   const getmetatypelist = () => {
     getmetalist(
       {},
@@ -115,6 +133,19 @@ const WS1 = () => {
       {},
       (apiRes) => {
         setUserDropdowns(apiRes.data.data);
+      },
+      (apiErr) => {}
+    );
+  };
+
+  const [groupsDropdown, setGroupsDropdown] = useState([]);
+
+  const getGroupDropdown = () => {
+    getGroupsDropdown(
+      {},
+      (apiRes) => {
+        const data = apiRes?.data;
+        setGroupsDropdown(data?.groups?.map((gro) => gro?.group_name));
       },
       (apiErr) => {}
     );
@@ -579,7 +610,6 @@ const WS1 = () => {
     comment: false,
     properties: false,
   });
-
   const handleClickLinkOpen = (id, file_type, name) => {
     setShareId({ id: id, file_type: file_type, name: name });
     setOpenLink(true);
@@ -1013,15 +1043,10 @@ const WS1 = () => {
       },
       (apiErr) => {}
     );
-    let newData = {
-      parent_id: currentFolderData.id,
-      levels: currentFolderData.levels,
-      workspace_name: currentFolderData.workspace_name,
-      workspace_id: currentFolderData.workspace_id,
-    };
-    getAllfoldernames(newData);
   };
   // ---------------------------------move
+  // ---------------------------------Ws1 Rights
+
   const checkboxData = [
     { label: "View", name: "view", style: { marginLeft: "-8.8px" } },
     { label: "Move", name: "move", style: { marginLeft: "11px" } },
@@ -1060,6 +1085,158 @@ const WS1 = () => {
       style: { marginLeft: "-22px" },
     },
   ];
+  const [openDialog, setOpenDialog] = useState(false);
+  const [checkboxWs1, setCheckboxWs1] = useState({
+    view: false,
+    share: false,
+    rename: false,
+    upload_folder: false,
+    create_folder: false,
+    upload_file: false,
+    delete: false,
+    download: false,
+    move: false,
+    rights: false,
+    comment: false,
+    properties: false,
+  });
+
+  const handleOpenPermission = (id, file_type) => {
+    setOpenDialog({
+      status: true,
+      data: { id, file_type },
+    });
+  };
+  const handleClosePermission = () => {
+    setOpenDialog(false);
+    resetWs1Permission();
+  };
+  const handleCheckboxWs1 = (event) => {
+    const { name, checked } = event.target;
+    setCheckboxWs1((prevValues) => ({
+      ...prevValues,
+      [name]: checked,
+    }));
+  };
+  const onSubmitAddPermission = (id, file_type) => {
+    let data;
+    if (file_type) {
+      data = {
+        file_id: id,
+        policy_type: "My Workspace",
+        view: checkboxWs1.view,
+        share: checkboxWs1.share,
+        rename: checkboxWs1.rename,
+        upload_folder: checkboxWs1.upload_folder,
+        create_folder: checkboxWs1.create_folder,
+        upload_file: checkboxWs1.upload_file,
+        delete_per: checkboxWs1.delete,
+        download_per: checkboxWs1.download,
+        move: checkboxWs1.move,
+        rights: checkboxWs1.rights,
+        comments: checkboxWs1.comment,
+        properties: checkboxWs1.properties,
+      };
+    } else {
+      data = {
+        folder_id: id,
+        policy_type: "My Workspace",
+        view: checkboxWs1.view,
+        share: checkboxWs1.share,
+        rename: checkboxWs1.rename,
+        upload_folder: checkboxWs1.upload_folder,
+        create_folder: checkboxWs1.create_folder,
+        upload_file: checkboxWs1.upload_file,
+        delete_per: checkboxWs1.delete,
+        download_per: checkboxWs1.download,
+        move: checkboxWs1.move,
+        rights: checkboxWs1.rights,
+        comments: checkboxWs1.comment,
+        properties: checkboxWs1.properties,
+      };
+    }
+    add_permission(
+      data,
+      (apiRes) => {
+        if (apiRes.status === 201) {
+          notification["success"]({
+            placement: "top",
+            description: "",
+            message: apiRes?.data?.message,
+            style: {
+              height: 60,
+            },
+          });
+          handleClosePermission();
+        }
+      },
+      (apiErr) => {}
+    );
+  };
+  const permissionWs1 = {
+    title: "Workspace Permission",
+    permissionArray: [
+      { label: "View", name: "view" },
+      { label: "Move", name: "move" },
+      { label: "Share", name: "share" },
+      {
+        label: "Rights",
+        name: "rights",
+      },
+      { label: "Rename", name: "rename" },
+      {
+        label: "Delete",
+        name: "delete",
+      },
+      {
+        label: "Comments",
+        name: "comment",
+      },
+      {
+        label: "Download",
+        name: "download",
+      },
+      {
+        label: "Properties",
+        name: "properties",
+      },
+      {
+        label: "Upload Folder",
+        name: "upload_folder",
+      },
+      {
+        label: "Create Folder",
+        name: "create_folder",
+      },
+
+      {
+        label: "Upload File",
+        name: "upload_file",
+      },
+    ],
+    buttonLabels: {
+      agree: "Grant Access",
+      disagree: "Deny Access",
+    },
+  };
+  const resetWs1Permission = () => {
+    setCheckboxWs1({
+      view: false,
+      share: false,
+      rename: false,
+      upload_folder: false,
+      create_folder: false,
+      upload_file: false,
+      delete: false,
+      download: false,
+      move: false,
+      rights: false,
+      comment: false,
+      properties: false,
+    });
+  };
+  // ---------------------------------Ws1 Rights
+
   return (
     <>
       <Head title="My Workspace - Regular"></Head>
@@ -1099,6 +1276,20 @@ const WS1 = () => {
             list={list}
             propertiesModel={propertiesModel}
             propertiesModelClose={propertiesModelClose}
+          />
+          <WorkspacePermission
+            title="Add Permissions"
+            autocomplete="true"
+            isLogin={isLogin}
+            permission={permissionWs1}
+            checkboxValues={checkboxWs1}
+            userDropdowns={userDropdowns}
+            openDialog={openDialog.status}
+            groupsDropdown={groupsDropdown}
+            workspacePermissionWs1={workspacePermissionWs1}
+            handleClickPermission={onSubmitAddPermission}
+            handleCheckboxChange={handleCheckboxWs1}
+            handleClosePermission={handleClosePermission}
           />
           <FileFolderComments
             notes={notes}
@@ -1175,14 +1366,15 @@ const WS1 = () => {
             sm={sm}
             list={list}
             isLogin={isLogin}
-            policies={propertys}
-            findFolder={findFolder}
             updateSm={updateSm}
             userData={userData}
+            policies={propertys}
+            findFolder={findFolder}
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
-            openFileUpload={() => setFileUpload(true)}
             callApiHeader={callApiHeader}
+            openFileUpload={() => setFileUpload(true)}
+            workspacePermissionWs1={workspacePermissionWs1}
           />
           {/* {pdfData && (
             <Document
@@ -1237,20 +1429,22 @@ const WS1 = () => {
             isLogin={isLogin}
             propertys={propertys}
             headCells={tableHeader}
-            setPropertys={setPropertys}
             searchTerm={searchTerm}
+            setPropertys={setPropertys}
             allfolderlist={allfolderlist}
             onFileDownload={onFileDownload}
-            handleClickVersionOpen={handleClickVersionOpen}
-            onDownloadfolders={onDownloadfolders}
+            handleClickMove={handleClickMove}
             PermissionPolicy={PermissionPolicy}
+            onDownloadfolders={onDownloadfolders}
             handleOpenDeleteFile={handleClickOpen}
             handleClickLinkOpen={handleClickLinkOpen}
             openFileUpload={() => setFileUpload(true)}
-            handleClickMove={handleClickMove}
+            workspacePermissionWs1={workspacePermissionWs1}
+            handleClickVersionOpen={handleClickVersionOpen}
             handleClickOpenCommets={handleClickOpenCommets}
             handleClickOpenProperties={handleClickOpenProperties}
             openModal={() => setOpen({ ...open, status: true })}
+            handleOpenPermission={handleOpenPermission}
           />
         </Stack>
       </Content>

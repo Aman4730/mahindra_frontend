@@ -268,6 +268,22 @@ export const UserContextProvider = (props) => {
       }
     );
   }
+  async function add_permission(
+    userSubmittedData,
+    handleApiRes,
+    handleApiError
+  ) {
+    await AxiosPost(
+      "add_permission",
+      userSubmittedData,
+      (apiRes) => {
+        handleApiRes(apiRes);
+      },
+      (apiError) => {
+        handleApiError(apiError);
+      }
+    );
+  }
   async function addNewcreatefolder(
     userSubmittedData,
     handleApiRes,
@@ -1069,6 +1085,7 @@ export const UserContextProvider = (props) => {
         addFolderWork: addFolderWork,
         addfolderlogs: addfolderlogs,
         addPermission: addPermission,
+        add_permission: add_permission,
         addcreatefolder: addcreatefolder,
         add_docmetadata: add_docmetadata,
         adduploadcreate: adduploadcreate,

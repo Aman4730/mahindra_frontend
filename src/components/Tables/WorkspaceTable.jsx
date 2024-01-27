@@ -59,6 +59,7 @@ export default function LogTable({
   allfolderlist,
   handleClickOpen,
   onPermissionClick,
+  onEditPermissionClick,
 }) {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
@@ -144,12 +145,10 @@ export default function LogTable({
                       return sizeInBytes + " B";
                     } else if (sizeInBytes < 1024 * 1024) {
                       return (sizeInBytes / 1024).toFixed(2) + " KB";
-                    } else if (sizeInBytes < 1024 * 1024 * 1024) {
+                    } else if (sizeInBytes < 1024 * 1024) {
                       return (sizeInBytes / (1024 * 1024)).toFixed(2) + " MB";
                     } else {
-                      return (
-                        (sizeInBytes / (1024 * 1024 * 1024)).toFixed(2) + " GB"
-                      );
+                      return (sizeInBytes / (1024 * 1024)).toFixed(2) + " GB";
                     }
                   }
                   const fileSizeInBytes = row.quota;
@@ -158,7 +157,7 @@ export default function LogTable({
                   for (let i = 0; i < row.selected_users.length; i++) {
                     userName = userName + "\n" + row.selected_users[i];
                   }
-
+                  const fileSizeInBytes1 = row.quota / 1024 / 1024;
                   return (
                     <TableRow
                       hover
@@ -215,7 +214,20 @@ export default function LogTable({
                         </Tooltip>
                         <Tooltip
                           className=""
-                          onClick={() => onPermissionClick(row.id)}
+                          // onClick={() =>
+                          //   onPermissionClick(row.id, row.workspace_type)
+                          // }
+                          onClick={() => {
+                            if (row?.workspacePermission?.id) {
+                              onEditPermissionClick(
+                                row?.workspacePermission?.id,
+                                row?.workspacePermission?.policy_type,
+                                row?.workspacePermission?.workspace_id
+                              );
+                            } else {
+                              onPermissionClick(row.id, row.workspace_type);
+                            }
+                          }}
                         >
                           <LockPersonIcon
                             tag="a"

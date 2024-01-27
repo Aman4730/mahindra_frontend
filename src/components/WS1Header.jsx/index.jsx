@@ -24,8 +24,8 @@ const WS1Header = ({
   setSearchTerm,
   callApiHeader,
   openFileUpload,
+  workspacePermissionWs1,
 }) => {
-  console.log(policies, "lkjh");
   const [open, setOpen] = useState(false);
   const [modal, setModal] = useState({
     edit: false,
@@ -39,6 +39,7 @@ const WS1Header = ({
     // Clean up the timeout when the component unmounts or when open changes
     return () => clearTimeout(timeoutId);
   }, []);
+  console.log(workspacePermissionWs1, "workspacePermissionWs1");
   return (
     <Stack>
       <BlockHead size="sm">
@@ -136,7 +137,7 @@ const WS1Header = ({
                   <ul className="nk-block-tools g-3">
                     <li className="nk-block-tools-opt">
                       {
-                        (policies.create_folder = "true" ? (
+                        (workspacePermissionWs1.create_folder = "true" ? (
                           <Button
                             color="primary"
                             className="btn-icon"
@@ -150,9 +151,8 @@ const WS1Header = ({
                         ))
                       }
                     </li>
-                    {console.log(policies.upload_folder, "lkjhjfkl")}
                     <li className="nk-block-tools-opt">
-                      {policies.upload_folder == "true" ? (
+                      {workspacePermissionWs1.upload_folder == "true" ? (
                         <Button
                           color="primary"
                           className="btn-icon"
@@ -167,7 +167,7 @@ const WS1Header = ({
                     </li>
                     <li className="nk-block-tools-opt">
                       {
-                        (policies.upload_file = "true" ? (
+                        (workspacePermissionWs1.upload_file = "true" ? (
                           <Button
                             color="primary"
                             className="btn-icon"

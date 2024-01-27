@@ -255,15 +255,18 @@ const Menu = ({ sidebarToggle, mobileView }) => {
   const { contextData } = useContext(UserContext);
   const [userData] = contextData;
   const [workspacelist, setWorkspacelist] = useState([]);
+  let token = localStorage.getItem("token") || "";
   const { setWorkspaceData, isLogin } = useContext(UserContext);
+
   useEffect(() => {
     const config = {
       headers: {
+        Authorization: token,
         "Content-Type": "application/json",
       },
     };
     axios
-      .post(`${process.env.REACT_APP_API_URL_LOCAL}/getworkspace`, config)
+      .post(`${process.env.REACT_APP_API_URL_LOCAL}/getworkspace`, {}, config)
       .then((response) => {
         let myData = response?.data?.data[0];
         setWorkspaceData({
@@ -274,7 +277,6 @@ const Menu = ({ sidebarToggle, mobileView }) => {
       })
       .catch((error) => {});
   }, []);
-
   const subMenu = workspacelist
     ?.map((data) => {
       if (isLogin?.my_workspace?.includes(data.workspace_name)) {
@@ -289,7 +291,6 @@ const Menu = ({ sidebarToggle, mobileView }) => {
       return null;
     })
     .filter(Boolean);
-
   let workSpaceMenu = [
     {
       icon: "growth-fill",

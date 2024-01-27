@@ -93,6 +93,12 @@ export const AuthContextProvider = (props) => {
               active: true,
               link: "/workflow",
             },
+            {
+              icon: "shield-check-fill",
+              text: "Permissions",
+              active: true,
+              link: "/permissions",
+            },
           ],
         },
         {

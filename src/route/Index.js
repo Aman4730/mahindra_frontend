@@ -128,6 +128,7 @@ import GlobalSearch from "../pages/ACME/GlobalSearch";
 import RecycleBin from "../pages/ACME/RecycleBin";
 import SystemInfo from "../pages/ACME/SystemInfo";
 import Logout from "../pages/ACME/Logout";
+import Permissions from "../pages/ACME/Permissions";
 const Pages = () => {
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
@@ -359,6 +360,11 @@ const Pages = () => {
           exact
           path={`${process.env.PUBLIC_URL}/workspace`}
           component={Workspace}
+        ></Route>
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL}/permissions`}
+          component={Permissions}
         ></Route>
         <Route
           exact

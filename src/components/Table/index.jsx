@@ -75,7 +75,9 @@ export default function CommonTable({
   onDownloadfolders,
   handleClickLinkOpen,
   handleOpenDeleteFile,
+  handleOpenPermission,
   handleClickOpenCommets,
+  workspacePermissionWs1,
   handleClickVersionOpen,
   handleClickOpenProperties,
 }) {
@@ -196,6 +198,8 @@ export default function CommonTable({
                   }
                   const fileSizeInBytes = data?.file_size || data?.folder_size;
                   const formattedSize = formatFileSize(fileSizeInBytes);
+
+                  const permission = data?.permission;
                   return (
                     <TableRow
                       hover
@@ -237,7 +241,7 @@ export default function CommonTable({
                         {convertedTimestamp}
                       </TableCell>
                       <TableCell style={{ fontSize: "13px" }}>
-                        {`${data.user_type}, ${data.user_email}`}
+                        {data.user_email}
                       </TableCell>
                       <TableCell
                         style={{
@@ -351,11 +355,155 @@ export default function CommonTable({
                           >
                             <ArticleIcon fontSize="small" sx={{ mr: 1 }} />
                           </Tooltip>
-                          <Tooltip title="Rights" sx={{ mr: 1 }}>
-                            <AdminPanelSettingsIcon fontSize="small" />
+                          <Tooltip
+                            title="Rights"
+                            onClick={() =>
+                              handleOpenPermission(data.id, data.file_type)
+                            }
+                          >
+                            <AdminPanelSettingsIcon
+                              fontSize="small"
+                              sx={{ mr: 1 }}
+                            />
                           </Tooltip>
                         </TableCell>
                       ) : (
+                        // <TableCell
+                        //   style={{
+                        //     cursor: "pointer",
+                        //     fontSize: "13px",
+                        //   }}
+                        //   align="right"
+                        // >
+                        //   {data.file_type &&
+                        //   data.versions == true &&
+                        //   propertys.view == "true" ? (
+                        //     <Tooltip
+                        //       title="Version"
+                        //       onClick={() => handleClickVersionOpen(data)}
+                        //     >
+                        //       <SportsVolleyballRoundedIcon
+                        //         fontSize="small"
+                        //         sx={{ mr: 1 }}
+                        //       />
+                        //     </Tooltip>
+                        //   ) : (
+                        //     ""
+                        //   )}
+                        //   {propertys.view == "true" ? (
+                        //     <Tooltip
+                        //       title="View"
+                        //       onClick={() => {
+                        //         navigate(
+                        //           data.id,
+                        //           data?.file_name,
+                        //           data.filemongo_id
+                        //         );
+                        //       }}
+                        //     >
+                        //       <VisibilityIcon sx={{ mr: 1 }} fontSize="small" />
+                        //     </Tooltip>
+                        //   ) : (
+                        //     ""
+                        //   )}
+                        //   {propertys.rename == "true" ? (
+                        //     <Tooltip title="Edit">
+                        //       <EditIcon sx={{ mr: 1 }} fontSize="small" />
+                        //     </Tooltip>
+                        //   ) : (
+                        //     ""
+                        //   )}
+                        //   {propertys.download_per == "true" ? (
+                        //     <Tooltip
+                        //       title="Download"
+                        //       onClick={() => {
+                        //         if (data.file_type) {
+                        //           onFileDownload(
+                        //             data.filemongo_id,
+                        //             data.file_name
+                        //           );
+                        //         } else {
+                        //           onDownloadfolders(data.id);
+                        //         }
+                        //       }}
+                        //     >
+                        //       <FileDownloadIcon
+                        //         sx={{ mr: 1 }}
+                        //         fontSize="small"
+                        //       />
+                        //     </Tooltip>
+                        //   ) : (
+                        //     ""
+                        //   )}
+                        //   {propertys.move == "true" ? (
+                        //     <Tooltip
+                        //       title="Move"
+                        //       onClick={() => handleClickMove(data)}
+                        //     >
+                        //       <DriveFileMoveIcon
+                        //         sx={{ mr: 1 }}
+                        //         fontSize="small"
+                        //       />
+                        //     </Tooltip>
+                        //   ) : (
+                        //     ""
+                        //   )}
+                        //   {propertys.share == "true" ? (
+                        //     <Tooltip
+                        //       title="Share"
+                        //       onClick={() =>
+                        //         handleClickLinkOpen(
+                        //           data.id,
+                        //           data.file_type,
+                        //           data?.file_name || data.folder_name
+                        //         )
+                        //       }
+                        //     >
+                        //       <ShareIcon sx={{ mr: 1 }} fontSize="small" />
+                        //     </Tooltip>
+                        //   ) : (
+                        //     ""
+                        //   )}
+                        //   {propertys.delete_per == "true" ? (
+                        //     <Tooltip
+                        //       title="Delete"
+                        //       onClick={() =>
+                        //         handleOpenDeleteFile(data.id, data.file_type)
+                        //       }
+                        //     >
+                        //       <DeleteIcon sx={{ mr: 1 }} fontSize="small" />
+                        //     </Tooltip>
+                        //   ) : (
+                        //     ""
+                        //   )}
+                        //   {propertys.comments == "true" ? (
+                        //     <Tooltip title="Comments">
+                        //       <SmsIcon fontSize="small" sx={{ mr: 1 }} />
+                        //     </Tooltip>
+                        //   ) : (
+                        //     ""
+                        //   )}
+                        //   {propertys.properties == "true" ? (
+                        //     <Tooltip title="Properties">
+                        //       <ArticleIcon sx={{ mr: 1 }} fontSize="small" />
+                        //     </Tooltip>
+                        //   ) : (
+                        //     ""
+                        //   )}
+                        //   {propertys.rights == "true" ? (
+                        //     <Tooltip
+                        //       title="Rights"
+                        //       style={{ marginRight: "35px" }}
+                        //     >
+                        //       <AdminPanelSettingsIcon
+                        //         fontSize="small"
+                        //         sx={{ mr: 1 }}
+                        //       />
+                        //     </Tooltip>
+                        //   ) : (
+                        //     ""
+                        //   )}
+                        // </TableCell>
                         <TableCell
                           style={{
                             cursor: "pointer",
@@ -363,9 +511,7 @@ export default function CommonTable({
                           }}
                           align="right"
                         >
-                          {data.file_type &&
-                          data.versions == true &&
-                          propertys.view == "true" ? (
+                          {data.file_type && data.versions == true ? (
                             <Tooltip
                               title="Version"
                               onClick={() => handleClickVersionOpen(data)}
@@ -378,30 +524,39 @@ export default function CommonTable({
                           ) : (
                             ""
                           )}
-                          {propertys.view == "true" ? (
+                          {workspacePermissionWs1?.view && (
                             <Tooltip
                               title="View"
                               onClick={() => {
-                                navigate(
-                                  data.id,
-                                  data?.file_name,
-                                  data.filemongo_id
-                                );
+                                if (data.file_type) {
+                                  navigate(
+                                    data.id,
+                                    data?.file_name,
+                                    data.filemongo_id
+                                  );
+                                } else {
+                                  callApi(data);
+                                }
                               }}
                             >
-                              <VisibilityIcon sx={{ mr: 1 }} fontSize="small" />
+                              <VisibilityIcon fontSize="small" sx={{ mr: 1 }} />
                             </Tooltip>
-                          ) : (
-                            ""
                           )}
-                          {propertys.rename == "true" ? (
-                            <Tooltip title="Edit">
+                          {workspacePermissionWs1?.rename && (
+                            <Tooltip
+                              title="Edit"
+                              onClick={() => {
+                                if (data.file_size) {
+                                  openFileUpload(data);
+                                } else {
+                                  openModal(data);
+                                }
+                              }}
+                            >
                               <EditIcon sx={{ mr: 1 }} fontSize="small" />
                             </Tooltip>
-                          ) : (
-                            ""
                           )}
-                          {propertys.download_per == "true" ? (
+                          {workspacePermissionWs1?.download_per && (
                             <Tooltip
                               title="Download"
                               onClick={() => {
@@ -411,32 +566,28 @@ export default function CommonTable({
                                     data.file_name
                                   );
                                 } else {
-                                  onDownloadfolders(data.id);
+                                  onDownloadfolders(data.id, data.folder_name);
                                 }
                               }}
                             >
                               <FileDownloadIcon
-                                sx={{ mr: 1 }}
                                 fontSize="small"
+                                sx={{ mr: 1 }}
                               />
                             </Tooltip>
-                          ) : (
-                            ""
                           )}
-                          {propertys.move == "true" ? (
+                          {workspacePermissionWs1?.move && (
                             <Tooltip
                               title="Move"
                               onClick={() => handleClickMove(data)}
                             >
                               <DriveFileMoveIcon
-                                sx={{ mr: 1 }}
                                 fontSize="small"
+                                sx={{ mr: 1 }}
                               />
                             </Tooltip>
-                          ) : (
-                            ""
                           )}
-                          {propertys.share == "true" ? (
+                          {workspacePermissionWs1?.share && (
                             <Tooltip
                               title="Share"
                               onClick={() =>
@@ -449,10 +600,8 @@ export default function CommonTable({
                             >
                               <ShareIcon sx={{ mr: 1 }} fontSize="small" />
                             </Tooltip>
-                          ) : (
-                            ""
                           )}
-                          {propertys.delete_per == "true" ? (
+                          {workspacePermissionWs1?.delete_per && (
                             <Tooltip
                               title="Delete"
                               onClick={() =>
@@ -461,35 +610,35 @@ export default function CommonTable({
                             >
                               <DeleteIcon sx={{ mr: 1 }} fontSize="small" />
                             </Tooltip>
-                          ) : (
-                            ""
                           )}
-                          {propertys.comments == "true" ? (
-                            <Tooltip title="Comments">
+                          {workspacePermissionWs1?.comments && (
+                            <Tooltip
+                              title="Comments"
+                              onClick={() => handleClickOpenCommets(data?.id)}
+                            >
                               <SmsIcon fontSize="small" sx={{ mr: 1 }} />
                             </Tooltip>
-                          ) : (
-                            ""
                           )}
-                          {propertys.properties == "true" ? (
-                            <Tooltip title="Properties">
-                              <ArticleIcon sx={{ mr: 1 }} fontSize="small" />
+                          {workspacePermissionWs1?.properties && (
+                            <Tooltip
+                              title="Properties"
+                              onClick={() => handleClickOpenProperties(data)}
+                            >
+                              <ArticleIcon fontSize="small" sx={{ mr: 1 }} />
                             </Tooltip>
-                          ) : (
-                            ""
                           )}
-                          {propertys.rights == "true" ? (
+                          {workspacePermissionWs1?.rights && (
                             <Tooltip
                               title="Rights"
-                              style={{ marginRight: "35px" }}
+                              onClick={() =>
+                                handleOpenPermission(data.id, data.file_type)
+                              }
                             >
                               <AdminPanelSettingsIcon
                                 fontSize="small"
                                 sx={{ mr: 1 }}
                               />
                             </Tooltip>
-                          ) : (
-                            ""
                           )}
                         </TableCell>
                       )}

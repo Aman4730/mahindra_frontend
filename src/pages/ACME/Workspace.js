@@ -3,12 +3,16 @@ import { notification } from "antd";
 import { useForm } from "react-hook-form";
 import Head from "../../layout/head/Head";
 import ModalPop from "../../components/Modal";
+import SearchBar from "../../components/SearchBar";
 import Content from "../../layout/content/Content";
 import "react-datepicker/dist/react-datepicker.css";
 import { UserContext } from "../../context/UserContext";
 import { AuthContext } from "../../context/AuthContext";
+import { Grid, Stack, Typography } from "@mui/material";
 import { FormGroup, Modal, ModalBody, Form } from "reactstrap";
+import WorkspceForm from "../../components/Forms/WorkspceForm";
 import WorkspaceTable from "../../components/Tables/WorkspaceTable";
+import WorkspacePermission from "../../components/Forms/WorkspacePermission";
 import {
   Col,
   Icon,
@@ -20,10 +24,6 @@ import {
   BlockBetween,
   BlockHeadContent,
 } from "../../components/Component";
-import SearchBar from "../../components/SearchBar";
-import { Grid, Stack, Typography } from "@mui/material";
-import WorkspceForm from "../../components/Forms/WorkspceForm";
-import WorkspacePermission from "../../components/Forms/WorkspacePermission";
 const Workspace = () => {
   const {
     contextData,
@@ -31,6 +31,7 @@ const Workspace = () => {
     getWorkspace,
     addPermission,
     userDropdownU,
+    add_permission,
     deleteworkspace,
     cabinetDropdown,
     getGroupsDropdown,
@@ -67,20 +68,20 @@ const Workspace = () => {
     permission_rename: "",
   });
   const [checkboxValues, setCheckboxValues] = useState({
-    view: false,
-    enable: false,
-    share: false,
-    rename: false,
-    upload_folder: false,
-    create_folder: false,
-    upload_file: false,
-    delete: false,
-    download: false,
-    move: false,
-    rights: false,
-    comment: false,
-    properties: false,
-    version_enable: false,
+    view: null,
+    enable: null,
+    share: null,
+    rename: null,
+    upload_folder: null,
+    create_folder: null,
+    upload_file: null,
+    delete: null,
+    download: null,
+    move: null,
+    rights: null,
+    comment: null,
+    properties: null,
+    version_enable: null,
   });
   const [open, setOpen] = useState({
     status: false,
@@ -128,22 +129,24 @@ const Workspace = () => {
       (apiErr) => {}
     );
   };
-  const getTotalWorkspace = () => {
+
+  const getWorkspaces = () => {
     getWorkspace(
       {},
       (apiRes) => {
-        setTotalUsers(apiRes?.data?.data.length);
-        if (apiRes?.status == 200) {
-          setUserData(apiRes?.data?.data);
-        }
+        console.log(apiRes?.data.data, "apiRes");
+        setTotalUsers(apiRes?.data?.data?.length);
+        setUserData(apiRes?.data?.data);
       },
-      (apiErr) => {}
+      (apiErr) => {
+        console.log(apiErr, "fhdfhdfhgdf");
+      }
     );
   };
   useEffect(() => {
     getUserRselect();
     getRolesDropdown();
-    getTotalWorkspace();
+    getWorkspaces();
     getCabinetDropdown();
   }, []);
 
@@ -191,7 +194,7 @@ const Workspace = () => {
               },
             });
             resetFormWorkspace();
-            getTotalWorkspace();
+            getWorkspaces();
           }
         },
         (apiErr) => {}
@@ -217,16 +220,8 @@ const Workspace = () => {
                 height: 70,
               },
             });
-            setFormData({
-              workspace_name: "",
-              enter_quota: "",
-              selected_groups: [],
-              selected_users: [],
-              selected_cabinet: "",
-              workspace_type: "",
-            });
-            setEditedId(0);
-            getTotalWorkspace();
+            resetFormWorkspace();
+            getWorkspaces();
           }
         },
         (apiErr) => {
@@ -279,7 +274,7 @@ const Workspace = () => {
           const code = 200;
           if (code == 200) {
             setModal({ edit: false }, { add: false });
-            getTotalWorkspace();
+            getWorkspaces();
           }
           setAuthToken(token);
         },
@@ -307,7 +302,6 @@ const Workspace = () => {
       );
     }
   };
-
   const onDeleteClick = (id) => {
     let deleteId = { id: id };
     deleteworkspace(
@@ -322,36 +316,43 @@ const Workspace = () => {
               height: 60,
             },
           });
-          getTotalWorkspace();
+          getWorkspaces();
           handleClose();
         }
       },
       (apiErr) => {}
     );
   };
-
-  const onPermissionClick = (id) => {
-    userData?.map((item) => {
-      if (item?.id == id) {
-        setFormData({
-          id: id,
-          workspace_name: formData.workspace_name,
-          enter_quota: formData.enter_quota,
-          selected_groups: formData.selected_groups,
-          selected_users: formData.selected_users,
-          selected_cabinet: formData.selected_cabinet,
-          workspace_type: formData.workspace_type,
-        });
-
-        setModal({ edit: false, add: false, permission: true });
-        setEditedId(id);
+  const [PermissionEditedId, setPermissionEditedId] = useState(0);
+  const onEditPermissionClick = (id, policy_type, workspace_id) => {
+    setOpenDialog(true);
+    userData.map((item) => {
+      const permissionData = item.workspacePermission;
+      if (item?.workspacePermission?.id == id) {
+        console.log(item);
+        setCheckboxValues((prevFormData) => ({
+          ...prevFormData,
+          view: permissionData.view,
+          share: permissionData.share,
+          rename: permissionData.rename,
+          upload_folder: permissionData.upload_folder,
+          create_folder: permissionData.create_folder,
+          upload_file: permissionData.upload_file,
+          delete: permissionData.delete_per,
+          download: permissionData.download_per,
+          move: permissionData.move,
+          rights: permissionData.rights,
+          comment: permissionData.comments,
+          properties: permissionData.properties,
+        }));
       }
+      setPermissionEditedId({
+        id: id,
+        policy_type: policy_type,
+        workspace_id: workspace_id,
+      });
     });
   };
-
-  const { errors, register, handleSubmit, watch, triggerValidation } =
-    useForm();
-
   const tableHeader = [
     {
       id: "Workspace Name",
@@ -400,15 +401,116 @@ const Workspace = () => {
   const [formShow, setFormShow] = useState(false);
 
   const [openDialog, setOpenDialog] = useState(false);
-
-  const handleOpenPermission = () => {
-    setOpenDialog(true);
+  const handleOpenPermission = (id, file_type) => {
+    setOpenDialog({
+      status: true,
+      data: { id, file_type },
+    });
   };
-
   const handleClosePermission = () => {
     setOpenDialog(false);
+    resetWs1Permission();
   };
-
+  const handleCheckboxWs1 = (event) => {
+    const { name, checked } = event.target;
+    setCheckboxValues((prevValues) => ({
+      ...prevValues,
+      [name]: checked,
+    }));
+  };
+  const onSubmitAddPermission = (id, file_type) => {
+    if (PermissionEditedId) {
+      console.log("edit");
+      let submittedData = {
+        id: PermissionEditedId.id,
+        workspace_id: id,
+        view: checkboxValues.view,
+        move: checkboxValues.move,
+        share: checkboxValues.share,
+        rename: checkboxValues.rename,
+        rights: checkboxValues.rights,
+        comments: checkboxValues.comment,
+        delete_per: checkboxValues.delete,
+        download_per: checkboxValues.download,
+        properties: checkboxValues.properties,
+        upload_file: checkboxValues.upload_file,
+        upload_folder: checkboxValues.upload_folder,
+        create_folder: checkboxValues.create_folder,
+        policy_type: PermissionEditedId.policy_type,
+        workspace_id: PermissionEditedId.workspace_id,
+      };
+      add_permission(
+        submittedData,
+        (apiRes) => {
+          if (apiRes.status === 200) {
+            notification["success"]({
+              placement: "top",
+              description: "",
+              message: apiRes?.data?.message,
+              style: {
+                height: 60,
+              },
+            });
+            getWorkspaces();
+            handleClosePermission();
+          }
+        },
+        (apiErr) => {}
+      );
+    } else {
+      let submittedData = {
+        workspace_id: id,
+        policy_type: file_type,
+        view: checkboxValues.view,
+        move: checkboxValues.move,
+        share: checkboxValues.share,
+        rights: checkboxValues.rights,
+        rename: checkboxValues.rename,
+        comments: checkboxValues.comment,
+        delete_per: checkboxValues.delete,
+        download_per: checkboxValues.download,
+        properties: checkboxValues.properties,
+        upload_file: checkboxValues.upload_file,
+        upload_folder: checkboxValues.upload_folder,
+        create_folder: checkboxValues.create_folder,
+      };
+      add_permission(
+        submittedData,
+        (apiRes) => {
+          if (apiRes.status === 201) {
+            notification["success"]({
+              placement: "top",
+              description: "",
+              message: apiRes?.data?.message,
+              style: {
+                height: 60,
+              },
+            });
+            getWorkspaces();
+            handleClosePermission();
+          }
+        },
+        (apiErr) => {}
+      );
+    }
+  };
+  const resetWs1Permission = () => {
+    setCheckboxValues({
+      view: null,
+      share: null,
+      rename: null,
+      upload_folder: null,
+      create_folder: null,
+      upload_file: null,
+      delete: null,
+      download: null,
+      move: null,
+      rights: null,
+      comment: null,
+      properties: null,
+    });
+    setPermissionEditedId(0);
+  };
   const handleChange = (event) => {
     const { id, value } = event.target;
     setFormData((prevFormData) => ({
@@ -422,46 +524,6 @@ const Workspace = () => {
       [id]: value,
     }));
   };
-
-  const permissionArray = [
-    { label: "View", name: "view" },
-    { label: "Move", name: "move" },
-    { label: "Share", name: "share" },
-    {
-      label: "Rights",
-      name: "rights",
-    },
-    { label: "Rename", name: "rename" },
-    {
-      label: "Delete",
-      name: "delete",
-    },
-    {
-      label: "Comments",
-      name: "comment",
-    },
-    {
-      label: "Download",
-      name: "download",
-    },
-    {
-      label: "Properties",
-      name: "properties",
-    },
-    {
-      label: "Upload Folder",
-      name: "upload_folder",
-    },
-    {
-      label: "Create Folder",
-      name: "create_folder",
-    },
-
-    {
-      label: "Upload File",
-      name: "upload_file",
-    },
-  ];
 
   const permission = {
     title: "Workspace Permission",
@@ -509,6 +571,8 @@ const Workspace = () => {
       disagree: "Deny Access",
     },
   };
+  const { errors, register, handleSubmit, watch, triggerValidation } =
+    useForm();
   return (
     <React.Fragment>
       <ModalPop
@@ -574,9 +638,12 @@ const Workspace = () => {
           />
           <WorkspacePermission
             title="Add Permission"
+            data={openDialog.data}
             openDialog={openDialog}
-            checkboxValues={checkboxValues}
             permission={permission}
+            checkboxValues={checkboxValues}
+            handleCheckboxChange={handleCheckboxWs1}
+            handleClickPermission={onSubmitAddPermission}
             handleClosePermission={handleClosePermission}
           />
           <DataTable className="card-stretch">
@@ -587,6 +654,7 @@ const Workspace = () => {
               onEditClick={onEditClick}
               handleClickOpen={handleClickOpen}
               onPermissionClick={handleOpenPermission}
+              onEditPermissionClick={onEditPermissionClick}
             />
           </DataTable>
         </Block>

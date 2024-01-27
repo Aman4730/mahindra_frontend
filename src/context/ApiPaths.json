@@ -9,6 +9,7 @@
         "guestlogin":"guestlogin",
         "getrecycle":"getrecycle",
         "guestdata":"guestdata",
+        "add_permission":"add_permission",
         "getallversions":"getallversions",
         "getteamspace":"getteamspace",
         "createworkflow":"createworkflow",
