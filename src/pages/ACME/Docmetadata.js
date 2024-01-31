@@ -270,19 +270,15 @@ const Docmetadata = () => {
             notification["success"]({
               placement: "top",
               description: "",
-              message: "Add Doc Metadata properties.",
+              message: "Doc Metadata Edited Successfully",
               style: {
                 height: 60,
               },
             });
-          }
-          const code = 200;
-          if (code == 200) {
             resetForm();
             setModal({ edit: false }, { add: false });
             getTotalGroups();
           }
-          setAuthToken(token);
         },
         (apiErr) => {}
       );
@@ -297,23 +293,25 @@ const Docmetadata = () => {
       meta_property(
         submittedData,
         (apiRes) => {
-          const code = 200;
-          if (code == 200) {
+          if (apiRes.status == 201) {
+            notification["success"]({
+              placement: "top",
+              description: "",
+              message: "Doc Metadata Added Successfully",
+              style: {
+                height: 60,
+              },
+            });
             resetForm();
             setModal({ edit: false }, { add: false });
             getUsers();
           }
-          setAuthToken(token);
         },
         (apiErr) => {}
       );
     }
   };
 
-  // selected_cabinet: "",
-  // selected_workspace: "",
-  // selected_doctype: "",
-  // metadata_name: "",
   //doc type properties on submit
   const onFormSubmit = () => {
     if (editId) {

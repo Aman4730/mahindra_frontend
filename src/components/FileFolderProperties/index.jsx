@@ -8,7 +8,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { Card, Divider } from "@mui/material";
 import "./style.css";
-export default function PropertiesModel({
+export default function FileFolderProperties({
   propertiesModelClose,
   propertiesModel,
   list,

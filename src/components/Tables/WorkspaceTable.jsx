@@ -219,13 +219,20 @@ export default function LogTable({
                           // }
                           onClick={() => {
                             if (row?.workspacePermission?.id) {
-                              onEditPermissionClick(
-                                row?.workspacePermission?.id,
-                                row?.workspacePermission?.policy_type,
-                                row?.workspacePermission?.workspace_id
-                              );
+                              onEditPermissionClick({
+                                workspace_name: row?.workspace_name,
+                                id: row?.workspacePermission?.id,
+                                policy_type:
+                                  row?.workspacePermission?.policy_type,
+                                workspace_id:
+                                  row?.workspacePermission?.workspace_id,
+                              });
                             } else {
-                              onPermissionClick(row.id, row.workspace_type);
+                              onPermissionClick(
+                                row.id,
+                                row.workspace_type,
+                                row.workspace_name
+                              );
                             }
                           }}
                         >
@@ -239,7 +246,7 @@ export default function LogTable({
                             style={{
                               backgroundColor: "transparent",
                               boxShadow: "none",
-                              color: "#454545",
+                              // color: "#454545",
                               cursor: "pointer",
                               fontSize: "20px",
                             }}

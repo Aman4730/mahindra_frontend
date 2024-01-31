@@ -9,6 +9,7 @@
         "guestlogin":"guestlogin",
         "getrecycle":"getrecycle",
         "guestdata":"guestdata",
+        "deletesmtp":"deletesmtp",
         "add_permission":"add_permission",
         "getallversions":"getallversions",
         "getteamspace":"getteamspace",

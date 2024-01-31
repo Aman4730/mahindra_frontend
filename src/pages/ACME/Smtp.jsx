@@ -7,9 +7,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import { UserContext } from "../../context/UserContext";
 import SmtpMainTable from "../../components/Tables/SmtpMainTable";
 import SmtpForm from "../../components/Forms/SmtpForm";
+import ModalPop from "../../components/Modal";
 
 const Smtp = () => {
-  const { createsmtp, getsmtp, addtestemail, editsmtp } =
+  const { createsmtp, getsmtp, addtestemail, editsmtp, deletesmtp } =
     useContext(UserContext);
   const [getSmpt, setGetSmpt] = useState([]);
   const [smptdata, setSmptdata] = useState([]);
@@ -25,6 +26,22 @@ const Smtp = () => {
     Authentication: "",
     Security: "",
   });
+  const [open, setOpen] = React.useState({
+    status: false,
+    data: "",
+  });
+  const handleClickOpen = (id) => {
+    setOpen({
+      status: true,
+      data: id,
+    });
+  };
+  const handleClose = () => {
+    setOpen({
+      status: false,
+      data: "",
+    });
+  };
   useEffect(() => {
     getsmptdata();
   }, []);
@@ -100,6 +117,27 @@ const Smtp = () => {
     );
   };
 
+  const onDeleteClick = (id) => {
+    handleClose();
+    let deleteId = { id: id };
+    deletesmtp(
+      deleteId,
+      (apiRes) => {
+        if (apiRes.status == 200) {
+          notification["success"]({
+            placement: "top",
+            description: "",
+            message: "SMTP Deleted Successfully.",
+            style: {
+              height: 60,
+            },
+          });
+          getsmptdata();
+        }
+      },
+      (apiErr) => {}
+    );
+  };
   const handleSubmit = () => {
     if (editId) {
       let data = {
@@ -262,6 +300,13 @@ const Smtp = () => {
             SMTP Details
           </Typography>
         </Stack>
+        <ModalPop
+          open={open.status}
+          handleClose={handleClose}
+          handleOkay={onDeleteClick}
+          title="SMTP is being Deleted. Are You Sure !"
+          data={open.data}
+        />
         <SmtpForm
           editId={editId}
           smptdata={smptdata}
@@ -278,6 +323,7 @@ const Smtp = () => {
           getSmpt={getSmpt}
           onEditClick={onEditClick}
           onBlockClick={onBlockClick}
+          handleClickOpen={handleClickOpen}
         />
       </Content>
     </React.Fragment>

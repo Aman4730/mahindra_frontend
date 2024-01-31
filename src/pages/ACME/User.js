@@ -37,7 +37,6 @@ const UserListRegularPage = () => {
   const [userData, setUserData] = contextData;
   const [editId, setEditedId] = useState();
   const [sm, updateSm] = useState(false);
-  const [deleteId, setDeleteId] = useState(false);
   const [totalUsers, setTotalUsers] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemPerPage, setItemPerPage] = useState(10);
@@ -96,11 +95,7 @@ const UserListRegularPage = () => {
       (apiErr) => {}
     );
   };
-  // Combine useEffect calls to fetch data initially and on page change
-  useEffect(() => {
-    getUsers();
-    getRolesDropdown();
-  }, [deleteId, currentPage]);
+
   // Function to reset form state
   const resetForm = () => {
     setFormData({
@@ -231,21 +226,14 @@ const UserListRegularPage = () => {
         email: selectedUser.email,
         password: selectedUser.password,
       });
-      // Set the 'modal' state to open the edit modal and close the add modal
       setModal({ edit: false, add: true });
-      // Set the 'editedId' state to store the 'id' of the user being edited
       setEditedId(id);
     }
   };
   // Function to handle the click event when the user clicks on the delete button/icon associated with a specific user
   const onDeleteClick = (id) => {
-    // Close any open modal/dialog
     handleClose();
-
-    setDeleteId(true);
-    // Prepare the data for the API request
     let deleteId = { id: id };
-    // Call the 'deleteUser' function with the 'deleteId' for deleting the user
     deleteUser(
       deleteId,
       (apiRes) => {
@@ -258,16 +246,8 @@ const UserListRegularPage = () => {
               height: 60,
             },
           });
+          getUsers();
         }
-        // On successful API response
-        const code = 200;
-        if (code === 200) {
-          // Reset the form, close any open modals, and refresh the user list
-          resetForm();
-          setModal({ edit: false }, { add: false }); // There's an error in this line, the correct way is to use a single object: setModal({ edit: false, add: false });
-          getUsers(); // Refresh the user list (assuming this function fetches the user list)
-        }
-        setAuthToken(token);
       },
       (apiErr) => {}
     );

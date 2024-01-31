@@ -125,7 +125,7 @@ export default function LogTable({
                   return (
                     <TableRow
                       hover
-                      key={index}
+                      key={row.id}
                       onClick={(event) => handleClick(event, row.name)}
                       role="checkbox"
                       aria-checked={isItemSelected}

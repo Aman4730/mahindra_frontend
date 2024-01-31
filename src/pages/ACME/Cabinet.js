@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import moment from "moment-timezone";
 import { notification } from "antd";
 import Head from "../../layout/head/Head";
 import { useForm } from "react-hook-form";
@@ -9,54 +8,47 @@ import Content from "../../layout/content/Content";
 import SearchBar from "../../components/SearchBar";
 import "react-datepicker/dist/react-datepicker.css";
 import { UserContext } from "../../context/UserContext";
-import { AuthContext } from "../../context/AuthContext";
 import CabinetTable from "../../components/Tables/CabinetTable";
 import { FormGroup, Modal, ModalBody, Form } from "reactstrap";
 import {
-  Block,
-  BlockBetween,
-  BlockDes,
-  BlockHead,
-  BlockHeadContent,
   Icon,
   Col,
+  Block,
   Button,
   RSelect,
+  BlockDes,
+  BlockHead,
+  BlockBetween,
+  BlockHeadContent,
 } from "../../components/Component";
 
 const Cabinet = () => {
   const {
-    contextData,
-    addCabinet,
     getCabinet,
+    addCabinet,
+    contextData,
+    deletecabinet,
     userDropdownU,
     getGroupsDropdown,
-    deletecabinet,
   } = useContext(UserContext);
   const [sm, updateSm] = useState(false);
   const [editId, setEditedId] = useState();
   const [userData, setUserData] = contextData;
-  const [onSearch, setonSearch] = useState(true);
-  const [deleteId, setDeleteId] = useState(false);
   const [totalUsers, setTotalUsers] = useState(0);
-  const { setAuthToken } = useContext(AuthContext);
-  const [actionText, setActionText] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemPerPage, setItemPerPage] = useState(5);
-  const [onSearchText, setSearchText] = useState("");
   const [searchTerm, setSearchTerm] = React.useState("");
   const [userDropdowns, setUserDropdowns] = useState([]);
   const [groupsDropdown, setGroupsDropdown] = useState([]);
-  const [modal, setModal] = useState({
-    edit: false,
-    add: false,
-  });
   const [formData, setFormData] = useState({
     cabinet_name: "",
     path_name: "",
     selected_groups: "",
     selected_users: "",
   });
+  const [modal, setModal] = useState({
+    edit: false,
+    add: false,
+  });
+  // Delete
   const [open, setOpen] = useState({
     status: false,
     data: "",
@@ -88,21 +80,6 @@ const Cabinet = () => {
       (apiErr) => {}
     );
   };
-  useEffect(() => {
-    getRolesDropdown();
-    getUserRselect();
-  }, []);
-  useEffect(() => {
-    let newData;
-    newData = userData.map((item) => {
-      item.checked = false;
-      return item;
-    });
-    setUserData([...newData]);
-  }, []);
-  useEffect(() => {
-    getTotalGroups();
-  }, [formData]);
   const getUserRselect = () => {
     userDropdownU(
       {},
@@ -123,9 +100,9 @@ const Cabinet = () => {
       (apiErr) => {}
     );
   };
-  const getTotalGroups = () => {
+  const getTableData = () => {
     getCabinet(
-      { pageNumber: currentPage, pageSize: itemPerPage, search: onSearchText },
+      {},
       (apiRes) => {
         setTotalUsers(apiRes.data.response.count);
         if (apiRes.status == 200) {
@@ -136,8 +113,18 @@ const Cabinet = () => {
     );
   };
   useEffect(() => {
-    getTotalGroups();
-  }, [currentPage]);
+    let newData;
+    newData = userData.map((item) => {
+      item.checked = false;
+      return item;
+    });
+    setUserData([...newData]);
+  }, []);
+  useEffect(() => {
+    getTableData();
+    getUserRselect();
+    getRolesDropdown();
+  }, []);
   // function to reset the form
   const resetForm = () => {
     setFormData({
@@ -148,7 +135,6 @@ const Cabinet = () => {
     });
     setEditedId(0);
   };
-  // function to close the form modal
   const onFormCancel = () => {
     setModal({ edit: false, add: false });
     resetForm();
@@ -163,8 +149,6 @@ const Cabinet = () => {
         path_name: formData.path_name,
         selected_users: formData.selected_users,
       };
-
-      // setUserData([submittedData, ...userData]);
       addCabinet(
         submittedData,
         (apiRes) => {
@@ -172,22 +156,20 @@ const Cabinet = () => {
             notification["success"]({
               placement: "top",
               description: "",
-              message: "Cabinet Updated Successfully.",
+              message: "Cabinet Updated Successfully",
               style: {
                 height: 60,
               },
             });
             onFormCancel();
-            getTotalGroups();
+            getTableData();
           }
-          // const { data: { data: { data, total }, meta: { code, message }, token } } = apiRes;
         },
         (apiErr) => {}
       );
     } else {
       let submittedData = {
         cabinet_name: formData.cabinet_name,
-        // path_name: formData.path_name,
         selected_groups: formData.selected_groups,
         selected_users: formData.selected_users,
       };
@@ -198,12 +180,13 @@ const Cabinet = () => {
             notification["success"]({
               placement: "top",
               description: "",
-              message: "Cabinet Created Successfully.",
+              message: "Cabinet Created Successfully",
               style: {
                 height: 60,
               },
             });
             onFormCancel();
+            getTableData();
           }
         },
         (apiErr) => {}
@@ -220,10 +203,7 @@ const Cabinet = () => {
           id: id,
           cabinet_name: item.cabinet_name,
           selected_groups: item.selected_groups,
-          // path_name: item.path_name,
           selected_users: item.selected_users,
-          // role: item.user_role,
-          // status: item.status
         });
 
         setModal({ edit: false, add: true });
@@ -234,7 +214,6 @@ const Cabinet = () => {
   // Delete Cabinet
   const onDeleteClick = (id) => {
     handleClose();
-    setDeleteId(true);
     let deleteId = { id: id };
     deletecabinet(
       deleteId,
@@ -243,19 +222,13 @@ const Cabinet = () => {
           notification["success"]({
             placement: "top",
             description: "",
-            message: "Cabinet Deleted Successfully.",
+            message: "Cabinet Deleted Successfully",
             style: {
               height: 60,
             },
           });
+          getTableData();
         }
-        const code = 200;
-        if (code == 200) {
-          resetForm();
-          setModal({ edit: false }, { add: false });
-          getTotalGroups();
-        }
-        setAuthToken(token);
       },
       (apiErr) => {}
     );
@@ -377,22 +350,6 @@ const Cabinet = () => {
                   noValidate
                   onSubmit={handleSubmit(onFormSubmit)}
                 >
-                  {/* <Col md="6">
-                    <FormGroup>
-                      <label className="form-label">Cabinet Name</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        name="cabinet_name"
-                        defaultValue={formData.cabinet_name}
-                        onChange={(e) => setFormData({ ...formData, [e.target.name]: e.target.value })}
-                        placeholder="Enter cabinet_name"
-                        ref={register({ required: "This field is required" })}
-                      />
-                      {errors.cabinet_name && <span className="invalid">{errors.cabinet_name.message}</span>}
-                    </FormGroup>
-                  </Col> */}
-
                   <Col md="6">
                     <FormGroup>
                       <label className="form-label">Cabinet Name</label>
@@ -417,31 +374,6 @@ const Cabinet = () => {
                       )}
                     </FormGroup>
                   </Col>
-
-                  {/* <Col md="6">
-                    <FormGroup>
-                      <label className="form-label">Path</label>
-                      <RSelect
-                        options={pathDropdown}
-                        name="pathDropdown"
-                        defaultValue="Please Select Groups"
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            path_name: e.label,
-                            [e.label]: e.value,
-                          })
-                        }
-                        ref={register({ required: "This field is required" })}
-                      />
-                      {errors.path_name && (
-                        <span className="invalid">
-                          {errors.path_name.message}
-                        </span>
-                      )}
-                    </FormGroup>
-                  </Col> */}
-
                   <Col md="6">
                     <FormGroup>
                       <label className="form-label">Groups</label>
@@ -490,43 +422,6 @@ const Cabinet = () => {
                       )}
                     </FormGroup>
                   </Col>
-                  {/* <Col md="6">
-                    <FormGroup>
-
-                      <label className="form-label">Browse File</label>
-                      <input type="file" name="file" onChange={handleFileChange} />
-                    </FormGroup>
-                  </Col> */}
-                  {/* <Col md="6">
-                    <FormGroup>
-                      <label className="form-label">Path</label>
-                      <RSelect
-                        options={userDropdowns}
-                        name="addCabinet"
-                        defaultValue="Please Select Groups"
-                        onChange={(e) => setFormData({ ...formData, path_name: e.label, [e.label]: e.value })}
-                        ref={register({ required: "This field is required" })}
-
-                      />
-                      {errors.path_name && <span className="invalid">{errors.path_name.message}</span>}
-                    </FormGroup>
-                  </Col> */}
-                  {/* <Col md="6">
-                    <FormGroup>
-                      <label className="form-label">Selected User</label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        name="selected_groups"
-                        defaultValue={formData.selected_groups}
-                        onChange={(e) => setFormData({ ...formData, [e.target.name]: e.target.value })}
-                        placeholder="Enter Quota"
-                        ref={register({ required: "This field is required" })}
-                      />
-                      {errors.selected_groups && <span className="invalid">{errors.selected_groups.message}</span>}
-                    </FormGroup>
-                  </Col> */}
-
                   <Col size="12">
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>
@@ -550,29 +445,6 @@ const Cabinet = () => {
                   </Col>
                 </Form>
               </div>
-            </div>
-          </ModalBody>
-        </Modal>
-        <Modal
-          isOpen={modal.edit}
-          toggle={() => setModal({ edit: false })}
-          className="modal-dialog-centered"
-          size="lg"
-        >
-          <ModalBody>
-            <a
-              href="#cancel"
-              onClick={(ev) => {
-                ev.preventDefault();
-                onFormCancel();
-              }}
-              className="close"
-            >
-              <Icon name="cross-sm"></Icon>
-            </a>
-            <div className="p-2">
-              <h5 className="title">Update User</h5>
-              <div className="mt-4"></div>
             </div>
           </ModalBody>
         </Modal>

@@ -872,6 +872,18 @@ export const UserContextProvider = (props) => {
       }
     );
   }
+  async function deletesmtp(data, handleApiRes, handleApiError) {
+    await AxiosPost(
+      "deletesmtp",
+      data,
+      (apiRes) => {
+        handleApiRes(apiRes);
+      },
+      (apiError) => {
+        handleApiError(apiError);
+      }
+    );
+  }
   async function deletepolicy(data, handleApiRes, handleApiError) {
     await AxiosPost(
       "deletepolicy",
@@ -1128,6 +1140,7 @@ export const UserContextProvider = (props) => {
         updateUser: updateUser,
         userDropdownU: userDropdownU,
         deleteNotes: deleteNotes,
+        deletesmtp: deletesmtp,
         deletepolicy: deletepolicy,
         deleteworkflow: deleteworkflow,
         downloadfile: downloadfile,

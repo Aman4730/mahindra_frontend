@@ -4,23 +4,15 @@ import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import { Tooltip } from "@mui/material";
 import { visuallyHidden } from "@mui/utils";
-import SmsIcon from "@mui/icons-material/Sms";
 import TableRow from "@mui/material/TableRow";
 import TableHead from "@mui/material/TableHead";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
-import ShareIcon from "@mui/icons-material/Share";
+import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import ArticleIcon from "@mui/icons-material/Article";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import TableContainer from "@mui/material/TableContainer";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import TablePagination from "@mui/material/TablePagination";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
-import DriveFileMoveIcon from "@mui/icons-material/DriveFileMove";
-import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
-import SportsVolleyballRoundedIcon from "@mui/icons-material/SportsVolleyballRounded";
-import EditIcon from "@mui/icons-material/Edit";
 import { Switch } from "@mui/material";
 function EnhancedTableHead(props) {
   const { order, orderBy, onRequestSort } = props;
@@ -30,8 +22,8 @@ function EnhancedTableHead(props) {
   const headCells = [
     { id: "Profile_Id", label: "Id" },
     { id: "Email_Id", label: "Email Id" },
-    { id: "Authentication", label: "Authentication" },
     { id: "Security", label: "Security" },
+    { id: "Authentication", label: "Authentication" },
     { id: "Server IP / Url", label: "Server IP/Url" },
     { id: "Action", label: "Action", style: { marginLeft: "23px" } },
   ];
@@ -68,27 +60,13 @@ function EnhancedTableHead(props) {
 
 export default function SmtpMainTable({
   rows,
-  isLogin,
-  callApi,
-  headCells,
-  propertys,
-  openModal,
-  searchTerm,
-  setPropertys,
-  allfolderlist,
-  openFileUpload,
-  onFileDownload,
-  handleClickMove,
-  PermissionPolicy,
-  onDownloadfolders,
-  handleClickLinkOpen,
-  handleOpenDeleteFile,
-  handleClickOpenCommets,
-  handleClickVersionOpen,
-  handleClickOpenProperties,
   getSmpt,
+  headCells,
   onEditClick,
+  setPropertys,
   onBlockClick,
+  handleClickOpen,
+  PermissionPolicy,
 }) {
   const property = PermissionPolicy?.map((data) => {
     setPropertys(data);
@@ -135,76 +113,74 @@ export default function SmtpMainTable({
               headCells={headCells}
             />
             <TableBody>
-              {getSmpt
-                // ?.filter((data) =>
-                //   data.email?.toLowerCase().includes(searchTerm?.toLowerCase())
-                // )
-                .map((data, index) => {
-                  const isItemSelected = isSelected(data.name);
-
-                  return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={index}
-                      selected={isItemSelected}
-                      sx={{
-                        cursor: "pointer",
+              {getSmpt.map((data, index) => {
+                const isItemSelected = isSelected(data.name);
+                return (
+                  <TableRow
+                    hover
+                    role="checkbox"
+                    aria-checked={isItemSelected}
+                    tabIndex={-1}
+                    key={index}
+                    selected={isItemSelected}
+                    sx={{
+                      cursor: "pointer",
+                    }}
+                  >
+                    <TableCell
+                      className="tablefont"
+                      style={{
+                        fontSize: "13px",
                       }}
                     >
-                      <TableCell
-                        className="tablefont"
-                        style={{
-                          fontSize: "13px",
-                        }}
+                      {data?.id}
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        fontSize: "13px",
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        maxWidth: "180px",
+                      }}
+                    >
+                      {data.username}
+                    </TableCell>
+                    <TableCell style={{ fontSize: "13px" }}>
+                      {data.authentication}
+                    </TableCell>
+                    <TableCell>{data.security}</TableCell>
+                    <TableCell>{data.host_serverip}</TableCell>
+                    <TableCell
+                      style={{
+                        cursor: "pointer",
+                        fontSize: "13px",
+                      }}
+                    >
+                      <Switch
+                        checked={data.smtp_status === true}
+                        size="small"
+                        onChange={(event) =>
+                          onBlockClick(data.id, event.target.checked)
+                        }
+                        disabled={data.smtp_status ? true : false}
+                      />
+                      <Tooltip
+                        title="Edit"
+                        onClick={() => onEditClick(data.id)}
                       >
-                        {data?.id}
-                      </TableCell>
-                      <TableCell
-                        style={{
-                          fontSize: "13px",
-                          whiteSpace: "nowrap",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          maxWidth: "180px",
-                        }}
+                        <EditIcon sx={{ mr: 1 }} fontSize="small" />
+                      </Tooltip>
+                      <Tooltip
+                        title="Delete"
+                        onClick={() => handleClickOpen(data.id)}
                       >
-                        {data.username}
-                      </TableCell>
-                      <TableCell style={{ fontSize: "13px" }}>
-                        {data.authentication}
-                      </TableCell>
-                      <TableCell>{data.security}</TableCell>
-                      <TableCell>{data.host_serverip}</TableCell>
-                      <TableCell
-                        style={{
-                          cursor: "pointer",
-                          fontSize: "13px",
-                        }}
-                      >
-                        <Switch
-                          checked={data.smtp_status === true}
-                          size="small"
-                          onChange={(event) =>
-                            onBlockClick(data.id, event.target.checked)
-                          }
-                          disabled={data.smtp_status ? true : false}
-                        />
-                        <Tooltip
-                          title="Edit"
-                          onClick={() => onEditClick(data.id)}
-                        >
-                          <EditIcon sx={{ mr: 1 }} fontSize="small" />
-                        </Tooltip>
-                        <Tooltip title="Delete">
-                          <DeleteIcon sx={{ ml: 1, mr: 1 }} fontSize="small" />
-                        </Tooltip>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
+                        <DeleteIcon sx={{ ml: 1, mr: 1 }} fontSize="small" />
+                      </Tooltip>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
               {emptyRows > 0 && (
                 <TableRow
                   style={{

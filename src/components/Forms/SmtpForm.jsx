@@ -11,12 +11,9 @@ import {
   InputAdornment,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import SmtpMainTable from "../Tables/SmtpMainTable";
 export default function SmtpForm({
   formData,
-  smptdata,
   editId,
-  onEditSmtp,
   handleChange,
   handleSubmit,
   testEmailForm,

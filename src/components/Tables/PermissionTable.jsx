@@ -78,7 +78,6 @@ export default function PermissionTable({
   allfolderlist,
   openFileUpload,
   onFileDownload,
-  handleClickMove,
   PermissionPolicy,
   onDownloadfolders,
   handleClickLinkOpen,

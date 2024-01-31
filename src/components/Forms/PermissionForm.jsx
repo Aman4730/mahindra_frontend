@@ -5,33 +5,18 @@ import {
   Stack,
   Button,
   TextField,
-  Typography,
-  IconButton,
   Autocomplete,
-  InputAdornment,
 } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
 export default function PermissionTable({
-  formData,
-  smptdata,
   editId,
-  Workspace,
-  onEditSmtp,
+  formData,
   cabinetList,
-  handleChange,
   handleSubmit,
   userDropdowns,
   groupsDropdown,
-  testEmailForm,
-  handleTestEmail,
-  handleSubmitTestEmail,
+  handleClickMove,
   handleAutocompleteChange,
 }) {
-  const [showPassword, setShowPassword] = React.useState(false);
-  const handleTogglePassword = () => {
-    setShowPassword((prevShowPassword) => !prevShowPassword);
-  };
-
   return (
     <Stack>
       <Card sx={{ p: 2, mb: 1 }}>
@@ -81,22 +66,6 @@ export default function PermissionTable({
               value={formData.WorkSpace}
               onChange={(event, value) =>
                 handleAutocompleteChange("WorkSpace", value)
-              }
-            />
-          </Grid>
-          <Grid item xs={3}>
-            <Autocomplete
-              fullWidth
-              disablePortal
-              size="small"
-              id="Folder_File"
-              options={["None", "SSL", "TLS", "STARTLS"]}
-              renderInput={(params) => (
-                <TextField {...params} label="Folder/File" />
-              )}
-              value={formData.Folder_File}
-              onChange={(event, value) =>
-                handleAutocompleteChange("Folder_File", value)
               }
             />
           </Grid>
@@ -158,14 +127,30 @@ export default function PermissionTable({
               }
             />
           </Grid>
-          <Grid item xs={7} display="flex" justifyContent="end">
+          <Grid item xs={3}>
             <Button
               variant="contained"
               onClick={handleSubmit}
               style={{
                 outline: "none",
               }}
-              sx={{ mr: 10.5 }}
+              sx={{ mt: 0.2 }}
+            >
+              File/Folder
+            </Button>
+          </Grid>
+          <Grid
+            item
+            xs={3}
+            sx={{ display: "flex", justifyContent: "flex-end" }}
+          >
+            <Button
+              variant="contained"
+              onClick={handleSubmit}
+              style={{
+                outline: "none",
+              }}
+              sx={{ mt: 0.2 }}
             >
               {editId ? "Update" : "Submit"}
             </Button>
