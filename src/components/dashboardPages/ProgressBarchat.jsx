@@ -1,113 +1,43 @@
-import { Card, Grid } from "@mui/material";
-import React from "react";
-import "./style.css";
+import React, { useState, useEffect } from "react";
+import ProgressBar from "react-bootstrap/ProgressBar";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-const ProgressBar = ({ label, initialPercentage, isUser, used_quota }) => {
-  const barColor = isUser ? "#48C9B0" : "#3498DB";
-  const calculatedPercentage = (used_quota / initialPercentage) * 100;
-  const roundedPercentage = calculatedPercentage.toFixed(2);
-  const progress = roundedPercentage;
+const App = () => {
+  const [progress, setProgress] = useState(0);
 
-  const progressBarStyle = {
-    width: progress + "%",
-  };
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // Update progress state every 1 second
+      setProgress((prevProgress) => {
+        if (prevProgress >= 100) {
+          clearInterval(interval);
+          return 100;
+        }
+        return prevProgress + 10; // Increment progress by 10%
+      });
+    }, 1000);
+
+    return () => clearInterval(interval); // Cleanup interval on unmount
+  }, []);
 
   return (
-    <>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
-        <div
-          style={{
-            width: "150px",
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-          }}
-        >
-          {label}
-        </div>
-        <div
-          style={{
-            flex: 1,
-            height: "13px",
-            background: "white",
-            borderRadius: "2rem",
-            width: "50%",
-          }}
-        >
-          <div className="progress-bar">
-            <div
-              className="progress-bar--gradient"
-              style={{
-                background: `linear-gradient(to right, ${barColor} 80%, #F39C12 80%, #CB4335 90%)`,
-              }}
-            >
-              <div className="progress-bar--progress" style={progressBarStyle}>
-                <span className="progress-bar--progress-value"></span>
-              </div>
-              <div className="progress-bar--not-progress"></div>
-            </div>
-          </div>
-        </div>
-        <div
-          style={{ marginLeft: "10px", width: "50px", marginRight: "10px" }}
-        >{`${roundedPercentage}%`}</div>
-      </div>
-    </>
-  );
-};
-
-const ProgressBarchat = ({ quotadetail, userquota }) => {
-  return (
-    <Card
-      sx={{
-        ml: 2,
-        mr: 2,
-        mb: 1.1,
-        overflowY: "hidden",
-        maxHeight: "184px",
-        fontFamily: "Arial, sans-serif",
-        padding: "15px 0px 15px 15px",
-        borderRadius: "10px",
-      }}
+    <div
+      style={{ display: "flex", flexDirection: "row", alignItems: "center" }}
     >
-      <h6>Storage Quota</h6>
-      <div
+      <ProgressBar
+        animated
+        now={progress}
+        label={`${progress}%`}
         style={{
-          maxHeight: "150px",
-          overflowY: "auto",
-          paddingBottom: "15px",
+          height: "14px",
+          width: "90%",
+          borderRadius: "20px",
+          marginRight: "8px",
         }}
-      >
-        <Grid container>
-          {quotadetail.map((data, index) => (
-            <Grid item xs={12} key={index}>
-              <ProgressBar
-                label={data.workspace_name}
-                initialPercentage={data.workspace_quota}
-                used_quota={data.used_quota}
-                isUser={false}
-              />
-            </Grid>
-          ))}
-          {userquota.map((data, index) => (
-            <Grid item xs={12} key={index}>
-              <ProgressBar
-                label={data.user_email}
-                initialPercentage={data.max_quota}
-                used_quota={data.used_quota}
-                isUser={true}
-              />
-            </Grid>
-          ))}
-        </Grid>
-      </div>
-    </Card>
+      />
+      <p>Capacity: 40 MW</p>
+    </div>
   );
 };
 
-export default ProgressBarchat;
+export default App;

@@ -10,6 +10,7 @@ import TableCell from "@mui/material/TableCell";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import TableContainer from "@mui/material/TableContainer";
 import "./style.css";
+import { TablePagination } from "@mui/material";
 
 function EnhancedTableHead(props) {
   const { order, orderBy, onRequestSort } = props;
@@ -18,11 +19,14 @@ function EnhancedTableHead(props) {
     onRequestSort(event, property);
   };
   const headCells = [
-    { id: "name", label: "Recent File/Folder" },
-    { id: "createdBy", label: "Created By" },
-    { id: "workspace_name", label: "WorkSpace" },
-    { id: "Size", label: "Size" },
-    { id: "updatedAt", label: "Updated D/T" },
+    { id: "Sites", label: "Sites" },
+    { id: "Capacity", label: "Capacity" },
+    { id: "Status", label: "Status" },
+    // { id: "Last_Event", label: "Last Event" },
+    // { id: "Power_Generation", label: "Power Generation" },
+    { id: "GHI", label: "GHI" },
+    { id: "GTI", label: "GTI" },
+    { id: "Module Temp", label: "Module Temp" },
   ];
   return (
     <TableHead>
@@ -61,8 +65,9 @@ function EnhancedTableHead(props) {
 }
 
 export default function DataGridCard({ tableData }) {
+  console.log(tableData, "tableData");
   const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("name");
+  const [orderBy, setOrderBy] = React.useState("calories");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -72,41 +77,33 @@ export default function DataGridCard({ tableData }) {
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
-  function getFileIconByExtension(filename) {
-    switch (filename) {
-      case ("doc", "docx"):
-        return "/Image/docx.svg";
-      case "png":
-        return "/Image/jpeg.svg";
-      case "pdf":
-        return "/Image/pdf.svg";
-      case "ppt":
-        return "/Image/pptx.svg";
-      case "txt":
-        return "/Image/txt.svg";
-      case "video":
-        return "/Image/video.png";
-      case "xlsx":
-        return "/Image/xlsx.svg";
-      case "csv":
-        return "/Image/csv.svg";
-      case "zip":
-        return "/Image/zip.svg";
-      default:
-        return "/Image/default.svg";
-    }
-  }
-  const isSelected = (name) => selected.indexOf(name) !== -1;
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+  const isSelected = (name) => selected.indexOf(name) !== -1;
+
+  const emptyRows =
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - allfolderlist.length) : 0;
+  const tableData1 = [
+    {
+      site: "aspl",
+      capacity: "40",
+      gti: "182.90577697753906",
+      ghi: "30.149999618530273",
+      module_temperature: "46.83300018310547",
+    },
+  ];
   return (
     <Box>
       <Paper>
         <TableContainer
           style={{
-            height: "260px",
-            width: "64.9vw",
             borderRadius: "10px",
           }}
         >
@@ -117,53 +114,23 @@ export default function DataGridCard({ tableData }) {
               onRequestSort={handleRequestSort}
             />
             <TableBody>
-              {tableData?.map((data, index) => {
-                const isItemSelected = isSelected(data.name);
-                const options = {
-                  year: "numeric",
-                  month: "2-digit",
-                  day: "2-digit",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  hour12: false,
-                };
-                const updateAt = new Date(data.updatedAt);
-                const updateAtdate = updateAt.toLocaleTimeString(
-                  "en-US",
-                  options
-                );
+              {tableData1?.map((data, index) => {
                 const isEvenRow = index % 2 === 1;
-                function formatFileSize(sizeInBytes) {
-                  if (sizeInBytes < 1024) {
-                    return sizeInBytes + " B";
-                  } else if (sizeInBytes < 1024 * 1024) {
-                    return (sizeInBytes / 1024).toFixed(2) + " KB";
-                  } else if (sizeInBytes < 1024 * 1024 * 1024) {
-                    return (sizeInBytes / (1024 * 1024)).toFixed(2) + " MB";
-                  } else {
-                    return (
-                      (sizeInBytes / (1024 * 1024 * 1024)).toFixed(2) + " GB"
-                    );
-                  }
-                }
-                const fileSizeInBytes = data?.file_size || data?.folder_size;
-                const formattedSize = formatFileSize(fileSizeInBytes);
+
                 return (
                   <TableRow
                     key={index}
                     role="checkbox"
-                    aria-checked={isItemSelected}
                     tabIndex={-1}
-                    selected={isItemSelected}
                     sx={{
                       cursor: "pointer",
                       backgroundColor: isEvenRow ? "#F4F6F6 " : "transparent",
                     }}
                   >
                     <TableCell
-                      className="tablefont"
+                      className="tableTextSize"
                       style={{
-                        fontSize: "12px",
+                        fontSize: "13px",
                         whiteSpace: "nowrap",
                         overflow: "hidden",
                         textOverflow: "ellipsis",
@@ -171,44 +138,25 @@ export default function DataGridCard({ tableData }) {
                         transition: "background-color 0.3s ease",
                       }}
                     >
-                      <img
-                        src={
-                          data?.file_name
-                            ? getFileIconByExtension(data.file_type)
-                            : data?.folder_name
-                            ? "/Image/folder.png"
-                            : ""
-                        }
-                        alt="File Icon"
-                        height="22px"
-                        style={{ marginRight: "10px", marginBottom: "2px" }}
-                      />
-                      {/* <svg href="/Image/docx.svg"></svg> */}
-
-                      {data?.file_name || data?.folder_name}
+                      {data?.site}
                     </TableCell>
-
-                    <TableCell style={{ fontSize: "12px" }}>
-                      {data.email}
+                    <TableCell className="tableTextSize">
+                      {data.capacity}
                     </TableCell>
-                    <TableCell style={{ fontSize: "12px" }}>
-                      {data.workspace_name}
+                    <TableCell className="tableTextSize">Active</TableCell>
+                    <TableCell className="tableTextSize">
+                      {Math.floor(data?.ghi * 100) / 100}
                     </TableCell>
-
-                    <TableCell
-                      style={{
-                        fontSize: "12px",
-                      }}
-                    >
-                      {formattedSize}
+                    <TableCell className="tableTextSize">
+                      {Math.floor(data?.gti * 100) / 100}
                     </TableCell>
-                    <TableCell style={{ fontSize: "12px" }}>
-                      {updateAtdate}
+                    <TableCell className="tableTextSize">
+                      {Number(data?.module_temperature).toFixed(2) + "°C"}
                     </TableCell>
                   </TableRow>
                 );
               })}
-              {tableData.length > 0 ? (
+              {tableData1.length > 0 ? (
                 ""
               ) : (
                 <TableRow
@@ -216,7 +164,7 @@ export default function DataGridCard({ tableData }) {
                     height: 53,
                   }}
                 >
-                  <TableCell colSpan={5} align="center">
+                  <TableCell colSpan={8} align="center">
                     No data available
                   </TableCell>
                 </TableRow>
@@ -224,6 +172,40 @@ export default function DataGridCard({ tableData }) {
             </TableBody>
           </Table>
         </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[10, 20, 30]}
+          component="div"
+          count={tableData.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          SelectProps={{
+            inputProps: { "aria-label": "rows per page" },
+            native: true,
+            style: {
+              marginBottom: "13px",
+            },
+          }}
+          nextIconButtonProps={{
+            style: {
+              marginBottom: "12px",
+              color: "green",
+            },
+            tabIndex: -1,
+          }}
+          backIconButtonProps={{
+            style: {
+              marginBottom: "12px",
+              color: "green",
+            },
+            tabIndex: -1,
+          }}
+          style={{
+            height: "40px",
+            overflow: "hidden", // Hide any overflow content
+          }}
+        />
       </Paper>
     </Box>
   );

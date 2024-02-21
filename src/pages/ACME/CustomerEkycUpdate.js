@@ -339,7 +339,7 @@ const CustomerKycUpdate = ({ match }) => {
                 >
                   <Col md="6">
                     <div style={{ marginTop: "-5%" }}>
-                      <h3 className="title">Acme Customer Onboard</h3>
+                      <h3 className="title">PHOTON Customer Onboard</h3>
                     </div>
                   </Col>
                   <Col md="6">

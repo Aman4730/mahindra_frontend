@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet";
 const Head = ({ ...props }) => {
   return (
     <Helmet>
-      <title>{props.title ? props.title + " | " : null} ACME | DMS</title>
+      <title>{props.title ? props.title + " | " : null} PHOTON</title>
     </Helmet>
   );
 };

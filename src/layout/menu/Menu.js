@@ -258,25 +258,6 @@ const Menu = ({ sidebarToggle, mobileView }) => {
   let token = localStorage.getItem("token") || "";
   const { setWorkspaceData, isLogin } = useContext(UserContext);
 
-  useEffect(() => {
-    const config = {
-      headers: {
-        Authorization: token,
-        "Content-Type": "application/json",
-      },
-    };
-    axios
-      .post(`${process.env.REACT_APP_API_URL_LOCAL}/getworkspace`, {}, config)
-      .then((response) => {
-        let myData = response?.data?.data[0];
-        setWorkspaceData({
-          workspace_id: myData.id,
-          workspace_name: myData?.workspace_name,
-        });
-        setWorkspacelist(response.data.data);
-      })
-      .catch((error) => {});
-  }, []);
   const subMenu = workspacelist
     ?.map((data) => {
       if (isLogin?.my_workspace?.includes(data.workspace_name)) {

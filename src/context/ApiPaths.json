@@ -1,5 +1,9 @@
 {
     "endPoints": {
+        "userdetails":"userdetails",
+        "dashboard":"dashboard",
+
+        
         "loginWIthOTP": "/user/loginWithOtp",
         "verifyOTP": "/user/verifyOtp",
         "login":"login",

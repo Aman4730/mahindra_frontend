@@ -28,6 +28,32 @@ export const UserContextProvider = (props) => {
       }
     );
   }
+  async function dashboard(userSubmittedData, handleApiRes, handleApiError) {
+    await AxiosPost(
+      "dashboard",
+      userSubmittedData,
+      (apiRes) => {
+        handleApiRes(apiRes);
+      },
+      (apiError) => {
+        handleApiError(apiError);
+      }
+    );
+  }
+
+  async function getUserData(data, handleApiRes, handleApiError) {
+    await AxiosPost(
+      "userdetails",
+      data,
+      (apiRes) => {
+        handleApiRes(apiRes);
+      },
+      (apiError) => {
+        handleApiError(apiError);
+      }
+    );
+  }
+
   async function guestlogin(userSubmittedData, handleApiRes, handleApiError) {
     await AxiosPost(
       "guestlogin",
@@ -1080,6 +1106,9 @@ export const UserContextProvider = (props) => {
     <UserContext.Provider
       value={{
         contextData: [userData, setUserData],
+        getUserData: getUserData,
+
+        dashboard: dashboard,
         Login: Login,
         logout: logout,
         forgetpass: forgetpass,

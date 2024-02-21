@@ -3,94 +3,48 @@ import { Stack } from "@mui/material";
 import Head from "../../layout/head/Head";
 import "react-datepicker/dist/react-datepicker.css";
 import { UserContext } from "../../context/UserContext";
-import CustomCards from "../../components/dashboardPages/CustomCards";
 import DataGridCard from "../../components/dashboardPages/DataGridCard";
 import ProgressBarchat from "../../components/dashboardPages/ProgressBarchat";
-import Piedoughnutchart from "../../components/dashboardPages/Piedoughnutchart";
+import axios from "axios";
 const Dashboard = () => {
   // Destructure useContext variables
-  const {
-    getCountworkspace,
-    getlatestfolderfiles,
-    getquotadetails,
-    getcountextension,
-  } = useContext(UserContext);
-  const [counts, setCounts] = useState([]);
+  const { getUserData, dashboard } = useContext(UserContext);
   const [tableData, setTableData] = useState([]);
-  const [quotadetail, setQuotadetail] = useState([]);
-  const [userquota, setUserquota] = useState([]);
-  const [extension, setExtension] = useState({});
-  // useEffect(() => {
-  //   getworkspace();
-  //   getExtension();
-  //   getFolderFile();
-  //   getQuotadetails();
-  // }, []);
   useEffect(() => {
-    const abortController = new AbortController();
-    getworkspace();
-    getExtension();
-    getFolderFile();
-    getQuotadetails();
-    return () => {
-      abortController.abort();
-    };
+    getDashboardTable();
   }, []);
-  //Card Data
-  const getworkspace = () => {
-    getCountworkspace(
-      {},
-      (apiRes) => {
-        setCounts(apiRes.data);
-      },
-      (apiErr) => {}
-    );
-  };
-  //dashboard table
-  const getFolderFile = () => {
-    getlatestfolderfiles(
-      {},
-      (apiRes) => {
-        setTableData([
-          ...apiRes?.data?.latestFiles,
-          ...apiRes?.data?.latestFolders,
-        ]);
-      },
-      (apiErr) => {}
-    );
-  };
-  //storage Quota
-  const getQuotadetails = () => {
-    getquotadetails(
-      {},
-      (apiRes) => {
-        setUserquota(apiRes.data.user_list);
-        setQuotadetail(apiRes.data.workspaces);
-      },
-      (apiErr) => {}
-    );
-  };
-  //Total Extension Data
-  const getExtension = () => {
-    getcountextension(
-      {},
-      (apiRes) => {
-        setExtension(apiRes.data);
-      },
-      (apiErr) => {}
-    );
-  };
 
+  //dashboard table
+  // const getDashboardTable = () => {
+  //   dashboard(
+  //     {},
+  //     (apiRes) => {
+  //       console.log(apiRes, "apiRes");
+  //       // setTableData(apiRes.data.userData);
+  //     },
+  //     (apiErr) => {
+  //       console.log(apiErr, "apiRes");
+  //     }
+  //   );
+  // };
+
+  const getDashboardTable = () => {
+    axios
+      .post("http://192.168.1.14:3000/dashboard", {})
+      .then((response) => {
+        setTableData(response?.data);
+        console.log(response, "response");
+      })
+      .catch((error) => {
+        console.error("Error during login:", error);
+      });
+  };
   return (
     <React.Fragment>
       <Head title="Dashboard - Regular"></Head>
-      <Stack style={{ marginTop: "60px" }}>
-        <CustomCards counts={counts} />
-        <ProgressBarchat quotadetail={quotadetail} userquota={userquota} />
-        <Stack flexDirection="row">
-          <Piedoughnutchart extension={extension} />
-          <DataGridCard tableData={tableData} />
-        </Stack>
+      <Stack style={{ marginTop: "75px" }} p={1}>
+        <ProgressBarchat />
+        <DataGridCard tableData={tableData} />
       </Stack>
     </React.Fragment>
   );

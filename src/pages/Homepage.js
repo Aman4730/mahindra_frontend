@@ -45,7 +45,7 @@ const Homepage = () => {
                 Upload Data
               </BlockTitle>
               <BlockDes className="text-soft">
-                <p>Welcome to Acme</p>
+                <p>Welcome to PHOTON</p>
               </BlockDes>
             </BlockHeadContent>
           </BlockBetween>

@@ -34,13 +34,13 @@ const Logout = () => {
                   <Link to={process.env.PUBLIC_URL + "/"} className="logo-link">
                     <img
                       className="logo-dark w-50"
-                      src="/Image/acmeLogo.jpeg"
+                      src="/Image/photon1.jpeg"
                       alt="logo-dark"
                     ></img>
                   </Link>
                 </div>
                 <BlockTitle tag="h5" className="text-center">
-                  ACME DocHub
+                  Photon
                 </BlockTitle>
                 <BlockDes></BlockDes>
               </BlockContent>

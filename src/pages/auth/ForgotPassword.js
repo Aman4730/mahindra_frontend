@@ -1,6 +1,5 @@
 import React, { useState, useContext } from "react";
 import PageContainer from "../../layout/page-container/PageContainer";
-import acmeLogo from "../../images/AcmeTrans.png";
 import Head from "../../layout/head/Head";
 import AuthFooter from "./AuthFooter";
 import {
@@ -91,13 +90,13 @@ const ForgotPassword = () => {
                   <Link to={process.env.PUBLIC_URL + "/"} className="logo-link">
                     <img
                       className="logo-dark w-50"
-                      src="/Image/acmeLogo.jpeg"
+                      src="/Image/photon1.jpeg"
                       alt="logo-dark"
                     ></img>
                   </Link>
                 </div>
                 <BlockTitle tag="h5" className="text-center">
-                  Reset Password - Acme DocHub
+                  Reset Password - PHOTON
                 </BlockTitle>
                 <BlockDes></BlockDes>
               </BlockContent>

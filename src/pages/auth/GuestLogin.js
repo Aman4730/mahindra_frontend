@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import PageContainer from "../../layout/page-container/PageContainer";
-import acmeLogo from "../../images/AcmeTrans.png";
 import Head from "../../layout/head/Head";
 import AuthFooter from "./AuthFooter";
 import {
@@ -101,14 +100,14 @@ const GuestLogin = () => {
                   <Link to={process.env.PUBLIC_URL + "/"} className="logo-link">
                     <img
                       className="logo-dark w-50"
-                      src="/Image/acmeLogo.jpeg"
+                      src="/Image/photon1.jpeg"
                       alt="logo-dark"
                     ></img>
                   </Link>
                 </div>
                 <br></br>
                 <BlockTitle tag="h5" className="text-center">
-                  Guest Sign In - Acme DocHub
+                  Guest Sign In - PHOTON
                 </BlockTitle>
                 <BlockDes></BlockDes>
               </BlockContent>

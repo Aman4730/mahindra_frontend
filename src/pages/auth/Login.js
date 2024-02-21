@@ -1,88 +1,79 @@
-import React, { useState, useContext } from "react";
-import PageContainer from "../../layout/page-container/PageContainer";
-import acmeLogo from "../../images/AcmeTrans.png";
-import Head from "../../layout/head/Head";
+import React, { useState } from "react";
+import { notification } from "antd";
 import AuthFooter from "./AuthFooter";
+import { useForm } from "react-hook-form";
+import Head from "../../layout/head/Head";
+import { Link, useHistory } from "react-router-dom";
+import { Form, FormGroup, Alert, Spinner } from "reactstrap";
+import PageContainer from "../../layout/page-container/PageContainer";
 import {
+  Icon,
   Block,
-  BlockContent,
+  Button,
   BlockDes,
   BlockHead,
   BlockTitle,
-  Button,
-  Icon,
   PreviewCard,
+  BlockContent,
 } from "../../components/Component";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { Form, FormGroup, Spinner, Alert } from "reactstrap";
-import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext";
-import { notification } from "antd";
-import { useHistory } from "react-router-dom";
-import { Grid, IconButton, InputAdornment, TextField } from "@mui/material";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
   const [passState, setPassState] = useState(false);
-  const [errorVal, setError] = useState("");
-  const [loginData, setLoginData] = useState([]);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+  const history = useHistory();
+
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
   };
-  const history = useHistory();
-  const onFormSubmit = (formData) => {
+
+  const onFormSubmit = async (formData) => {
     setLoading(true);
-    fetch(`${process.env.REACT_APP_API_URL_LOCAL}/login`, {
-      method: "POST",
-      body: JSON.stringify(formData),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((data) => {
-        return data.json();
-      })
-      .then((data) => {
-        console.log(data, "login");
-        if (data.status) {
-          setLoginData(data);
-          localStorage.setItem("token", data.token);
-          localStorage.setItem("user", JSON.stringify(data));
-          history.push("/");
-        } else if (data.status == false) {
-          notification["error"]({
-            placement: "'bottomRight",
-            description: "",
-            message: "Your account has been disabled",
-          });
-        } else {
-          notification["error"]({
-            placement: "'bottomRight",
-            description: "",
-            message: "Invalid Credential",
-          });
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL_LOCAL}/login`,
+        {
+          method: "POST",
+          body: JSON.stringify(formData),
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      );
+      const data = await response.json();
+      if (data.status) {
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data));
+        history.push("/");
+      } else if (data.status === false) {
+        notification.error({
+          placement: "bottomRight",
+          description: "",
+          message: "Your account has been disabled",
+        });
+      } else {
+        notification.error({
+          placement: "bottomRight",
+          description: "",
+          message: "Invalid Credential",
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    setLoading(false);
   };
 
-  const [showPassword, setShowPassword] = React.useState(false);
-  const handleTogglePassword = () => {
-    setShowPassword((prevShowPassword) => !prevShowPassword);
-  };
   const { errors, register, handleSubmit } = useForm();
+
   return (
-    <React.Fragment>
+    <div className="loginbackground">
       <Head title="Login" />
       <PageContainer>
         <Block className="nk-block-middle nk-auth-body  wide-xs">
@@ -93,24 +84,20 @@ const Login = () => {
                   <Link to={process.env.PUBLIC_URL + "/"} className="logo-link">
                     <img
                       className="logo-dark w-50"
-                      src="/Image/acmeLogo.jpeg"
+                      src="/Image/photon1.jpeg"
                       alt="logo-dark"
                     ></img>
                   </Link>
                 </div>
+                <BlockTitle tag="h6" className="text-center">
+                  Innovation and Sustainability Combined
+                </BlockTitle>
                 <BlockTitle tag="h5" className="text-center">
-                  Sign In - ACME DocHub
+                  Sign In - Photon
                 </BlockTitle>
                 <BlockDes></BlockDes>
               </BlockContent>
             </BlockHead>
-            {errorVal && (
-              <div className="mb-3">
-                <Alert color="danger" className="alert-icon">
-                  <Icon name="alert-circle" /> {errorVal}
-                </Alert>
-              </div>
-            )}
             <Form className="is-alter" onSubmit={handleSubmit(onFormSubmit)}>
               <FormGroup>
                 <div className="form-label-group">
@@ -181,7 +168,7 @@ const Login = () => {
                   type="submit"
                   color="primary"
                 >
-                  Login
+                  {loading ? <Spinner color="light" size="sm" /> : "Login"}
                 </Button>
               </FormGroup>
               <div
@@ -197,7 +184,8 @@ const Login = () => {
         </Block>
         <AuthFooter />
       </PageContainer>
-    </React.Fragment>
+    </div>
   );
 };
+
 export default Login;

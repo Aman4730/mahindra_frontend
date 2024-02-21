@@ -5,7 +5,6 @@ import Logo from "../logo/Logo";
 import News from "../news/News";
 import User from "./dropdown/user/User";
 import Notification from "./dropdown/Notification/Notification";
-import acmeLogo from "../../images/acmeLogo.jpeg";
 import { Link } from "react-router-dom";
 import { BlockHeadContent, BlockTitle } from "../../components/Component";
 import { Stack } from "@mui/material";
@@ -38,11 +37,11 @@ const Header = ({ fixed, theme, className, setVisibility, ...props }) => {
               <Stack
                 style={{
                   fontSize: "24.5px",
-                  marginLeft: "170px",
+                  marginLeft: "100px",
                 }}
               >
                 <BlockHeadContent>
-                  <BlockTitle>DocHub</BlockTitle>
+                  <BlockTitle>PHOTON</BlockTitle>
                 </BlockHeadContent>
               </Stack>
             </ul>
@@ -65,17 +64,14 @@ const Header = ({ fixed, theme, className, setVisibility, ...props }) => {
           </div>
           <div>
             <Link to={process.env.PUBLIC_URL + "/"} className="logo-link">
-              {/* <img className="logo-light logo-img logo-img-lg" src={acmeLogo} alt="logo" />
-              <img className="logo-dark logo-img logo-img-lg" src={acmeLogo} alt="logo-dark" /> */}
               <img
                 style={{
-                  width: "100px",
-                  height: "60px",
+                  width: "86px",
+                  height: "65px",
                 }}
-                src="/Image/acmeLogo.jpeg"
+                src="/Image/photon1.jpeg"
                 alt="logo-dark"
               ></img>
-              {/* <img className="logo-light w-80 h-80" src={acmeLogo} alt="logo" /> */}
             </Link>
           </div>
         </div>
