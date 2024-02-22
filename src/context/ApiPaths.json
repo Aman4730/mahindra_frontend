@@ -1,9 +1,13 @@
 {
     "endPoints": {
         "userdetails":"userdetails",
+        "wind":"wind",
+        "graph":"graph",
+        "boxes":"boxes",
         "dashboard":"dashboard",
+        "temperature":"temperature",
 
-        
+
         "loginWIthOTP": "/user/loginWithOtp",
         "verifyOTP": "/user/verifyOtp",
         "login":"login",

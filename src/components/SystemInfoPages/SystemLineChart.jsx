@@ -9,47 +9,8 @@ import {
   CartesianGrid,
   ResponsiveContainer,
 } from "recharts";
-import { Card, Container, Grid } from "@mui/material";
+import { Card, Grid } from "@mui/material";
 const SystemLineChart = ({ system_Info }) => {
-  const [data, setData] = useState([]);
-  useEffect(() => {
-    if (system_Info?.last_10_doc) {
-      const newData = system_Info.last_10_doc.map((item) => {
-        const originalTimestamp = item.createdAt;
-        const originalDate = new Date(parseInt(originalTimestamp));
-
-        const options = {
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit",
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: false,
-        };
-
-        const convertedTimestamp = originalDate.toLocaleString(
-          "en-US",
-          options
-        );
-
-        return {
-          createdAt: convertedTimestamp,
-          rx_sec: item.networkInfo.map((item) =>
-            item.operstate === "up"
-              ? Math.floor((item.rx_sec / 125) * 100) / 100
-              : ""
-          ),
-          tx_sec: item.networkInfo.map((item) =>
-            item.operstate === "up"
-              ? Math.floor((item.tx_sec / 125) * 100) / 100
-              : ""
-          ),
-        };
-      });
-
-      setData(newData);
-    }
-  }, [system_Info]);
   return (
     <Card
       sx={{
@@ -64,10 +25,10 @@ const SystemLineChart = ({ system_Info }) => {
         overflowX: "auto",
       }}
     >
-      <h6>Network Stats</h6>
+      <h6>Irradiance / Generation</h6>
       <Grid container>
         <ResponsiveContainer width="100%" height={300}>
-          <LineChart width={1100} height={300} data={data}>
+          <LineChart width={1100} height={300} data={system_Info}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="createdAt" />
             <YAxis />
@@ -75,20 +36,19 @@ const SystemLineChart = ({ system_Info }) => {
             <Legend />
             <Line
               type="monotone"
-              dataKey="rx_sec"
+              dataKey="ghi"
               stroke="#8884d8"
               dot={{ fill: "#8884d8" }}
               curve="catmullRom"
-              strokeWidth={3} // Set the stroke width for series1
+              strokeWidth={2}
             />
             <Line
               type="monotone"
-              dataKey="tx_sec"
-              stroke="#82CA9D"
-              dot={{ fill: "#82ca9d" }}
-              name="Tx"
+              dataKey="gti"
+              stroke="#DA9619"
+              dot={{ fill: "#8884d8" }}
               curve="catmullRom"
-              strokeWidth={3}
+              strokeWidth={2}
             />
           </LineChart>
         </ResponsiveContainer>

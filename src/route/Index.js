@@ -77,10 +77,7 @@ import UserProfileLayout from "../pages/pre-built/user-manage/UserProfileLayout"
 // import KycListRegular from "../pages/pre-built/kyc-list-regular/KycListRegular";
 import KycList from "../pages/ACME/KycList";
 import Groups from "../pages/ACME/Groups";
-import Cabinet from "../pages/ACME/Cabinet";
-import Workspace from "../pages/ACME/Workspace";
 import Workspacedata from "../pages/ACME/Workspace-data";
-import Doctype from "../pages/ACME/Doctype";
 import KycDetailsRegular from "../pages/pre-built/kyc-list-regular/kycDetailsRegular";
 import TransListBasic from "../pages/pre-built/trans-list/TransListBasic";
 import TransListCrypto from "../pages/pre-built/trans-list/TransListCrypto";
@@ -115,20 +112,14 @@ import { FileManagerContextProvider } from "../pages/app/file-manager/FileManage
 import Policys from "../pages/ACME/Policys";
 import WS1 from "../pages/ACME/WS1";
 import Foldertable from "../../src/components/foldertable";
-import Docmetadata from "../pages/ACME/Docmetadata";
-import Logs from "../pages/ACME/Logs";
 import Fileviewer from "../components/Fileviewer";
 import Smtp from "../pages/ACME/Smtp";
 import TeamSpace from "../pages/ACME/TeamSpace";
 import GuestTeamSpace from "../components/GuestTeamSpace/GuestTeamSpace";
-import Policies from "../pages/ACME/Policies";
 import Dasboard from "../pages/ACME/Dasboard";
-import WorkFlow from "../pages/ACME/WorkFlow";
-import GlobalSearch from "../pages/ACME/GlobalSearch";
-import RecycleBin from "../pages/ACME/RecycleBin";
 import SystemInfo from "../pages/ACME/SystemInfo";
 import Logout from "../pages/ACME/Logout";
-import Permissions from "../pages/ACME/Permissions";
+import SitesBoxes from "../components/dashboardPages/SitesBoxes";
 const Pages = () => {
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
@@ -140,18 +131,10 @@ const Pages = () => {
   //   const endpointsToHide = [
   //     "/my-workspace",
   //     "/teamSpace",
-  //     "/GlobalSearch",
-  //     "/recyclebin",
-  //     "/logs",
   //     "/user-list",
   //     "/groups",
   //     "/smtp",
-  //     "/policies",
   //     "/workflow",
-  //     "/cabinet",
-  //     "/workspace",
-  //     "/doctype",
-  //     "/docmetadata",
   //     "/fileviewer",
   //     "/systemInfo",
   //   ];
@@ -172,18 +155,9 @@ const Pages = () => {
     const endpointsToHide = [
       "/my-workspace",
       "/teamSpace",
-      "/GlobalSearch",
-      "/recyclebin",
-      "/logs",
       "/user-list",
       "/groups",
       "/smtp",
-      "/policies",
-      "/workflow",
-      "/cabinet",
-      "/workspace",
-      "/doctype",
-      "/docmetadata",
       "/fileviewer",
       "/systemInfo",
     ];
@@ -330,15 +304,16 @@ const Pages = () => {
           path={`${process.env.PUBLIC_URL}/kyc-list`}
           component={KycList}
         ></Route>
+
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL}/sitesBoxes`}
+          component={SitesBoxes}
+        ></Route>
         <Route
           exact
           path={`${process.env.PUBLIC_URL}/groups`}
           component={Groups}
-        ></Route>
-        <Route
-          exact
-          path={`${process.env.PUBLIC_URL}/cabinet`}
-          component={Cabinet}
         ></Route>
 
         <Route
@@ -356,36 +331,7 @@ const Pages = () => {
           path={`${process.env.PUBLIC_URL}/guestTeamSpace`}
           component={GuestTeamSpace}
         ></Route>
-        <Route
-          exact
-          path={`${process.env.PUBLIC_URL}/workspace`}
-          component={Workspace}
-        ></Route>
-        <Route
-          exact
-          path={`${process.env.PUBLIC_URL}/permissions`}
-          component={Permissions}
-        ></Route>
-        <Route
-          exact
-          path={`${process.env.PUBLIC_URL}/GlobalSearch`}
-          component={GlobalSearch}
-        ></Route>
-        <Route
-          exact
-          path={`${process.env.PUBLIC_URL}/policies`}
-          component={Policies}
-        ></Route>
-        <Route
-          exact
-          path={`${process.env.PUBLIC_URL}/workflow`}
-          component={WorkFlow}
-        ></Route>
-        <Route
-          exact
-          path={`${process.env.PUBLIC_URL}/recyclebin`}
-          component={RecycleBin}
-        ></Route>
+
         <Route
           exact
           path={`${process.env.PUBLIC_URL}/workspace-data`}
@@ -403,29 +349,16 @@ const Pages = () => {
         ></Route>
         <Route
           exact
-          path={`${process.env.PUBLIC_URL}/logs`}
-          component={Logs}
-        ></Route>
-        <Route
-          exact
           path={`${process.env.PUBLIC_URL}/logout`}
           component={Logout}
         ></Route>
-        <Route
-          exact
-          path={`${process.env.PUBLIC_URL}/doctype`}
-          component={Doctype}
-        ></Route>
+
         <Route
           exact
           path={`${process.env.PUBLIC_URL}/fileviewer`}
           component={Fileviewer}
         ></Route>
-        <Route
-          exact
-          path={`${process.env.PUBLIC_URL}/docmetadata`}
-          component={Docmetadata}
-        ></Route>
+
         <Route
           exact
           path={`${process.env.PUBLIC_URL}/foldertable`}

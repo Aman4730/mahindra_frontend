@@ -21,25 +21,6 @@ export const AuthContextProvider = (props) => {
     if (isLogin?.user_type == "Admin") {
       setAuthMenu([
         {
-          icon: "trash-fill",
-          text: "Recycle bin",
-          active: true,
-          link: "/recyclebin",
-        },
-        {
-          icon: "light-fill",
-          text: "Reports",
-          active: true,
-          subMenu: [
-            {
-              icon: "list-thumb-fill",
-              text: "Logs",
-              active: true,
-              link: "/logs",
-            },
-          ],
-        },
-        {
           icon: "slack-hash",
           text: "Admin",
           active: true,
@@ -73,63 +54,6 @@ export const AuthContextProvider = (props) => {
               text: "SystemInfo",
               active: true,
               link: "/systemInfo",
-            },
-          ],
-        },
-        {
-          icon: "policy",
-          text: "Policies", //notepad type
-          active: true,
-          subMenu: [
-            {
-              icon: "dashlite",
-              text: "Workspace",
-              active: true,
-              link: "/policies",
-            },
-            {
-              icon: "shield-check-fill",
-              text: "Work Flow",
-              active: true,
-              link: "/workflow",
-            },
-            {
-              icon: "shield-check-fill",
-              text: "Permissions",
-              active: true,
-              link: "/permissions",
-            },
-          ],
-        },
-        {
-          icon: "google-drive", //
-          text: "Storage", //file cabinet
-          active: true,
-          link: "/user-list",
-          subMenu: [
-            {
-              icon: "bag",
-              text: "Cabinet",
-              active: true,
-              link: "/cabinet",
-            },
-            {
-              icon: "activity-round",
-              text: "Workspace",
-              active: true,
-              link: "/workspace",
-            },
-            {
-              icon: "growth-fill",
-              text: "Doc Type",
-              active: true,
-              link: "/doctype",
-            },
-            {
-              icon: "apple-store-ios",
-              text: "Doc Metadata",
-              active: true,
-              link: "/docmetadata",
             },
           ],
         },

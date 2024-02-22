@@ -315,23 +315,9 @@ const Menu = ({ sidebarToggle, mobileView }) => {
       link: "/teamSpace",
       subMenu: teamMenu,
     },
-    {
-      icon: "eye-fill",
-      text: "Global Search",
-      active: true,
-      link: "/GlobalSearch",
-    },
   ];
   const run = "false";
   // Check if the permission for the recycle bin is granted
-  if (loginData?.recycle_bin === "true") {
-    teamSpaceMenu.push({
-      icon: "trash-fill",
-      text: "Recycle bin",
-      active: true,
-      link: "/recyclebin",
-    });
-  }
 
   return (
     <ul className="nk-menu">

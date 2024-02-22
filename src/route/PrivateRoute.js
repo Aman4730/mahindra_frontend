@@ -12,7 +12,7 @@ const PrivateRoute = ({ exact, component: Component, ...rest }) => {
     //     isLogin || (guestlogin && guestlogin.success) ? (
     //       <Component {...props} {...rest} />
     //     ) : (
-    //       <Redirect to={`${process.env.PUBLIC_URL}/logout`} />
+    //       <Redirect to={`${process.env.PUBLIC_URL}/`} />
     //     )
     //   }
     // />

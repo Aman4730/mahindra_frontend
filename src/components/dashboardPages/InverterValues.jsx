@@ -1,5 +1,4 @@
 import * as React from "react";
-import "./style.css";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import Paper from "@mui/material/Paper";
@@ -20,14 +19,15 @@ function EnhancedTableHead(props) {
     onRequestSort(event, property);
   };
   const headCells = [
-    { id: "Sites", label: "Sites" },
-    { id: "Capacity", label: "Capacity" },
-    { id: "Status", label: "Status" },
+    { id: "Parameters", label: "Parameters" },
+    { id: "Inv 1", label: "Inv 1" },
+    { id: "Inv 2", label: "Inv 2" },
     // { id: "Last_Event", label: "Last Event" },
     // { id: "Power_Generation", label: "Power Generation" },
-    { id: "GHI", label: "GHI" },
-    { id: "GTI", label: "GTI" },
-    { id: "Module Temp", label: "Module Temp" },
+    { id: "Inv 3", label: "Inv 3" },
+    { id: "Inv 4", label: "Inv 4" },
+    { id: "Inv 5", label: "Inv 5" },
+    { id: "Inv 6", label: "Inv 6" },
   ];
   return (
     <TableHead>
@@ -65,27 +65,90 @@ function EnhancedTableHead(props) {
   );
 }
 
-export default function DataGridCard({
-  wind,
-  graph,
-  boxData,
-  tableData,
-  temperatureData,
-}) {
+export default function InverterValues({ boxData }) {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
+  const tableData1 = [
+    {
+      parameter: "L1 I",
+      Inv1: "1820.19",
+      Inv2: "106.40",
+      Inv3: "216.90",
+      Inv4: "315.98",
+      Inv5: "209.60",
+      Inv6: "203.95",
+    },
+    {
+      parameter: "L1 II",
+      Inv1: "1420.90",
+      Inv2: "1406.40",
+      Inv3: "2816.50",
+      Inv4: "3015.68",
+      Inv5: "2909.10",
+      Inv6: "2603.45",
+    },
+    {
+      parameter: "L1 III",
+      Inv1: "1620.70",
+      Inv2: "1806.40",
+      Inv3: "2816.50",
+      Inv4: "3015.68",
+      Inv5: "2909.10",
+      Inv6: "2603.45",
+    },
+    {
+      parameter: "Frequency",
+      Inv1: "172.60",
+      Inv2: "166.40",
+      Inv3: "26.50",
+      Inv4: "705.68",
+      Inv5: "909.10",
+      Inv6: "203.45",
+    },
+    {
+      parameter: "DC I",
+      Inv1: "120.40",
+      Inv2: "406.40",
+      Inv3: "816.50",
+      Inv4: "015.68",
+      Inv5: "909.10",
+      Inv6: "29.45",
+    },
+    {
+      parameter: "DC V",
+      Inv1: "1200.10",
+      Inv2: "1406.40",
+      Inv3: "2816.50",
+      Inv4: "3015.68",
+      Inv5: "2909.10",
+      Inv6: "2603.45",
+    },
+    {
+      parameter: "Active Power",
+      Inv1: "1220.10",
+      Inv2: "1406.40",
+      Inv3: "2916.50",
+      Inv4: "3015.68",
+      Inv5: "2909.10",
+      Inv6: "2603.45",
+    },
+    {
+      parameter: "DC Power",
+      Inv1: "1420.10",
+      Inv2: "1106.40",
+      Inv3: "2816.50",
+      Inv4: "3015.68",
+      Inv5: "2909.10",
+      Inv6: "2603.45",
+    },
+  ];
   const history = useHistory();
   const navigate = (boxData) => {
-    history.push("/sitesBoxes", {
-      wind: wind,
-      graph: graph,
-      boxData: boxData,
-      temperatureData: temperatureData,
-    });
+    console.log(boxData, "boxData=");
+    history.push("/sitesBoxes", { boxData: boxData });
   };
 
   const handleRequestSort = (event, property) => {
@@ -105,7 +168,7 @@ export default function DataGridCard({
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - tableData.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - tableData1.length) : 0;
 
   return (
     <Box>
@@ -122,7 +185,7 @@ export default function DataGridCard({
               onRequestSort={handleRequestSort}
             />
             <TableBody>
-              {tableData
+              {tableData1
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((data, index) => {
                   const isItemSelected = isSelected(data.name);
@@ -147,29 +210,32 @@ export default function DataGridCard({
                           maxWidth: "200px",
                           transition: "background-color 0.3s ease",
                         }}
-                        onClick={() =>
-                          navigate(boxData, temperatureData, wind, graph)
-                        }
+                        onClick={() => navigate(boxData)}
                       >
-                        {data?.site}
+                        {data?.parameter}
                       </TableCell>
                       <TableCell className="tableTextSize">
-                        {data.capacity}
-                      </TableCell>
-                      <TableCell className="tableTextSize">Active</TableCell>
-                      <TableCell className="tableTextSize">
-                        {Math.floor(data?.ghi * 100) / 100}
+                        {data.Inv1}
                       </TableCell>
                       <TableCell className="tableTextSize">
-                        {Math.floor(data?.gti * 100) / 100}
+                        {data.Inv2}
                       </TableCell>
                       <TableCell className="tableTextSize">
-                        {Number(data?.module_temperature).toFixed(2) + "°C"}
+                        {data.Inv3}
+                      </TableCell>
+                      <TableCell className="tableTextSize">
+                        {data.Inv4}
+                      </TableCell>
+                      <TableCell className="tableTextSize">
+                        {data.Inv5}
+                      </TableCell>
+                      <TableCell className="tableTextSize">
+                        {data.Inv6}
                       </TableCell>
                     </TableRow>
                   );
                 })}
-              {tableData.length > 0 ? null : (
+              {tableData1.length > 0 ? null : (
                 <TableRow
                   style={{
                     height: 53,
@@ -186,7 +252,7 @@ export default function DataGridCard({
         <TablePagination
           rowsPerPageOptions={[10, 20, 30]}
           component="div"
-          count={tableData.length}
+          count={tableData1.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

@@ -28,6 +28,7 @@ export const UserContextProvider = (props) => {
       }
     );
   }
+  //Mahindra Apis
   async function dashboard(userSubmittedData, handleApiRes, handleApiError) {
     await AxiosPost(
       "dashboard",
@@ -40,6 +41,71 @@ export const UserContextProvider = (props) => {
       }
     );
   }
+  async function dashboardBoxes(
+    userSubmittedData,
+    handleApiRes,
+    handleApiError
+  ) {
+    await AxiosPost(
+      "boxes",
+      userSubmittedData,
+      (apiRes) => {
+        handleApiRes(apiRes);
+      },
+      (apiError) => {
+        handleApiError(apiError);
+      }
+    );
+  }
+  async function dashboardtemperature(
+    userSubmittedData,
+    handleApiRes,
+    handleApiError
+  ) {
+    await AxiosPost(
+      "temperature",
+      userSubmittedData,
+      (apiRes) => {
+        handleApiRes(apiRes);
+      },
+      (apiError) => {
+        handleApiError(apiError);
+      }
+    );
+  }
+  async function dashboardwind(
+    userSubmittedData,
+    handleApiRes,
+    handleApiError
+  ) {
+    await AxiosPost(
+      "wind",
+      userSubmittedData,
+      (apiRes) => {
+        handleApiRes(apiRes);
+      },
+      (apiError) => {
+        handleApiError(apiError);
+      }
+    );
+  }
+  async function dashboardGraph(
+    userSubmittedData,
+    handleApiRes,
+    handleApiError
+  ) {
+    await AxiosPost(
+      "graph",
+      userSubmittedData,
+      (apiRes) => {
+        handleApiRes(apiRes);
+      },
+      (apiError) => {
+        handleApiError(apiError);
+      }
+    );
+  }
+  //Mahindra Apis
 
   async function getUserData(data, handleApiRes, handleApiError) {
     await AxiosPost(
@@ -1107,8 +1173,12 @@ export const UserContextProvider = (props) => {
       value={{
         contextData: [userData, setUserData],
         getUserData: getUserData,
-
         dashboard: dashboard,
+        dashboardwind: dashboardwind,
+        dashboardGraph: dashboardGraph,
+        dashboardBoxes: dashboardBoxes,
+        dashboardtemperature: dashboardtemperature,
+
         Login: Login,
         logout: logout,
         forgetpass: forgetpass,
