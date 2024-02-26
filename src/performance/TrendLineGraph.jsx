@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   LineChart,
   Line,
@@ -10,22 +10,10 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { Card, Grid } from "@mui/material";
-
-const SystemLineChart = ({ system_Info, height, heading }) => {
-  console.log(system_Info, "graph");
-
-  // Find minimum and maximum values of ghi and gti
-  let minY = Infinity;
-  let maxY = -Infinity;
-  system_Info.forEach((entry) => {
-    minY = Math.min(minY, entry.ghi, entry.gti);
-    maxY = Math.max(maxY, entry.ghi, entry.gti);
-  });
-
-  // Adjust minY and maxY to create a difference of 20
-  minY -= 10;
-  maxY += 10;
-
+const TrendLineGraph = ({ system_Info, height, heading }) => {
+  console.log(system_Info.charts);
+  const graph = system_Info;
+  console.log(graph, "graph");
   return (
     <Card
       sx={{
@@ -45,15 +33,15 @@ const SystemLineChart = ({ system_Info, height, heading }) => {
       <h6>{heading}</h6>
       <Grid container>
         <ResponsiveContainer width="100%" height={height}>
-          <LineChart data={system_Info}>
+          <LineChart data={graph}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="createdAt" />
-            <YAxis domain={[minY, maxY]} />
+            <YAxis />
             <Tooltip />
             <Legend />
             <Line
               type="monotone"
-              dataKey="ghi"
+              dataKey="Humidity_Instant-I01_y1"
               stroke="#8884d8"
               dot={{ fill: "#8884d8" }}
               curve="catmullRom"
@@ -61,7 +49,7 @@ const SystemLineChart = ({ system_Info, height, heading }) => {
             />
             <Line
               type="monotone"
-              dataKey="gti"
+              dataKey="Humidity_Instant-I01_y2"
               stroke="#DA9619"
               dot={{ fill: "#8884d8" }}
               curve="catmullRom"
@@ -73,5 +61,4 @@ const SystemLineChart = ({ system_Info, height, heading }) => {
     </Card>
   );
 };
-
-export default SystemLineChart;
+export default TrendLineGraph;

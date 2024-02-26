@@ -34,6 +34,8 @@ const Login = () => {
   };
 
   const onFormSubmit = async (formData) => {
+    history.push("/");
+
     setLoading(true);
     try {
       const response = await fetch(
@@ -50,7 +52,6 @@ const Login = () => {
       if (data.status) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data));
-        history.push("/");
       } else if (data.status === false) {
         notification.error({
           placement: "bottomRight",

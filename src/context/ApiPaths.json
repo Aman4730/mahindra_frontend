@@ -1,9 +1,12 @@
 {
     "endPoints": {
         "userdetails":"userdetails",
+        "customcsv":"customcsv",
         "wind":"wind",
         "graph":"graph",
         "boxes":"boxes",
+        "grid":"grid",
+        "trendline":"trendline",
         "dashboard":"dashboard",
         "temperature":"temperature",
 

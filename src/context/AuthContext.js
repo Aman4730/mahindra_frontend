@@ -26,12 +26,6 @@ export const AuthContextProvider = (props) => {
           active: true,
           subMenu: [
             {
-              icon: "user",
-              text: "Users",
-              active: true,
-              link: "/user-list",
-            },
-            {
               icon: "users",
               text: "Groups",
               active: true,
@@ -56,6 +50,54 @@ export const AuthContextProvider = (props) => {
               link: "/systemInfo",
             },
           ],
+        },
+        {
+          icon: "package-fill",
+          text: "Admin",
+          active: true,
+          link: "/admin",
+        },
+        {
+          icon: "pie-fill",
+          text: "Dashboard",
+          active: true,
+          link: "/",
+        },
+        {
+          icon: "growth-fill",
+          text: "Inverter Efficiency",
+          active: true,
+          link: "/inverterEfficiency",
+        },
+        {
+          icon: "sign-bnb",
+          text: "SCB",
+          active: true,
+          link: "/scb",
+        },
+        {
+          icon: "table-view-fill",
+          text: "Analytics",
+          active: true,
+          link: "/analyticsPage",
+        },
+        {
+          icon: "db-fill",
+          text: "Performance",
+          active: true,
+          link: "/performancePage",
+        },
+        {
+          icon: "wallet-fill",
+          text: "CSV",
+          active: true,
+          link: "/CSVPage",
+        },
+        {
+          icon: "shield-alert-fill",
+          text: "Alerts",
+          active: true,
+          link: "/CSVPage",
         },
       ]);
     } else if (isLogin?.user_type == "User") {

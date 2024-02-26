@@ -359,7 +359,6 @@ export default function CommonTable({
                           <Tooltip
                             title="Rights"
                             onClick={() => {
-                              console.log(data);
                               if (data?.permission?.id) {
                                 onEditPermissionClick(
                                   data?.id,
@@ -538,7 +537,6 @@ export default function CommonTable({
                             <Tooltip
                               title="Rights"
                               onClick={() => {
-                                console.log(data?.permission?.id, "juglugou");
                                 if (data?.permission?.id) {
                                   onEditPermissionClick({
                                     id: data?.id,

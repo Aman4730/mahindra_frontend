@@ -1,5 +1,4 @@
 import * as React from "react";
-import "./style.css";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import Paper from "@mui/material/Paper";
@@ -57,7 +56,7 @@ function EnhancedTableHead(props) {
   );
 }
 
-export default function DataGridCard({ tableData, headCells }) {
+export default function PerformanceTable({ tableData, headCells }) {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
   const [selected, setSelected] = React.useState([]);
@@ -92,7 +91,7 @@ export default function DataGridCard({ tableData, headCells }) {
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - tableData.length) : 0;
 
   return (
-    <Box>
+    <Box pl={2}>
       <Paper>
         <TableContainer
           style={{
@@ -122,53 +121,8 @@ export default function DataGridCard({ tableData, headCells }) {
                         backgroundColor: isEvenRow ? "#F4F6F6 " : "transparent",
                       }}
                     >
-                      <TableCell
-                        className="tableTextSize"
-                        style={{
-                          fontSize: "13px",
-                          whiteSpace: "nowrap",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          maxWidth: "200px",
-                          transition: "background-color 0.3s ease",
-                        }}
-                        onClick={() => navigate(data?.site, data?.capacity)}
-                      >
-                        {data?.site}
-                      </TableCell>
-                      <TableCell className="tableTextSize">
-                        {data?.capacity} MW
-                      </TableCell>
-                      <TableCell className="tableTextSize">
-                        {data.status == "Online" ? (
-                          <Tooltip title={data.status} placement="right">
-                            <SignalCellularAltIcon />
-                          </Tooltip>
-                        ) : (
-                          <Tooltip title={data.status} placement="right">
-                            <SignalCellularConnectedNoInternet0BarIcon />
-                          </Tooltip>
-                        )}
-                      </TableCell>
-                      <TableCell className="tableTextSize">
-                        {data.status == "Offline" ? (
-                          <span style={{ color: "#f44336", fontSize: "16px" }}>
-                            Offline
-                          </span>
-                        ) : (
-                          <span style={{ color: "#4caf50", fontSize: "16px" }}>
-                            Online
-                          </span>
-                        )}
-                      </TableCell>
-                      <TableCell className="tableTextSize">
-                        {Math.floor(data?.ghi * 100) / 100}
-                      </TableCell>
-                      <TableCell className="tableTextSize">
-                        {Math.floor(data?.gti * 100) / 100}
-                      </TableCell>
-                      <TableCell className="tableTextSize">
-                        {Number(data?.module_temperature).toFixed(2) + "°C"}
+                      <TableCell colSpan={12} align="center">
+                        No data available
                       </TableCell>
                     </TableRow>
                   );

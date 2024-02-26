@@ -2,8 +2,6 @@ import React, { useEffect } from "react";
 
 function Compass({ size, rotate }) {
   useEffect(() => {
-    // console.log("useEffect for rotation running...");
-
     const needle = document.getElementById("needle");
 
     // let rotationValue = String(360 - rotate);

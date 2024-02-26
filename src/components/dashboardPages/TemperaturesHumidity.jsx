@@ -38,7 +38,7 @@ const TemperaturesHumidity = ({ temperatureData }) => {
     temperatureData?.map((data) => {
       setTemperature(data);
     });
-  }, []);
+  }, [temperatureData]);
   const data1 = [
     {
       name: "Ambient",
@@ -62,11 +62,12 @@ const TemperaturesHumidity = ({ temperatureData }) => {
         paddingBottom: ".5rem",
         paddingLeft: ".25rem",
         paddingRight: ".25rem",
-        height: 300,
+        height: 290,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "space-between",
+        borderRadius: "5px",
       }}
     >
       <Typography variant="h6">Temperatures {" and "} Humidity</Typography>
@@ -87,7 +88,6 @@ const TemperaturesHumidity = ({ temperatureData }) => {
           fill="#8884d8"
           background={{ fill: "#eee" }}
           label={<CustomizedLabel />}
-          //   label={{ position: "top" }}
         >
           {/* <LabelList dataKey='name' content={renderCustomizedLabel} /> */}
           {data1.map((entry, index) => (

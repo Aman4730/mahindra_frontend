@@ -7,11 +7,11 @@ import TableRow from "@mui/material/TableRow";
 import { useHistory } from "react-router-dom";
 import TableHead from "@mui/material/TableHead";
 import TableBody from "@mui/material/TableBody";
-import { TablePagination } from "@mui/material";
+import { Card, TablePagination } from "@mui/material";
 import TableCell from "@mui/material/TableCell";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import TableContainer from "@mui/material/TableContainer";
-
+import CloseIcon from "@mui/icons-material/Close";
 function EnhancedTableHead(props) {
   const { order, orderBy, onRequestSort } = props;
 
@@ -65,7 +65,7 @@ function EnhancedTableHead(props) {
   );
 }
 
-export default function InverterValues({ boxData }) {
+export default function InverterValues({ tableGrid, values }) {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
   const [selected, setSelected] = React.useState([]);
@@ -147,7 +147,6 @@ export default function InverterValues({ boxData }) {
   ];
   const history = useHistory();
   const navigate = (boxData) => {
-    console.log(boxData, "boxData=");
     history.push("/sitesBoxes", { boxData: boxData });
   };
 
@@ -171,13 +170,9 @@ export default function InverterValues({ boxData }) {
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - tableData1.length) : 0;
 
   return (
-    <Box>
+    <Card elevation={6}>
       <Paper>
-        <TableContainer
-          style={{
-            borderRadius: "10px",
-          }}
-        >
+        <TableContainer>
           <Table aria-labelledby="tableTitle" size={"small"}>
             <EnhancedTableHead
               order={order}
@@ -185,7 +180,7 @@ export default function InverterValues({ boxData }) {
               onRequestSort={handleRequestSort}
             />
             <TableBody>
-              {tableData1
+              {values
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((data, index) => {
                   const isItemSelected = isSelected(data.name);
@@ -203,7 +198,6 @@ export default function InverterValues({ boxData }) {
                       <TableCell
                         className="tableTextSize"
                         style={{
-                          fontSize: "13px",
                           whiteSpace: "nowrap",
                           overflow: "hidden",
                           textOverflow: "ellipsis",
@@ -212,26 +206,62 @@ export default function InverterValues({ boxData }) {
                         }}
                         onClick={() => navigate(boxData)}
                       >
-                        {data?.parameter}
+                        {data?.heading}
                       </TableCell>
-                      <TableCell className="tableTextSize">
-                        {data.Inv1}
-                      </TableCell>
-                      <TableCell className="tableTextSize">
-                        {data.Inv2}
-                      </TableCell>
-                      <TableCell className="tableTextSize">
-                        {data.Inv3}
-                      </TableCell>
-                      <TableCell className="tableTextSize">
-                        {data.Inv4}
-                      </TableCell>
-                      <TableCell className="tableTextSize">
-                        {data.Inv5}
-                      </TableCell>
-                      <TableCell className="tableTextSize">
-                        {data.Inv6}
-                      </TableCell>
+                      {data.inv1 ? (
+                        <TableCell className="tableTextSize">
+                          {data.inv1}
+                        </TableCell>
+                      ) : (
+                        <TableCell className="tableTextSize">
+                          <CloseIcon fontSize="small" />
+                        </TableCell>
+                      )}
+                      {data.inv2 ? (
+                        <TableCell className="tableTextSize">
+                          {data.inv2}
+                        </TableCell>
+                      ) : (
+                        <TableCell className="tableTextSize">
+                          <CloseIcon fontSize="small" />
+                        </TableCell>
+                      )}
+                      {data.inv3 ? (
+                        <TableCell className="tableTextSize">
+                          {data.inv3}
+                        </TableCell>
+                      ) : (
+                        <TableCell className="tableTextSize">
+                          <CloseIcon fontSize="small" />
+                        </TableCell>
+                      )}
+                      {data.inv4 ? (
+                        <TableCell className="tableTextSize">
+                          {data.inv4}
+                        </TableCell>
+                      ) : (
+                        <TableCell className="tableTextSize">
+                          <CloseIcon fontSize="small" />
+                        </TableCell>
+                      )}
+                      {data.inv5 ? (
+                        <TableCell className="tableTextSize">
+                          {data.inv5}
+                        </TableCell>
+                      ) : (
+                        <TableCell className="tableTextSize">
+                          <CloseIcon fontSize="small" />
+                        </TableCell>
+                      )}
+                      {data.inv6 ? (
+                        <TableCell className="tableTextSize">
+                          {data.inv6}
+                        </TableCell>
+                      ) : (
+                        <TableCell className="tableTextSize">
+                          <CloseIcon fontSize="small" />
+                        </TableCell>
+                      )}
                     </TableRow>
                   );
                 })}
@@ -284,6 +314,6 @@ export default function InverterValues({ boxData }) {
           }}
         />
       </Paper>
-    </Box>
+    </Card>
   );
 }

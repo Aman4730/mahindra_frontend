@@ -105,6 +105,42 @@ export const UserContextProvider = (props) => {
       }
     );
   }
+  async function addCSV(userSubmittedData, handleApiRes, handleApiError) {
+    await AxiosPost(
+      "customcsv",
+      userSubmittedData,
+      (apiRes) => {
+        handleApiRes(apiRes);
+      },
+      (apiError) => {
+        handleApiError(apiError);
+      }
+    );
+  }
+  async function gettrendline(userSubmittedData, handleApiRes, handleApiError) {
+    await AxiosPost(
+      "trendline",
+      userSubmittedData,
+      (apiRes) => {
+        handleApiRes(apiRes);
+      },
+      (apiError) => {
+        handleApiError(apiError);
+      }
+    );
+  }
+  async function getGrid(userSubmittedData, handleApiRes, handleApiError) {
+    await AxiosPost(
+      "grid",
+      userSubmittedData,
+      (apiRes) => {
+        handleApiRes(apiRes);
+      },
+      (apiError) => {
+        handleApiError(apiError);
+      }
+    );
+  }
   //Mahindra Apis
 
   async function getUserData(data, handleApiRes, handleApiError) {
@@ -1173,11 +1209,14 @@ export const UserContextProvider = (props) => {
       value={{
         contextData: [userData, setUserData],
         getUserData: getUserData,
+        addCSV: addCSV,
         dashboard: dashboard,
         dashboardwind: dashboardwind,
         dashboardGraph: dashboardGraph,
         dashboardBoxes: dashboardBoxes,
         dashboardtemperature: dashboardtemperature,
+        gettrendline: gettrendline,
+        getGrid: getGrid,
 
         Login: Login,
         logout: logout,

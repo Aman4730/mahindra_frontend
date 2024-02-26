@@ -16,7 +16,6 @@ export default function IrradianceGeneration({
   leftAxisY,
   rightAxisY,
 }) {
-  // console.log("Biaxial line data", data);
   const [opacity, setOpacity] = useState({ ghi: 1, gti: 1, pg: 1 });
 
   const selectLine = (dataKey) => {

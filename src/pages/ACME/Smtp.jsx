@@ -307,24 +307,6 @@ const Smtp = () => {
           title="SMTP is being Deleted. Are You Sure !"
           data={open.data}
         />
-        <SmtpForm
-          editId={editId}
-          smptdata={smptdata}
-          formData={formData}
-          onEditSmtp={onEditSmtp}
-          handleChange={handleChange}
-          handleSubmit={handleSubmit}
-          testEmailForm={testEmailForm}
-          handleTestEmail={handleTestEmail}
-          handleSubmitTestEmail={handleSubmitTestEmail}
-          handleAutocompleteChange={handleAutocompleteChange}
-        />
-        <SmtpMainTable
-          getSmpt={getSmpt}
-          onEditClick={onEditClick}
-          onBlockClick={onBlockClick}
-          handleClickOpen={handleClickOpen}
-        />
       </Content>
     </React.Fragment>
   );

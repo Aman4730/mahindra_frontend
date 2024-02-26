@@ -9,25 +9,19 @@ export default function WindDirectionSpeed({
   wind,
 }) {
   const [data, setData] = useState({});
-  console.log(wind);
 
   useEffect(() => {
-    let isMounted = true;
     wind?.map((data) => {
-      if (isMounted) {
-        setData(data);
-      }
+      setData(data);
     });
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+  }, [wind]);
   return (
     <Card
       elevation={6}
       style={{
         padding: ".5rem 1rem",
-        height: 300,
+        height: 290,
+        borderRadius: "5px",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
@@ -51,7 +45,7 @@ export default function WindDirectionSpeed({
               color: "#4caf50",
             }}
           >
-            <span>{Math.floor(data.wind_dir * 100) / 100} °</span>
+            <span>{Math.floor(data.wind_dir * 100) / 100 || 0} °</span>
           </span>
           <span
             style={{
@@ -59,17 +53,17 @@ export default function WindDirectionSpeed({
               color: "#2196f3",
             }}
           >
-            {<span>{Math.floor(data.wind_speed * 100) / 100} m/s</span>}
+            {<span>{Math.floor(data.wind_speed * 100) / 100 || 0} m/s</span>}
           </span>
         </Typography>
         {!Number.isNaN(rain) && (
           <Typography
-            // variant="h6"
             color="textSecondary"
             align="center"
             style={{ marginTop: ".25rem", marginBottom: ".25rem" }}
           >
-            Rain: {Number(rain) === -111 ? "x" : <span>{data?.rain} mm</span>}
+            Rain:
+            {Number(rain) === -111 ? "x" : <span>{data?.rain || 0} mm</span>}
           </Typography>
         )}
       </div>

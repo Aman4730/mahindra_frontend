@@ -67,8 +67,6 @@ import SVGIconPage from "../pages/components/crafted-icons/SvgIcons";
 import ProjectCardPage from "../pages/pre-built/projects/ProjectCard";
 import ProjectListPage from "../pages/pre-built/projects/ProjectList";
 // import UserListRegularPage from "../pages/pre-built/user-manage/UserListRegular";
-import UserPage from "../pages/ACME/User";
-import GroupsPage from "../pages/ACME/Groups";
 
 import UserContactCardPage from "../pages/pre-built/user-manage/UserContactCard";
 import UserDetailsPage from "../pages/pre-built/user-manage/UserDetailsRegular";
@@ -76,7 +74,6 @@ import UserListCompact from "../pages/pre-built/user-manage/UserListCompact";
 import UserProfileLayout from "../pages/pre-built/user-manage/UserProfileLayout";
 // import KycListRegular from "../pages/pre-built/kyc-list-regular/KycListRegular";
 import KycList from "../pages/ACME/KycList";
-import Groups from "../pages/ACME/Groups";
 import Workspacedata from "../pages/ACME/Workspace-data";
 import KycDetailsRegular from "../pages/pre-built/kyc-list-regular/kycDetailsRegular";
 import TransListBasic from "../pages/pre-built/trans-list/TransListBasic";
@@ -113,13 +110,17 @@ import Policys from "../pages/ACME/Policys";
 import WS1 from "../pages/ACME/WS1";
 import Foldertable from "../../src/components/foldertable";
 import Fileviewer from "../components/Fileviewer";
-import Smtp from "../pages/ACME/Smtp";
 import TeamSpace from "../pages/ACME/TeamSpace";
 import GuestTeamSpace from "../components/GuestTeamSpace/GuestTeamSpace";
 import Dasboard from "../pages/ACME/Dasboard";
-import SystemInfo from "../pages/ACME/SystemInfo";
 import Logout from "../pages/ACME/Logout";
 import SitesBoxes from "../components/dashboardPages/SitesBoxes";
+import CSVPage from "../pages/ACME/CSVPage";
+import InverterEfficiency from "../pages/ACME/InverterEfficiency";
+import AnalyticsPage from "../pages/ACME/AnalyticsPage";
+import PerformancePage from "../pages/ACME/PerformancePage";
+import SCBPage from "../pages/ACME/SCBPage";
+import AdminPage from "../pages/ACME/AdminPage";
 const Pages = () => {
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
@@ -159,7 +160,7 @@ const Pages = () => {
       "/groups",
       "/smtp",
       "/fileviewer",
-      "/systemInfo",
+      // "/sitesBoxes",
     ];
 
     endpointsToHide.forEach((endpoint) => {
@@ -187,11 +188,7 @@ const Pages = () => {
           path={`${process.env.PUBLIC_URL}/`}
           component={Dasboard}
         ></Route>
-        <Route
-          exact
-          path={`${process.env.PUBLIC_URL}/systemInfo`}
-          component={SystemInfo}
-        ></Route>
+
         <Route
           exact
           path={`${process.env.PUBLIC_URL}/crypto`}
@@ -199,9 +196,10 @@ const Pages = () => {
         ></Route>
         <Route
           exact
-          path={`${process.env.PUBLIC_URL}/analytics`}
-          component={Analytics}
+          path={`${process.env.PUBLIC_URL}/analyticsPage`}
+          component={AnalyticsPage}
         ></Route>
+
         <Route
           exact
           path={`${process.env.PUBLIC_URL}/invest`}
@@ -224,15 +222,7 @@ const Pages = () => {
           path={`${process.env.PUBLIC_URL}/project-list`}
           component={ProjectListPage}
         ></Route>
-        <Route //Context Api added
-          exact
-          path={`${process.env.PUBLIC_URL}/user-list`}
-          render={() => (
-            <UserContextProvider>
-              <UserPage />
-            </UserContextProvider>
-          )}
-        ></Route>
+
         {/* <Route //Context Api added
           exact
           path={`${process.env.PUBLIC_URL}/groups`}
@@ -312,15 +302,35 @@ const Pages = () => {
         ></Route>
         <Route
           exact
-          path={`${process.env.PUBLIC_URL}/groups`}
-          component={Groups}
+          path={`${process.env.PUBLIC_URL}/admin`}
+          component={AdminPage}
         ></Route>
-
         <Route
           exact
-          path={`${process.env.PUBLIC_URL}/smtp`}
-          component={Smtp}
+          path={`${process.env.PUBLIC_URL}/inverterEfficiency`}
+          component={InverterEfficiency}
         ></Route>
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL}/performancePage`}
+          component={PerformancePage}
+        ></Route>
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL}/analytics`}
+          component={Analytics}
+        ></Route>
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL}/CSVPage`}
+          component={CSVPage}
+        ></Route>
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL}/scb`}
+          component={SCBPage}
+        ></Route>
+
         <Route
           exact
           path={`${process.env.PUBLIC_URL}/teamSpace`}

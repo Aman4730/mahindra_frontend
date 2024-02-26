@@ -250,7 +250,7 @@ const MenuSub = ({
 
 const Menu = ({ sidebarToggle, mobileView }) => {
   const { menuData, userAuthContextData } = useContext(AuthContext);
-  menuData.splice(6);
+  menuData.splice(8);
   const [userDataguest] = userAuthContextData;
   const { contextData } = useContext(UserContext);
   const [userData] = contextData;
@@ -274,17 +274,10 @@ const Menu = ({ sidebarToggle, mobileView }) => {
     .filter(Boolean);
   let workSpaceMenu = [
     {
-      icon: "growth-fill",
-      text: "Dashboard",
+      icon: "slack-hash",
+      text: "CSV",
       active: true,
-      link: "/",
-    },
-    {
-      icon: "google-wallet",
-      text: "My Workspace",
-      active: true,
-      link: "/workspace-data",
-      subMenu: subMenu,
+      link: "/CSVPage",
     },
   ];
 
@@ -307,39 +300,12 @@ const Menu = ({ sidebarToggle, mobileView }) => {
   const property = isLogin?.Permission?.map((data) => {
     loginData = data;
   });
-  let teamSpaceMenu = [
-    {
-      icon: "share-fill",
-      text: "TeamSpace",
-      active: true,
-      link: "/teamSpace",
-      subMenu: teamMenu,
-    },
-  ];
+  let teamSpaceMenu = [];
   const run = "false";
   // Check if the permission for the recycle bin is granted
 
   return (
     <ul className="nk-menu">
-      {workSpaceMenu.map((item) =>
-        item.heading ? (
-          <MenuHeading heading={item.heading} key={item.heading} />
-        ) : userDataguest.type === "guest" ? (
-          ""
-        ) : (
-          <MenuItem
-            key={item.text}
-            link={item.link}
-            icon={item.icon}
-            iconUrl={item.iconUrl}
-            text={item.text}
-            sub={item.subMenu}
-            badge={item.badge}
-            sidebarToggle={sidebarToggle}
-            mobileView={mobileView}
-          />
-        )
-      )}
       {teamSpaceMenu.map((item) =>
         item.heading ? (
           <MenuHeading heading={item.heading} key={item.heading} />

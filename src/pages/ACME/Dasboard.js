@@ -14,17 +14,9 @@ const Dashboard = () => {
     dashboardGraph,
     dashboardtemperature,
   } = useContext(UserContext);
-  const [wind, setWind] = useState([]);
-  const [boxData, setBoxData] = useState([]);
   const [tableData, setTableData] = useState([]);
-  const [graph, setGraph] = useState([]);
-  const [temperatureData, setTemperatureData] = useState([]);
   useEffect(() => {
-    getDashboardWind();
-    getDashboardBoxes();
     getDashboardTable();
-    getDashboardGraph();
-    getDashboardtemperature();
   }, []);
 
   //dashboard table
@@ -39,69 +31,23 @@ const Dashboard = () => {
       }
     );
   };
-  //Boxes
-  const getDashboardBoxes = () => {
-    let data = { startTime: 1708502470, endTime: 1708502511 };
-    dashboardBoxes(
-      data,
-      (apiRes) => {
-        setBoxData(apiRes?.data);
-      },
-      (apiErr) => {
-        console.log(apiErr, "apiRes");
-      }
-    );
-  };
-  //temperature
-  const getDashboardtemperature = () => {
-    dashboardtemperature(
-      {},
-      (apiRes) => {
-        setTemperatureData(apiRes?.data);
-      },
-      (apiErr) => {
-        console.log(apiErr, "apiRes");
-      }
-    );
-  };
-  //wind
-  const getDashboardWind = () => {
-    dashboardwind(
-      {},
-      (apiRes) => {
-        setWind(apiRes?.data);
-      },
-      (apiErr) => {
-        console.log(apiErr, "apiRes");
-      }
-    );
-  };
-  //graph
-  const getDashboardGraph = () => {
-    let data = { startTime: 1708597490, endTime: 1708597904 };
-    dashboardGraph(
-      data,
-      (apiRes) => {
-        console.log(apiRes, "apiRes");
-        setGraph(apiRes?.data);
-      },
-      (apiErr) => {
-        console.log(apiErr, "apiRes");
-      }
-    );
-  };
+  const headCells = [
+    { id: "Sites", label: "Sites" },
+    { id: "Capacity", label: "Capacity" },
+    { id: "Network", label: "Network" },
+    { id: "Status", label: "Status" },
+    // { id: "Last_Event", label: "Last Event" },
+    // { id: "Power_Generation", label: "Power Generation" },
+    { id: "GHI", label: "GHI" },
+    { id: "GTI", label: "GTI" },
+    { id: "Module Temp", label: "Module Temp" },
+  ];
   return (
     <React.Fragment>
       <Head title="Dashboard - Regular"></Head>
       <Stack style={{ marginTop: "75px" }} p={1}>
         <ProgressBarchat />
-        <DataGridCard
-          wind={wind}
-          graph={graph}
-          boxData={boxData}
-          tableData={tableData}
-          temperatureData={temperatureData}
-        />
+        <DataGridCard tableData={tableData} headCells={headCells} />
       </Stack>
     </React.Fragment>
   );
