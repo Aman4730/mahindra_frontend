@@ -74,7 +74,6 @@ import UserListCompact from "../pages/pre-built/user-manage/UserListCompact";
 import UserProfileLayout from "../pages/pre-built/user-manage/UserProfileLayout";
 // import KycListRegular from "../pages/pre-built/kyc-list-regular/KycListRegular";
 import KycList from "../pages/ACME/KycList";
-import Workspacedata from "../pages/ACME/Workspace-data";
 import KycDetailsRegular from "../pages/pre-built/kyc-list-regular/kycDetailsRegular";
 import TransListBasic from "../pages/pre-built/trans-list/TransListBasic";
 import TransListCrypto from "../pages/pre-built/trans-list/TransListCrypto";
@@ -106,12 +105,6 @@ import QuillPreview from "../pages/components/forms/rich-editor/QuillPreview";
 import TinymcePreview from "../pages/components/forms/rich-editor/TinymcePreview";
 import KnobPreview from "../pages/components/charts/KnobPreview";
 import { FileManagerContextProvider } from "../pages/app/file-manager/FileManagerContext";
-import Policys from "../pages/ACME/Policys";
-import WS1 from "../pages/ACME/WS1";
-import Foldertable from "../../src/components/foldertable";
-import Fileviewer from "../components/Fileviewer";
-import TeamSpace from "../pages/ACME/TeamSpace";
-import GuestTeamSpace from "../components/GuestTeamSpace/GuestTeamSpace";
 import Dasboard from "../pages/ACME/Dasboard";
 import Logout from "../pages/ACME/Logout";
 import SitesBoxes from "../components/dashboardPages/SitesBoxes";
@@ -333,46 +326,8 @@ const Pages = () => {
 
         <Route
           exact
-          path={`${process.env.PUBLIC_URL}/teamSpace`}
-          component={TeamSpace}
-        ></Route>
-        <Route
-          exact
-          path={`${process.env.PUBLIC_URL}/guestTeamSpace`}
-          component={GuestTeamSpace}
-        ></Route>
-
-        <Route
-          exact
-          path={`${process.env.PUBLIC_URL}/workspace-data`}
-          component={Workspacedata}
-        ></Route>
-        <Route
-          exact
-          path={`${process.env.PUBLIC_URL}/policys`}
-          component={Policys}
-        ></Route>
-        <Route
-          exact
-          path={`${process.env.PUBLIC_URL}/my-workspace`}
-          component={WS1}
-        ></Route>
-        <Route
-          exact
           path={`${process.env.PUBLIC_URL}/logout`}
           component={Logout}
-        ></Route>
-
-        <Route
-          exact
-          path={`${process.env.PUBLIC_URL}/fileviewer`}
-          component={Fileviewer}
-        ></Route>
-
-        <Route
-          exact
-          path={`${process.env.PUBLIC_URL}/foldertable`}
-          component={Foldertable}
         ></Route>
 
         <Route

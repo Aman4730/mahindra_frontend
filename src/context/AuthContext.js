@@ -21,37 +21,6 @@ export const AuthContextProvider = (props) => {
     if (isLogin?.user_type == "Admin") {
       setAuthMenu([
         {
-          icon: "slack-hash",
-          text: "Admin",
-          active: true,
-          subMenu: [
-            {
-              icon: "users",
-              text: "Groups",
-              active: true,
-              link: "/groups",
-            },
-            {
-              icon: "mail-fill",
-              text: "Smtp",
-              active: true,
-              link: "/smtp",
-            },
-            {
-              icon: "account-setting-fill",
-              text: "Roles",
-              active: true,
-              link: "/user-list",
-            },
-            {
-              icon: "account-setting-fill",
-              text: "SystemInfo",
-              active: true,
-              link: "/systemInfo",
-            },
-          ],
-        },
-        {
           icon: "package-fill",
           text: "Admin",
           active: true,
