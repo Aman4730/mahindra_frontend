@@ -6,8 +6,8 @@ import Box from "@mui/material/Box";
 import Head from "../../layout/head/Head";
 import { Autocomplete, Button, Grid, Stack, TextField } from "@mui/material";
 import SystemLineChart from "../../components/SystemInfoPages/SystemLineChart";
-import PerformanceTable from "../../components/Tables/PerformanceTable";
 import { DatePicker, Space } from "antd";
+import PerformanceTable from "../../components/AllTables/PerformanceTable";
 
 const CustomTabPanel = ({ children, value, index }) => {
   return (

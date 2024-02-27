@@ -5,10 +5,10 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { Autocomplete, Button, Grid, Stack, TextField } from "@mui/material";
 import SystemLineChart from "../../components/SystemInfoPages/SystemLineChart";
-import PerformanceTable from "../../components/Tables/PerformanceTable";
 import Head from "../../layout/head/Head";
 import { DatePicker, Space } from "antd";
 import TrendLine from "../../performance/TrendLine";
+import PerformanceTable from "../../components/AllTables/PerformanceTable";
 
 const CustomTabPanel = ({ children, value, index }) => {
   return (
